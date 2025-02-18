@@ -1,0 +1,379 @@
+﻿@using SchoolApp.DAL.ViewModels
+@model VWClassTypeName
+<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2">الجنسية</h1>
+            </div>
+            <div class="d-flex justify-content-end navigation-buttons">
+                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="classTypeNameForm" class="forms-sample">
+                <!-- Hidden field for ID -->
+                <input type="hidden" asp-for="Id" id="classTypeNameId" />
+                <div class="row row-cols-2 g-2">
+                    <div class="col">
+                        <label class="fs-6" for="classTypeNameCodeInput">كود</label>
+                        <input asp-for="Code" readonly type="number" class="form-control form-control-sm custom-input" id="classTypeNameCodeInput">
+                    </div>
+                    <div class="col">
+                  <label class="fs-6">المراحل الدراسية</label>
+                        <select asp-for="StageId" id="classTypeNameStageId" asp-items="ViewBag.listStages" type="text" class="form-control form-control-sm custom-input" >
+                            <option value="0">اختر المرحلة</option>
+                        </select>
+                    </div
+                    <div class="col">
+                        <label class="fs-6" for="classTypeNameNameInput"> اسم الفصل</label>
+                        <input asp-for="Name" type="text" class="form-control form-control-sm custom-input" maxlength="100"  id="classTypeNameNameInput" placeholder="اسم الفصل">
+                    </div>
+                </div>
+                @*  <div class="form-group custom-form-group">
+                    <label class="fs-6" for="classTypeNameCodeInput">كود</label>
+
+                </div>
+                <div class="form-group custom-form-group">
+                    <label class="fs-6" for="classTypeNameNameInput">اسم الجنسية</label>
+                    <input type="text" class="form-control form-control-sm custom-input" maxlength="100" asp-for="Name" id="classTypeNameNameInput" placeholder="ادخل الجنسية">
+                </div> *@
+                <div class="form-group custom-form-group">
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
+                    <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 for alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // On page load, get the next available code from the server
+            $.ajax({
+                url: '@Url.Action("GetNextCode", "ClassTypeName")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    $('#classTypeNameCodeInput').val(response.nextCode);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error retrieving the next code:", errorThrown);
+                }
+            });
+                    $("#btnDelete").click(function () {
+            // Get the record's ID from a hidden field or another element
+            var id = $("#classTypeNameId").val();
+            
+
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، احذفها!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) { 
+                    // If confirmed, send the delete request
+                    $.ajax({
+                        url: '@Url.Action("Delete", "ClassTypeName")',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            // Assuming your API returns a success message (you can modify as needed)
+                            Swal.fire("تم الحذف!", response.success, "success").then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
+                        }
+                    });
+                }
+            });
+        });
+
+            // Handler for the Add button
+       $("#btnAdd").click(function () {
+    var code = parseInt($('#classTypeNameCodeInput').val()) || 0;
+    var name = $('#classTypeNameNameInput').val();
+    var stageId = parseInt($('#classTypeNameStageId').val()) || 0;
+    var Id = parseInt($('#classTypeNameId').val()) || 0;
+    var errors = "";
+
+    // Client-side validation
+    if (!name || name.trim() === "") {
+        errors += "اسم الفصل مطلوب<br/>";
+    }
+    if (stageId === 0) {
+        errors += "رجا اختر المرحلة<br/>";
+    }
+    if (name.length > 100) {
+        errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
+    }
+    if (errors !== "") {
+        Swal.fire('خطأ', errors, 'error');
+        return;
+    }
+
+    var classTypeNameData = {
+        Id: Id,
+        Name: name,
+        Code: code,
+        StageId: stageId
+    };
+
+    console.log("Sending Data:", classTypeNameData); // Debugging
+
+    $.ajax({
+        url: '@Url.Action("Add", "ClassTypeName")',
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',  // Ensures correct format
+        data: JSON.stringify(classTypeNameData),  // Convert to JSON
+        dataType: 'json',  // Expect JSON response
+        success: function (response) {
+            if (response.success) {
+                Swal.fire('نجاح', response.message, 'success').then(function () {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('خطأ', response.message, 'error');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var errors = "";
+            var responseErrors = jqXHR.responseJSON;
+            if (responseErrors) {
+                $.each(responseErrors, function (key, value) {
+                    errors += value.join("<br/>") + "<br/>";
+                });
+            } else {
+                errors = errorThrown;
+            }
+            Swal.fire('خطأ', errors, 'error');
+        }
+    });
+});
+
+
+           // Handler for the Edit button
+$("#btnEdit").click(function () {
+    var code = parseInt($('#classTypeNameCodeInput').val()) || 0;
+    var name = $('#classTypeNameNameInput').val();
+    var stageId = parseInt($('#classTypeNameStageId').val()) || 0;
+    var Id = parseInt($('#classTypeNameId').val()) || 0;
+    var errors = "";
+
+    // Client-side validation
+    if (!name || name.trim() === "") {
+        errors += "اسم  الفصل مطلوب<br/>";
+    }
+    if (stageId === 0) {
+        errors += "رجا اختر المرحلة<br/>";
+    }
+    if (name.length > 100) {
+        errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
+    }
+    if (errors !== "") {
+        Swal.fire('خطأ', errors, 'error');
+        return;
+    }
+
+    var classTypeNameData = {
+        Id: Id,
+        Name: name,
+        Code: code,
+        StageId: stageId
+    };
+
+    console.log("Editing Data:", classTypeNameData); // Debugging
+
+    // AJAX call for EditclassTypeName
+    $.ajax({
+        url: '@Url.Action("Edit", "ClassTypeName")',
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',  // Ensures correct format
+        data: JSON.stringify(classTypeNameData),  // Convert to JSON
+        dataType: 'json',  // Expect JSON response
+        success: function (response) {
+            if (response.success) {
+                Swal.fire('نجاح', response.message, 'success').then(function () {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('خطأ', response.message, 'error');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            var errors = "";
+            var responseErrors = jqXHR.responseJSON;
+            if (responseErrors) {
+                $.each(responseErrors, function (key, value) {
+                    errors += value.join("<br/>") + "<br/>";
+                });
+            } else {
+                errors = errorThrown;
+            }
+            Swal.fire('خطأ', errors, 'error');
+        }
+    });
+});
+
+
+            // Handler for the Min button (gets record with minimum code)
+            $("#btnMin").click(async function () {
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetMinclassTypeName", "ClassTypeName")',
+                        dataType: "json"
+                    });
+                    if (response) {
+                        console.log(response)
+                        $("#classTypeNameId").val(response.id);
+                        $("#classTypeNameCodeInput").val(response.code);
+                        $("#classTypeNameNameInput").val(response.name);
+                        $("#classTypeNameStageId").val(response.stageId);
+                    } else {
+                        Swal.fire("خطأ", "No records found.", "error");
+                    }
+                } catch (error) {
+                    console.error("Error fetching min classTypeName:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+            });
+
+            // Handler for the Max button (gets record with maximum code)
+            $("#btnMax").click(async function () {
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetMaxclassTypeName", "ClassTypeName")',
+                        dataType: "json"
+                    });
+                    if (response) {
+                         $("#classTypeNameId").val(response.id);
+                        $("#classTypeNameCodeInput").val(response.code);
+                        $("#classTypeNameNameInput").val(response.name);
+                        $("#classTypeNameStageId").val(response.stageId);
+                    } else {
+                        Swal.fire("خطأ", "No records found.", "error");
+                    }
+                } catch (error) {
+                    console.error("Error fetching max classTypeName:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+            });
+
+            // Handler for the Previous button
+            $("#btnPrevious").click(async function () {
+                const classTypeNameId =$("#classTypeNameId").val();
+                // console.log(classTypeNameId);
+
+                // console.log(typeof(+classTypeNameId));
+                // if (+classTypeNameId!==0) {
+                //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                //     return;
+                // }
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetPreviousClassTypeName", "ClassTypeName", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +classTypeNameId),
+                        dataType: "json"
+                    });
+                    if (response) {
+                         $("#classTypeNameId").val(response.id);
+                        $("#classTypeNameCodeInput").val(response.code);
+                        $("#classTypeNameNameInput").val(response.name);
+                        $("#classTypeNameStageId").val(response.stageId);
+                    } else {
+                        Swal.fire("تنبيه", "No previous record found.", "info");
+                    }
+                } catch (error) {
+                     // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد  اسم الفصل قبل تلك", "info");
+        } else {
+            console.error("Error fetching previous classTypeName:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+
+            // Handler for the Next button
+            $("#btnNext").click(async function () {
+                const classTypeNameId =parseInt( $("#classTypeNameId").val());
+                // console.log(classTypeNameId);
+                // console.log(typeof(classTypeNameId));
+                // if (+classTypeNameId!==0) {
+                //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                //     return;
+                // }
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetNextClassTypeName", "ClassTypeName", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +classTypeNameId),
+                        dataType: "json"
+                    });
+                    if (response) {
+
+                         $("#classTypeNameId").val(response.id);
+                        $("#classTypeNameCodeInput").val(response.code);
+                        $("#classTypeNameNameInput").val(response.name);
+                        $("#classTypeNameStageId").val(response.stageId);
+                    } else {
+                        Swal.fire("تنبيه", "No next record found.", "info");
+                    }
+                } catch (error) {
+                    // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد اسم الفصل بعد تلك.", "info");
+        } else {
+            console.error("Error fetching previous ClassTypeName:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+        });
+    </script>
+}

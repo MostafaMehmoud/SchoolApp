@@ -1,0 +1,594 @@
+﻿@using SchoolApp.DAL.Models
+@model FileBus
+
+
+<style>
+    .custom-input {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+}
+.custom-button {
+    margin: 0.2rem;
+    padding: 0.3rem 0.5rem;
+}
+.custom-form-group {
+    margin-bottom: 0.5rem;
+}
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+</style>
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <!-- قسم العنوان والأزرار -->
+        <div class="d-flex justify-content-between align-items-center p-1">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-4">ملف الباص</h1>
+            </div>
+            <div class="d-flex justify-content-end navigation-buttons">
+                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الكارد (المعلومات) -->
+        <div class="card-body p-1">
+            <form id="fileBusForm" class="form-sample">
+                <input type="hidden" asp-for="BusId" id="busId" />
+                <!-- صفوف الحقول -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">رقم الباص</label>
+                            <div class="col-sm-9 p-0">
+                                <input type="text" asp-for="BusCode" class="form-control form-control-sm" id="fileBusCodeInput" placeholder="ادخل رقم الباص">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">اسم المشرف</label>
+                            <div class="col-sm-9 p-0">
+                                <input id="BusSup" asp-for="BusSup" type="text" class="form-control form-control-sm" placeholder="ادخل اسم المشرف">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">المرحلة</label>
+                            <div class="col-sm-9 p-0">
+                                <select id="BusState" asp-for="BusState" class="form-control form-control-sm">
+                                    <option value="1">تميهيدي</option>
+                                    <option value="2"> ابتدائي</option>
+                                    <option value="3">المتوسط</option>
+                                    <option value="4">الثانوي</option>
+                                    <option value="5">الجميع</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">رقم اللوحة</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusPlate" id="BusPlate" type="text" class="form-control form-control-sm" placeholder="ادخل رقم اللوحة">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">اسم السائق</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusDrive" id="BusDrive" type="text" class="form-control form-control-sm" placeholder="ادخل اسم السائق">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">اتجاه الخط</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusRoute" id="BusRoute" type="text" class="form-control form-control-sm" placeholder="ادخل اتجاه الخط">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">جوال</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="MobilPhone1" id="MobilPhone1" type="text" class="form-control form-control-sm" placeholder="ادخل الجوال">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">الجوال</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="MobilPhone2" id="MobilPhone2" type="text" class="form-control form-control-sm" placeholder="ادخل الجوال">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">عدد الطلاب</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusStud" id="BusStud" type="text" class="form-control form-control-sm" placeholder="ادخل عدد الطلاب">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">رسوم الذهب فقط</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusGo" id="BusGo" type="number" class="form-control form-control-sm" placeholder="ادخل رسوم الذهب">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">رسوم العودة فقط</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusReturn" id="BusReturn" type="number" class="form-control form-control-sm" placeholder="ادخل رسوم العودة">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row m-0">
+                            <label class="col-sm-3 col-form-label fs-7">رسوم العودة و الذهب</label>
+                            <div class="col-sm-9 p-0">
+                                <input asp-for="BusAll" id="BusAll" type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
+                    <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 for alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // On page load, get the next available code from the server
+            $.ajax({
+                url: '@Url.Action("GetNextCode", "FileBus")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    $('#fileBusCodeInput').val(response.nextCode);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error retrieving the next code:", errorThrown);
+                }
+            });
+                    $("#btnDelete").click(function () {
+            // Get the record's ID from a hidden field or another element
+            var id = $("#busId").val();
+            if (!id) {
+                Swal.fire("تنبيه", "Please select a record first.", "warning");
+                return;
+            }
+
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، احذفها!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, send the delete request
+                    $.ajax({
+                        url: '@Url.Action("Delete", "FileBus")',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            // Assuming your API returns a success message (you can modify as needed)
+                            Swal.fire("تم الحذف!", response.success, "success").then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
+                        }
+                    });
+                }
+            });
+        });
+
+            // Handler for the Add button
+                               $("#btnAdd").click(function () {
+         var errors = ""; // تعريف المتغير مرة واحدة
+
+        // قراءة القيم من الحقول الأساسية
+        var busCode = $('#fileBusCodeInput').val();
+        var busPlate = $('#BusPlate').val();
+        var busGo = $('#BusGo').val();
+        var busReturn = $('#BusReturn').val();
+        var busAll = $('#BusAll').val();
+
+        // قراءة القيم من الحقول الإضافية
+        var mobilPhone1 = $('#MobilPhone1').val();
+        var mobilPhone2 = $('#MobilPhone2').val();
+        var busDrive = $('#BusDrive').val();
+        var busRoute = $('#BusRoute').val();
+        var busSup = $('#BusSup').val();
+        var busState = $('#BusState').val();
+        var busNumber = $('#BusNumber').val();
+        var busStud = $('#BusStud').val();
+
+        // التحقق من صحة الحقول الأساسية
+        if (!busCode || busCode.trim() === "") {
+            errors += "ادخل رقم الباص<br/>";
+        }
+        if (!busPlate || busPlate.trim() === "") {
+            errors += "ادخل رقم اللوحة<br/>";
+        } else if (busPlate.length > 15) {
+            errors += "الحد الاقصى لرقم اللوحة هو 15 رقم<br/>";
+        }
+        if (!busGo || busGo.trim() === "0") {
+            errors += "ادخل سعر الذهب بشكل صحيح<br/>";
+        }
+        if (!busReturn || busReturn.trim() === "0") {
+            errors += "ادخل سعر العودة بشكل صحيح<br/>";
+        }
+        if (!busAll || busAll.trim() === "0") {
+            errors += "ادخل سعر الذهب والعودة بشكل صحيح<br/>";
+        }
+
+        // التحقق من صحة الحقول الإضافية
+        if (mobilPhone1 && mobilPhone1.length > 15) {
+            errors += "الحد الاقصى لرقم الجوال (MobilPhone1) هو 15 رقم<br/>";
+        }
+        if (mobilPhone2 && mobilPhone2.length > 15) {
+            errors += "الحد الاقصى لرقم الجوال (MobilPhone2) هو 15 رقم<br/>";
+        }
+        if (busDrive && busDrive.length > 30) {
+            errors += "الحد الاقصى لاسم السائق (BusDrive) هو 30 حرف<br/>";
+        }
+        if (busRoute && busRoute.length > 15) {
+            errors += "الحد الاقصى لاسم خط الاتجاه (BusRoute) هو 15 حرف<br/>";
+        }
+        if (busSup && busSup.length > 30) {
+            errors += "الحد الاقصى لاسم المشرف (BusSup) هو 30 حرف<br/>";
+        }
+
+        // التحقق النهائي من وجود أخطاء
+        if (errors !== "") {
+            Swal.fire("خطأ", errors, "error");
+            return;
+        }
+                    // استخدام $.serialize() لجمع جميع بيانات النموذج
+                    var formData = $("#fileBusForm").serialize();
+                    console.log(formData); // للتأكد من البيانات المرسلة
+
+                    $.ajax({
+                        url: '@Url.Action("Add", "FileBus")',
+                        type: 'POST',
+                        data: formData,
+                        // عند استخدام serialize، يتم إرسال البيانات كـ form URL-encoded؛ لذلك لا تحتاج إلى ضبط contentType
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire("نجاح", response.message, "success").then(function () {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("خطأ", response.message, "error");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            var errMsg = "";
+                            if (jqXHR.responseJSON) {
+                                $.each(jqXHR.responseJSON, function (key, value) {
+                                    errMsg += value.join("<br/>") + "<br/>";
+                                });
+                            } else {
+                                errMsg = errorThrown;
+                            }
+                            Swal.fire("خطأ", errMsg, "error");
+                        }
+                    });
+                });
+
+
+            // Handler for the Edit button
+                   $("#btnEdit").click(function () {
+            // قراءة القيم من الحقول الأساسية
+            var errors = ""; // تعريف المتغير مرة واحدة
+
+        // قراءة القيم من الحقول الأساسية
+        var busCode = $('#fileBusCodeInput').val();
+        var busPlate = $('#BusPlate').val();
+        var busGo = $('#BusGo').val();
+        var busReturn = $('#BusReturn').val();
+        var busAll = $('#BusAll').val();
+
+        // قراءة القيم من الحقول الإضافية
+        var mobilPhone1 = $('#MobilPhone1').val();
+        var mobilPhone2 = $('#MobilPhone2').val();
+        var busDrive = $('#BusDrive').val();
+        var busRoute = $('#BusRoute').val();
+        var busSup = $('#BusSup').val();
+        var busState = $('#BusState').val();
+        var busNumber = $('#BusNumber').val();
+        var busStud = $('#BusStud').val();
+
+        // التحقق من صحة الحقول الأساسية
+        if (!busCode || busCode.trim() === "") {
+            errors += "ادخل رقم الباص<br/>";
+        }
+        if (!busPlate || busPlate.trim() === "") {
+            errors += "ادخل رقم اللوحة<br/>";
+        } else if (busPlate.length > 15) {
+            errors += "الحد الاقصى لرقم اللوحة هو 15 رقم<br/>";
+        }
+        if (!busGo || busGo.trim() === "0") {
+            errors += "ادخل سعر الذهب بشكل صحيح<br/>";
+        }
+        if (!busReturn || busReturn.trim() === "0") {
+            errors += "ادخل سعر العودة بشكل صحيح<br/>";
+        }
+        if (!busAll || busAll.trim() === "0") {
+            errors += "ادخل سعر الذهب والعودة بشكل صحيح<br/>";
+        }
+
+        // التحقق من صحة الحقول الإضافية
+        if (mobilPhone1 && mobilPhone1.length > 15) {
+            errors += "الحد الاقصى لرقم الجوال (MobilPhone1) هو 15 رقم<br/>";
+        }
+        if (mobilPhone2 && mobilPhone2.length > 15) {
+            errors += "الحد الاقصى لرقم الجوال (MobilPhone2) هو 15 رقم<br/>";
+        }
+        if (busDrive && busDrive.length > 30) {
+            errors += "الحد الاقصى لاسم السائق (BusDrive) هو 30 حرف<br/>";
+        }
+        if (busRoute && busRoute.length > 15) {
+            errors += "الحد الاقصى لاسم خط الاتجاه (BusRoute) هو 15 حرف<br/>";
+        }
+        if (busSup && busSup.length > 30) {
+            errors += "الحد الاقصى لاسم المشرف (BusSup) هو 30 حرف<br/>";
+        }
+
+        // التحقق النهائي من وجود أخطاء
+        if (errors !== "") {
+            Swal.fire("خطأ", errors, "error");
+            return;
+        }
+
+            // إعداد كائن البيانات باستخدام أسماء الخصائص المطابقة لنموذج العرض (VWFileBus)
+             var formData = $("#fileBusForm").serialize();
+            console.log(formData);
+            // إرسال الطلب عبر AJAX إلى الـ Action الخاص بالتعديل
+            $.ajax({
+                url: '@Url.Action("Edit", "FileBus")',  // تأكد من أن هذا هو الرابط الصحيح للـ Action
+                 type: 'POST',
+                        data: formData,
+                        // عند استخدام serialize، يتم إرسال البيانات كـ form URL-encoded؛ لذلك لا تحتاج إلى ضبط contentType
+                        success: function (response) {
+                    if (response.success) {
+                        Swal.fire("نجاح", response.message, "success").then(function () {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire("خطأ", response.message, "error");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errMsg = "";
+                    var responseErrors = jqXHR.responseJSON;
+                    if (responseErrors) {
+                        $.each(responseErrors, function (key, value) {
+                            errMsg += value.join("<br/>") + "<br/>";
+                        });
+                    } else {
+                        errMsg = errorThrown;
+                    }
+                    Swal.fire("خطأ", errMsg, "error");
+                }
+            });
+        });
+
+            // Handler for the Min button (gets record with minimum code)
+                    $("#btnMin").click(async function () {
+            try {
+                const response = await $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetMinFileBus", "FileBus")',
+                    dataType: "json"
+                });
+                if (response) {
+                    console.log(response)
+                    // افترض أن الاستجابة تحتوي على الكائن بنفس أسماء الخصائص المذكورة في VWFileBus
+                    $("#busId").val(response.busId);
+                    $("#fileBusCodeInput").val(response.busCode);
+                    $("#BusPlate").val(response.busPlate);
+                    $("#BusGo").val(response.busGo);
+                    $("#BusReturn").val(response.busReturn);
+                    $("#BusAll").val(response.busAll);
+                    $("#MobilPhone1").val(response.mobilPhone1);
+                    $("#MobilPhone2").val(response.mobilPhone2);
+                    $("#BusDrive").val(response.busDrive);
+                    $("#BusRoute").val(response.BusRoute);
+                    $("#BusSup").val(response.busSup);
+                    $("#BusState").val(response.busState);
+                    $("#BusStud").val(response.busStud);
+                } else {
+                    Swal.fire("خطأ", "لم يتم العثور على سجلات.", "error");
+                }
+            } catch (error) {
+                console.error("Error fetching minimum file bus:", error);
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات.", "error");
+            }
+        });
+
+
+            // Handler for the Max button (gets record with maximum code)
+            $("#btnMax").click(async function () {
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetMaxFileBus", "FileBus")',
+                        dataType: "json"
+                    });
+                    if (response) {
+                        console.log(response)
+                        $("#busId").val(response.busId);
+                    $("#fileBusCodeInput").val(response.busCode);
+                    $("#BusPlate").val(response.busPlate);
+                    $("#BusGo").val(response.busGo);
+                    $("#BusReturn").val(response.busReturn);
+                    $("#BusAll").val(response.busAll);
+                    $("#MobilPhone1").val(response.mobilPhone1);
+                    $("#MobilPhone2").val(response.mobilPhone2);
+                    $("#BusDrive").val(response.busDrive);
+                    $("#BusRoute").val(response.busRoute);
+                    $("#BusSup").val(response.busSup);
+                    $("#BusState").val(response.busState);
+                    $("#BusStud").val(response.busStud);
+                    } else {
+                        Swal.fire("خطأ", "No records found.", "error");
+                    }
+                } catch (error) {
+                    console.error("Error fetching max national:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+            });
+
+            // Handler for the Previous button
+            $("#btnPrevious").click(async function () {
+                const busId = $("#busId").val();
+                if (!busId) {
+                    Swal.fire("تنبيه", "Please select a record first.", "warning");
+                    return;
+                }
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetPreviousFileBus", "FileBus", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", busId),
+                        dataType: "json"
+                    });
+                    if (response) {
+                       $("#busId").val(response.busId);
+                    $("#fileBusCodeInput").val(response.busCode);
+                    $("#BusPlate").val(response.busPlate);
+                    $("#BusGo").val(response.busGo);
+                    $("#BusReturn").val(response.busReturn);
+                    $("#BusAll").val(response.busAll);
+                    $("#MobilPhone1").val(response.mobilPhone1);
+                    $("#MobilPhone2").val(response.mobilPhone2);
+                    $("#BusDrive").val(response.busDrive);
+                    $("#BusRoute").val(response.busRoute);
+                    $("#BusSup").val(response.busSup);
+                    $("#BusState").val(response.busState);
+                    $("#BusStud").val(response.busStud);
+                    } else {
+                        Swal.fire("تنبيه", "No previous record found.", "info");
+                    }
+                } catch (error) {
+                     // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد ملف الباص قبل تلك", "info");
+        } else {
+            console.error("Error fetching previous national:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+
+            // Handler for the Next button
+            $("#btnNext").click(async function () {
+                const busId = $("#busId").val();
+                if (!busId) {
+                    Swal.fire("تنبيه", "Please select a record first.", "warning");
+                    return;
+                }
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetNextFileBus", "FileBus", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", busId),
+                        dataType: "json"
+                    });
+                    if (response) {
+
+                           console.log(response)
+                        $("#busId").val(response.busId);
+                    $("#fileBusCodeInput").val(response.busCode);
+                    $("#BusPlate").val(response.busPlate);
+                    $("#BusGo").val(response.busGo);
+                    $("#BusReturn").val(response.busReturn);
+                    $("#BusAll").val(response.busAll);
+                    $("#MobilPhone1").val(response.mobilPhone1);
+                    $("#MobilPhone2").val(response.mobilPhone2);
+                    $("#BusDrive").val(response.busDrive);
+                    $("#BusRoute").val(response.busRoute);
+                    $("#BusSup").val(response.busSup);
+                    $("#BusState").val(response.busState);
+                    $("#BusStud").val(response.busStud);
+                    } else {
+                        Swal.fire("تنبيه", "No next record found.", "info");
+                    }
+                } catch (error) {
+                    // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد ماف الباص بعد تلك.", "info");
+        } else {
+            console.error("Error fetching previous national:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+        });
+    </script>
+}

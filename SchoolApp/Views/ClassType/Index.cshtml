@@ -1,0 +1,192 @@
+﻿
+<style>
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .custom-form-group {
+        margin-bottom: 0.4rem;
+    }
+
+    .card-header {
+        padding: 0.5rem 1rem;
+    }
+
+    .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .form-control-sm {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+<div class="col-12 grid-margin">
+    <div class="card">
+        <!-- قسم العنوان والأزرار -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="text-dark m-0">المرحلة الدراسية</h5>
+            <div class="d-flex justify-content-end navigation-buttons">
+                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+        </div>
+        <!-- محتوى الكارد (المعلومات) -->
+        <div class="card-body p-1">
+            <form id="classTypeForm" class="form-sample">
+                <input type="hidden"  />
+                <!-- صفوف الحقول -->
+                <div class="row row-cols-2 g-2">
+                    <div class="col">
+                        <label class="form-label">كود المرحلة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">مسمي المرحلة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل مسمي المرحلة">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الأول</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الأول">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الثاني</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثاني">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+
+
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الثالث</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثالث">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الرابع</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الرابع">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الخامس</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الخامس">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل السادس</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل السادس">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل السابع</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل السابع">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2 mt-1">
+                    <div class="col">
+                        <label class="form-label">رسوم الفصل الثامن</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثامن">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاستحقاق</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    </div>
+                </div>
+                <p class="fw-bold mt-2">دليل المحاسبة</p>
+                <div class="row row-cols-2 g-2">
+                    <div class="col">
+                        <label class="form-label">كود المرحلة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الرسوم المستحقة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2">
+                    <div class="col">
+                        <label class="form-label">كود المرحلة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الرسوم المستحقة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
+                    </div>
+                </div>
+                <div class="row row-cols-2 g-2">
+                    <div class="col">
+                        <label class="form-label">كود المرحلة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الرسوم المستحقة /ح</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
+                    </div>
+                </div>
+               
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
+                    <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
