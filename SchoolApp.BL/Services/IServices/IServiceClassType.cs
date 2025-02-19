@@ -16,10 +16,10 @@ namespace SchoolApp.BL.Services.IServices
         public ClassType GetbyId(int id);
         public IEnumerable<ClassType> GetAll();
         public Task<int> GetNewCode();
-        Task<ClassType> GetNextClassType(int id);
-        Task<ClassType> GetPreviousClassType(int id);
-        Task<ClassType> GetMinClassType();
-        Task<ClassType> GetMaxClassType();
+        Task<VWClassType> GetNextClassType(int id);
+        Task<VWClassType> GetPreviousClassType(int id);
+        Task<VWClassType> GetMinClassType();
+        Task<VWClassType> GetMaxClassType();
         int GetMaxClassTypeId();
         
     }

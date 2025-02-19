@@ -17,6 +17,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         IRepositorySpecial<Stage> stages { get; }   
         IRepositorySpecial<ClassTypeName> classTypes { get; }   
         IRepositorySpecial<ClassType> classTypesSpecial { get; }    
+        IRepositorySpecial<Installment> installments { get; }
         int Complete();
     }
 

@@ -22,7 +22,7 @@ namespace SchoolApp.DAL.Repositories
         void DeleteRange(IEnumerable<T> entities);
         void Save();
         IEnumerable<T> GetAllWithInclude(params Expression<Func<T, object>>[] includeProperties);
-        
+
 
     }
 

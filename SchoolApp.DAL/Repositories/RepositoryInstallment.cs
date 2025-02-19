@@ -10,37 +10,36 @@ using SchoolApp.DAL.Repository;
 
 namespace SchoolApp.DAL.Repositories
 {
-    public class RepositoryClassType : Repository<ClassType>, IRepositorySpecial<ClassType>
+    public class RepositoryInstallment : Repository<Installment>, IRepositorySpecial<Installment>
     {
-        public RepositoryClassType(ApplicationDBContext context) : base(context)
+        public RepositoryInstallment(ApplicationDBContext context) : base(context)
         {
         }
 
-        public async Task<ClassType> GetMax()
+        public async Task<Installment> GetMax()
         {
-            
-            var maxStage = await _context.classTypes.Include(i=>i.Amounts).OrderByDescending(n => n.Code).FirstOrDefaultAsync();
+            var maxStage = await _context.installments.OrderByDescending(n => n.Code).FirstOrDefaultAsync();
             return maxStage;
         }
 
         public int GetMaxIdOfItem()
         {
-            var id = _context.classTypes.Max(i => i.Id);
+            var id = _context.installments.Max(i => i.Id);
             return id;
         }
 
-        public async Task<ClassType> GetMin()
+        public async Task<Installment> GetMin()
         {
-            var minSatge = await _context.classTypes.Include(i => i.Amounts).OrderBy(n => n.Code).FirstOrDefaultAsync();
+            var minSatge = await _context.installments.OrderBy(n => n.Code).FirstOrDefaultAsync();
             return minSatge;
         }
 
         public async Task<int> GetNewCode()
-        {
+        { 
             try
             {
                 // Use DefaultIfEmpty(0) to handle an empty table.
-                int? maxCode = await _context.classTypes.Include(i => i.Amounts)
+                int? maxCode = await _context.installments
                     .Select(c => (int?)c.Code)
 
                     .MaxAsync();
@@ -56,10 +55,10 @@ namespace SchoolApp.DAL.Repositories
             }
         }
 
-        public async Task<ClassType> GetNextOrPreviousItemByCode(int id, string direction)
+        public async Task<Installment> GetNextOrPreviousItemByCode(int id, string direction)
         {
             // Get the current record's code.
-            var currentCode = await _context.classTypes
+            var currentCode = await _context.installments
                 .Where(n => n.Id == id)
                 .Select(n => n.Code)
                 .FirstOrDefaultAsync();
@@ -75,7 +74,7 @@ namespace SchoolApp.DAL.Repositories
                 if (direction.ToLower() == "previous")
                 {
                     // Get the record with a code immediately less than the current code.
-                    var previousStage = await _context.classTypes.Include(i=>i.Amounts)
+                    var previousStage = await _context.installments
                         .Where(n => n.Code < currentCode)
                         .OrderByDescending(n => n.Code)
                         .FirstOrDefaultAsync();
@@ -84,7 +83,7 @@ namespace SchoolApp.DAL.Repositories
                 else if (direction.ToLower() == "next")
                 {
                     // Get the record with a code immediately greater than the current code.
-                    var nextStage = await _context.classTypes.Include(i => i.Amounts)
+                    var nextStage = await _context.installments
                         .Where(n => n.Code > currentCode)
                         .OrderBy(n => n.Code)
                         .FirstOrDefaultAsync();

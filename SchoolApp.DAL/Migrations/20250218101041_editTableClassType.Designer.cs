@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApp.DAL;
 
@@ -11,9 +12,11 @@ using SchoolApp.DAL;
 namespace SchoolApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250218101041_editTableClassType")]
+    partial class editTableClassType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,13 +72,12 @@ namespace SchoolApp.DAL.Migrations
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CurrentDateClassType")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("StageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StageId");
 
                     b.ToTable("classTypes");
                 });
@@ -168,33 +170,6 @@ namespace SchoolApp.DAL.Migrations
                     b.ToTable("FileBuses");
                 });
 
-            modelBuilder.Entity("SchoolApp.DAL.Models.Installment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InstallName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("StageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("installments");
-                });
-
             modelBuilder.Entity("SchoolApp.DAL.Models.National", b =>
                 {
                     b.Property<int>("ID")
@@ -252,6 +227,17 @@ namespace SchoolApp.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("ClassType");
+                });
+
+            modelBuilder.Entity("SchoolApp.DAL.Models.ClassType", b =>
+                {
+                    b.HasOne("SchoolApp.DAL.Models.Stage", "Stage")
+                        .WithMany()
+                        .HasForeignKey("StageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stage");
                 });
 
             modelBuilder.Entity("SchoolApp.DAL.Models.ClassType", b =>

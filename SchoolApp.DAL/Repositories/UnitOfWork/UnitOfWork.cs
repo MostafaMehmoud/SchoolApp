@@ -21,6 +21,8 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
 
         public IRepositorySpecial<ClassType> classTypesSpecial {  get; }
 
+        public IRepositorySpecial<Installment> installments {  get; }
+
         public UnitOfWork(ApplicationDBContext context)
         {
             _context = context;
@@ -30,6 +32,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             stages=new RepositoryStage(_context);
             classTypes=new RepositoryClassTypeName(_context);
             classTypesSpecial = new RepositoryClassType(_context);
+            installments = new RepositoryInstallment(_context);
         }
 
         public int Complete() => _context.SaveChanges();

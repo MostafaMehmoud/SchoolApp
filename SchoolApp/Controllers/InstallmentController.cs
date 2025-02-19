@@ -1,31 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolApp.BL.Services.IServices;
-using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
 
 namespace SchoolApp.Controllers
 {
-    public class FileBusController : Controller
+    public class InstallmentController : Controller
     {
-        private readonly IServiceFileBus _serviceFileBus;
         private readonly IServiceStage _serviceStage;
-        public FileBusController(IServiceFileBus serviceFileBus, IServiceStage serviceStage)
+        private readonly IServiceInstallment _serviceInstallment;
+        public InstallmentController(IServiceStage serviceStage, IServiceInstallment serviceInstallment)
         {
-            _serviceFileBus = serviceFileBus;
             _serviceStage = serviceStage;
+            _serviceInstallment = serviceInstallment;
         }
         public IActionResult Index()
         {
             ViewBag.listStages = new SelectList(_serviceStage.GetAll(), "Id", "StageName");
-            return View(new FileBus());
+            return View();
         }
-        [HttpGet]
         public async Task<IActionResult> GetNextCode()
         {
             try
             {
-                var nextCode = await _serviceFileBus.GetNewCode();
+                var nextCode = await _serviceInstallment.GetNewCode();
                 return Json(new { nextCode });
             }
             catch (Exception ex)
@@ -37,7 +35,7 @@ namespace SchoolApp.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Add(VWFileBus fileBus)
+        public async Task<IActionResult> Add([FromBody] VWInstallment InstallmentData)
         {
             if (!ModelState.IsValid)
             {
@@ -52,7 +50,7 @@ namespace SchoolApp.Controllers
             }
 
             // Use your BL service to add the record
-            var resultMessage = _serviceFileBus.Add(fileBus);
+            var resultMessage = _serviceInstallment.Add(InstallmentData);
             // For this example, assume the service returns a success message string
             bool success = resultMessage.Contains("نجاح");
 
@@ -61,7 +59,7 @@ namespace SchoolApp.Controllers
 
         // Action to edit an existing National
         [HttpPost]
-        public IActionResult Edit(VWFileBus fileBus )
+        public IActionResult Edit([FromBody] VWInstallment InstallmentData)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +72,7 @@ namespace SchoolApp.Controllers
                 return BadRequest(errors);
             }
 
-            var resultMessage = _serviceFileBus.Edit(fileBus);
+            var resultMessage = _serviceInstallment.Edit(InstallmentData);
             bool success = resultMessage.Contains("نجاح");
 
             return Ok(new { success, message = resultMessage });
@@ -86,7 +84,7 @@ namespace SchoolApp.Controllers
         {
             try
             {
-                string result = _serviceFileBus.Delete(id);
+                string result = _serviceInstallment.Delete(id);
                 return Json(new { success = result });
             }
             catch (Exception ex)
@@ -94,45 +92,45 @@ namespace SchoolApp.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
-        [HttpGet("GetMinFileBus")]
-        public async Task<IActionResult> GetMinFileBus()
+        [HttpGet("GetMinInstallment")]
+        public async Task<IActionResult> GetMinInstallment()
         {
-            var fileBus = await _serviceFileBus.GetMinFileBus();
-            if (fileBus == null)
+            var Installment = await _serviceInstallment.GetMinInstallment();
+            if (Installment == null)
                 return NotFound(new { Message = "No records found." });
-            return Ok(fileBus);
+            return Ok(Installment);
         }
 
-        [HttpGet("GetMaxFileBus")]
-        public async Task<IActionResult> GetMaxFileBus()
+        [HttpGet("GetMaxInstallment")]
+        public async Task<IActionResult> GetMaxInstallment()
         {
-            var national = await _serviceFileBus.GetMaxFileBus();
+            var national = await _serviceInstallment.GetMaxInstallment();
             if (national == null)
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
 
-        [HttpGet("GetNextFileBus/{id}")]
-        public async Task<IActionResult> GetNextFileBus(int id)
+        [HttpGet("GetNextInstallment/{id}")]
+        public async Task<IActionResult> GetNextInstallment(int id)
         {
             if (id == 0)
             {
-                id = _serviceFileBus.GetMaxFileBusId();
+                id = _serviceInstallment.GetMaxInstallmentId();
             }
-            var national = await _serviceFileBus.GetNextFileBus(id);
+            var national = await _serviceInstallment.GetNextInstallment(id);
             if (national == null)
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
 
-        [HttpGet("GetPreviousFileBus/{id}")]
-        public async Task<IActionResult> GetPreviousFileBus(int id)
+        [HttpGet("GetPreviousInstallment/{id}")]
+        public async Task<IActionResult> GetPreviousInstallment(int id)
         {
             if (id == 0)
             {
-                id = _serviceFileBus.GetMaxFileBusId();
+                id = _serviceInstallment.GetMaxInstallmentId();
             }
-            var national = await _serviceFileBus.GetPreviousFileBus(id);
+            var national = await _serviceInstallment.GetPreviousInstallment(id);
             if (national == null)
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);

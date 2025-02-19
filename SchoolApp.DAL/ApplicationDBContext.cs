@@ -19,6 +19,7 @@ namespace SchoolApp.DAL
         public DbSet<ClassTypeName> classTypeName {  get; set; }   
         public DbSet<Amount> amounts { get; set; }  
         public DbSet<ClassType> classTypes { get; set; }
+        public DbSet<Installment> installments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<National>()
@@ -33,6 +34,9 @@ namespace SchoolApp.DAL
             modelBuilder.Entity<ClassTypeName>()
           .HasIndex(n => n.Code)
           .IsUnique();
+            modelBuilder.Entity<Installment>()
+         .HasIndex(n => n.Code)
+         .IsUnique();
             base.OnModelCreating(modelBuilder);
         }
     }

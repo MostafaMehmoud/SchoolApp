@@ -107,6 +107,6 @@ namespace SchoolApp.DAL.Repository
             return query.ToList();
         }
 
-       
+
     }
 }

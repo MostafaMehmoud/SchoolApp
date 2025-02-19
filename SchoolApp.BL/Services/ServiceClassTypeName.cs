@@ -74,6 +74,11 @@ namespace SchoolApp.BL.Services
             return _unitOfWork.classTypes.GetAll();
         }
 
+        public List<ClassTypeName> GetAllClassTypesByStageId(int StageId)
+        {
+            return _unitOfWork.classTypes.GetAll().Where(i=>i.StageId==StageId).ToList();
+        }
+
         public ClassTypeName GetbyId(int id)
         {
             return _unitOfWork.classTypes.GetById(id);

@@ -79,12 +79,8 @@
                         <div class="form-group row m-0">
                             <label class="col-sm-3 col-form-label fs-7">المرحلة</label>
                             <div class="col-sm-9 p-0">
-                                <select id="BusState" asp-for="BusState" class="form-control form-control-sm">
-                                    <option value="1">تميهيدي</option>
-                                    <option value="2"> ابتدائي</option>
-                                    <option value="3">المتوسط</option>
-                                    <option value="4">الثانوي</option>
-                                    <option value="5">الجميع</option>
+                                <select id="BusState" asp-items="ViewBag.listStages" asp-for="BusState" class="form-control form-control-sm">
+                                    
                                 </select>
                             </div>
                         </div>

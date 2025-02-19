@@ -21,5 +21,6 @@ namespace SchoolApp.BL.Services.IServices
         Task<ClassTypeName> GetMinClassTypeName();
         Task<ClassTypeName> GetMaxClassTypeName();
         int GetMaxClassTypeNameId();
+        public List<ClassTypeName> GetAllClassTypesByStageId(int StageId);  
     }
 }

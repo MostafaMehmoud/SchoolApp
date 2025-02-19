@@ -13,7 +13,7 @@ namespace SchoolApp.DAL.Models
             ClassType=new ClassType();
         }
         public int Id {  get; set; }
-
+        public int ClassTypeNameId {  get; set; }
         public int ClassTypeId {  get; set; }
         public ClassType ClassType { get; set; }    
         public decimal AmountPrice { get; set; }

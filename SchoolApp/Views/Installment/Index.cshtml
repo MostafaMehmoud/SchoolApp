@@ -1,5 +1,5 @@
 ﻿@using SchoolApp.DAL.ViewModels
-@model VWClassTypeName
+@model VWInstallment
 <style>
     /* تقليل حجم المدخلات */
     .custom-input {
@@ -42,32 +42,32 @@
         </div>
 
         <div class="card-body">
-            <form id="classTypeNameForm" class="forms-sample">
+            <form id="InstallmentForm" class="forms-sample">
                 <!-- Hidden field for ID -->
-                <input type="hidden" asp-for="Id" id="classTypeNameId" />
+                <input type="hidden" asp-for="Id" id="installmentId" />
                 <div class="row row-cols-2 g-2">
                     <div class="col">
-                        <label class="fs-6" for="classTypeNameCodeInput">كود</label>
-                        <input asp-for="Code" readonly type="number" class="form-control form-control-sm custom-input" id="classTypeNameCodeInput">
+                        <label class="fs-6" for="installmentCodeInput">كود</label>
+                        <input asp-for="Code" readonly type="number" class="form-control form-control-sm custom-input" id="installmentCodeInput">
                     </div>
                     <div class="col">
-                  <label class="fs-6">المراحل الدراسية</label>
-                        <select asp-for="StageId" id="classTypeNameStageId" asp-items="ViewBag.listStages" type="text" class="form-control form-control-sm custom-input" >
+                        <label class="fs-6">المراحل الدراسية</label>
+                        <select asp-for="StageId" id="installmentStageId" asp-items="ViewBag.listStages" type="text" class="form-control form-control-sm custom-input">
                             <option value="0">اختر المرحلة</option>
                         </select>
                     </div>
                     <div class="col">
-                        <label class="fs-6" for="classTypeNameNameInput"> اسم الفصل</label>
-                        <input asp-for="Name" type="text" class="form-control form-control-sm custom-input" maxlength="100"  id="classTypeNameNameInput" placeholder="اسم الفصل">
+                        <label class="fs-6" for="installmentNameInput"> اسم القسط</label>
+                        <input asp-for="InstallName" type="text" class="form-control form-control-sm custom-input" maxlength="100" id="installmentNameInput" placeholder="اسم القسط">
                     </div>
                 </div>
                 @*  <div class="form-group custom-form-group">
-                    <label class="fs-6" for="classTypeNameCodeInput">كود</label>
+                    <label class="fs-6" for="installmentCodeInput">كود</label>
 
                 </div>
                 <div class="form-group custom-form-group">
-                    <label class="fs-6" for="classTypeNameNameInput">اسم الجنسية</label>
-                    <input type="text" class="form-control form-control-sm custom-input" maxlength="100" asp-for="Name" id="classTypeNameNameInput" placeholder="ادخل الجنسية">
+                    <label class="fs-6" for="installmentNameInput">اسم الجنسية</label>
+                    <input type="text" class="form-control form-control-sm custom-input" maxlength="100" asp-for="Name" id="installmentNameInput" placeholder="ادخل الجنسية">
                 </div> *@
                 <div class="form-group custom-form-group">
                     <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
@@ -87,11 +87,11 @@
         $(document).ready(function () {
             // On page load, get the next available code from the server
             $.ajax({
-                url: '@Url.Action("GetNextCode", "ClassTypeName")',
+                url: '@Url.Action("GetNextCode", "Installment")',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
-                    $('#classTypeNameCodeInput').val(response.nextCode);
+                    $('#installmentCodeInput').val(response.nextCode);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error("Error retrieving the next code:", errorThrown);
@@ -99,7 +99,7 @@
             });
                     $("#btnDelete").click(function () {
             // Get the record's ID from a hidden field or another element
-            var id = $("#classTypeNameId").val();
+            var id = $("#installmentId").val();
             
 
             // Show confirmation dialog
@@ -116,7 +116,7 @@
                 if (result.isConfirmed) { 
                     // If confirmed, send the delete request
                     $.ajax({
-                        url: '@Url.Action("Delete", "ClassTypeName")',
+                        url: '@Url.Action("Delete", "Installment")',
                         type: 'POST',
                         data: { id: id },
                         success: function (response) {
@@ -135,10 +135,10 @@
 
             // Handler for the Add button
        $("#btnAdd").click(function () {
-    var code = parseInt($('#classTypeNameCodeInput').val()) || 0;
-    var name = $('#classTypeNameNameInput').val();
-    var stageId = parseInt($('#classTypeNameStageId').val()) || 0;
-    var Id = parseInt($('#classTypeNameId').val()) || 0;
+    var code = parseInt($('#installmentCodeInput').val()) || 0;
+    var name = $('#installmentNameInput').val();
+    var stageId = parseInt($('#installmentStageId').val()) || 0;
+    var Id = parseInt($('#installmentId').val()) || 0;
     var errors = "";
 
     // Client-side validation
@@ -156,20 +156,20 @@
         return;
     }
 
-    var classTypeNameData = {
+    var InstallmentData = {
         Id: Id,
-        Name: name,
+                InstallName: name,
         Code: code,
         StageId: stageId
     };
 
-    console.log("Sending Data:", classTypeNameData); // Debugging
+    console.log("Sending Data:", InstallmentData); // Debugging
 
     $.ajax({
-        url: '@Url.Action("Add", "ClassTypeName")',
+        url: '@Url.Action("Add", "Installment")',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',  // Ensures correct format
-        data: JSON.stringify(classTypeNameData),  // Convert to JSON
+        data: JSON.stringify(InstallmentData),  // Convert to JSON
         dataType: 'json',  // Expect JSON response
         success: function (response) {
             if (response.success) {
@@ -198,15 +198,15 @@
 
            // Handler for the Edit button
 $("#btnEdit").click(function () {
-    var code = parseInt($('#classTypeNameCodeInput').val()) || 0;
-    var name = $('#classTypeNameNameInput').val();
-    var stageId = parseInt($('#classTypeNameStageId').val()) || 0;
-    var Id = parseInt($('#classTypeNameId').val()) || 0;
+    var code = parseInt($('#installmentCodeInput').val()) || 0;
+    var name = $('#installmentNameInput').val();
+    var stageId = parseInt($('#installmentStageId').val()) || 0;
+    var Id = parseInt($('#installmentId').val()) || 0;
     var errors = "";
 
     // Client-side validation
     if (!name || name.trim() === "") {
-        errors += "اسم  الفصل مطلوب<br/>";
+        errors += "اسم  القسط مطلوب<br/>";
     }
     if (stageId === 0) {
         errors += "رجا اختر المرحلة<br/>";
@@ -219,21 +219,21 @@ $("#btnEdit").click(function () {
         return;
     }
 
-    var classTypeNameData = {
+    var InstallmentData = {
         Id: Id,
-        Name: name,
+                InstallName: name,
         Code: code,
         StageId: stageId
     };
 
-    console.log("Editing Data:", classTypeNameData); // Debugging
+    console.log("Editing Data:", InstallmentData); // Debugging
 
-    // AJAX call for EditclassTypeName
+    // AJAX call for EditInstallment
     $.ajax({
-        url: '@Url.Action("Edit", "ClassTypeName")',
+        url: '@Url.Action("Edit", "Installment")',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',  // Ensures correct format
-        data: JSON.stringify(classTypeNameData),  // Convert to JSON
+        data: JSON.stringify(InstallmentData),  // Convert to JSON
         dataType: 'json',  // Expect JSON response
         success: function (response) {
             if (response.success) {
@@ -265,20 +265,20 @@ $("#btnEdit").click(function () {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetMinclassTypeName", "ClassTypeName")',
+                        url: '@Url.Action("GetMinInstallment", "Installment")',
                         dataType: "json"
                     });
                     if (response) {
                         console.log(response)
-                        $("#classTypeNameId").val(response.id);
-                        $("#classTypeNameCodeInput").val(response.code);
-                        $("#classTypeNameNameInput").val(response.name);
-                        $("#classTypeNameStageId").val(response.stageId);
+                        $("#installmentId").val(response.id);
+                        $("#installmentCodeInput").val(response.code);
+                        $("#installmentNameInput").val(response.installName);
+                        $("#installmentStageId").val(response.stageId);
                     } else {
                         Swal.fire("خطأ", "No records found.", "error");
                     }
                 } catch (error) {
-                    console.error("Error fetching min classTypeName:", error);
+                    console.error("Error fetching min Installment:", error);
                     Swal.fire("خطأ", "Error fetching data.", "error");
                 }
             });
@@ -288,53 +288,53 @@ $("#btnEdit").click(function () {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetMaxclassTypeName", "ClassTypeName")',
+                        url: '@Url.Action("GetMaxInstallment", "Installment")',
                         dataType: "json"
                     });
                     if (response) {
-                         $("#classTypeNameId").val(response.id);
-                        $("#classTypeNameCodeInput").val(response.code);
-                        $("#classTypeNameNameInput").val(response.name);
-                        $("#classTypeNameStageId").val(response.stageId);
+                         $("#installmentId").val(response.id);
+                        $("#installmentCodeInput").val(response.code);
+                                $("#installmentNameInput").val(response.installName);
+                        $("#installmentStageId").val(response.stageId);
                     } else {
                         Swal.fire("خطأ", "No records found.", "error");
                     }
                 } catch (error) {
-                    console.error("Error fetching max classTypeName:", error);
+                    console.error("Error fetching max Installment:", error);
                     Swal.fire("خطأ", "Error fetching data.", "error");
                 }
             });
 
             // Handler for the Previous button
             $("#btnPrevious").click(async function () {
-                const classTypeNameId =$("#classTypeNameId").val();
-                // console.log(classTypeNameId);
+                const installmentId =$("#installmentId").val();
+                // console.log(installmentId);
 
-                // console.log(typeof(+classTypeNameId));
-                // if (+classTypeNameId!==0) {
+                // console.log(typeof(+installmentId));
+                // if (+installmentId!==0) {
                 //     Swal.fire("تنبيه", "Please select a record first.", "warning");
                 //     return;
                 // }
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetPreviousClassTypeName", "ClassTypeName", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +classTypeNameId),
+                        url: '@Url.Action("GetPreviousInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
                         dataType: "json"
                     });
                     if (response) {
-                         $("#classTypeNameId").val(response.id);
-                        $("#classTypeNameCodeInput").val(response.code);
-                        $("#classTypeNameNameInput").val(response.name);
-                        $("#classTypeNameStageId").val(response.stageId);
+                         $("#installmentId").val(response.id);
+                        $("#installmentCodeInput").val(response.code);
+                                $("#installmentNameInput").val(response.installName);
+                        $("#installmentStageId").val(response.stageId);
                     } else {
                         Swal.fire("تنبيه", "No previous record found.", "info");
                     }
                 } catch (error) {
                      // If the status code is 404, display a specific warning message.
         if (error.status == 404) {
-            Swal.fire("تنبيه", "لا يوجد  اسم الفصل قبل تلك", "info");
+            Swal.fire("تنبيه", "لا يوجد  اسم القسط قبل تلك", "info");
         } else {
-            console.error("Error fetching previous classTypeName:", error);
+            console.error("Error fetching previous Installment:", error);
             Swal.fire("خطأ", "Error fetching data.", "error");
         }
                 }
@@ -342,34 +342,34 @@ $("#btnEdit").click(function () {
 
             // Handler for the Next button
             $("#btnNext").click(async function () {
-                const classTypeNameId =parseInt( $("#classTypeNameId").val());
-                // console.log(classTypeNameId);
-                // console.log(typeof(classTypeNameId));
-                // if (+classTypeNameId!==0) {
+                const installmentId =parseInt( $("#installmentId").val());
+                // console.log(installmentId);
+                // console.log(typeof(installmentId));
+                // if (+installmentId!==0) {
                 //     Swal.fire("تنبيه", "Please select a record first.", "warning");
                 //     return;
                 // }
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetNextClassTypeName", "ClassTypeName", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +classTypeNameId),
+                        url: '@Url.Action("GetNextInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
                         dataType: "json"
                     });
                     if (response) {
 
-                         $("#classTypeNameId").val(response.id);
-                        $("#classTypeNameCodeInput").val(response.code);
-                        $("#classTypeNameNameInput").val(response.name);
-                        $("#classTypeNameStageId").val(response.stageId);
+                         $("#installmentId").val(response.id);
+                        $("#installmentCodeInput").val(response.code);
+                                $("#installmentNameInput").val(response.installName);
+                        $("#installmentStageId").val(response.stageId);
                     } else {
                         Swal.fire("تنبيه", "No next record found.", "info");
                     }
                 } catch (error) {
                     // If the status code is 404, display a specific warning message.
         if (error.status == 404) {
-            Swal.fire("تنبيه", "لا يوجد اسم الفصل بعد تلك.", "info");
+            Swal.fire("تنبيه", "لا يوجد اسم القسط بعد تلك.", "info");
         } else {
-            console.error("Error fetching previous ClassTypeName:", error);
+            console.error("Error fetching previous Installment:", error);
             Swal.fire("خطأ", "Error fetching data.", "error");
         }
                 }

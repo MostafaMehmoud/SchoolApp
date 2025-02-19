@@ -1,39 +1,32 @@
-﻿
+﻿@using SchoolApp.DAL.Models
+@using SchoolApp.DAL.ViewModels
+@model VWClassType
+
 <style>
+    /* تقليل حجم المدخلات */
     .custom-input {
         font-size: 0.85rem;
         padding: 0.25rem 0.5rem;
     }
 
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
     .custom-button {
         margin: 0.2rem;
-        padding: 0.3rem 0.6rem;
-        font-size: 0.85rem;
+        padding: 0.3rem 0.5rem;
     }
 
-    .custom-form-group {
-        margin-bottom: 0.4rem;
-    }
-
-    .card-header {
-        padding: 0.5rem 1rem;
-    }
-
-    .form-label {
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .form-control-sm {
-        font-size: 0.85rem;
-        padding: 0.25rem 0.5rem;
-    }
 </style>
-<div class="col-12 grid-margin">
+<div class="col-12 grid-margin stretch-card">
     <div class="card">
-        <!-- قسم العنوان والأزرار -->
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="text-dark m-0">المرحلة الدراسية</h5>
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2">المرحلة الدراسية</h1>
+            </div>
             <div class="d-flex justify-content-end navigation-buttons">
                 <div class="btn btn-primary btn-sm custom-button" id="btnMin">
                     <i class="fa fa-angle-double-right"></i>
@@ -49,144 +42,496 @@
                 </div>
             </div>
         </div>
-        <!-- محتوى الكارد (المعلومات) -->
-        <div class="card-body p-1">
-            <form id="classTypeForm" class="form-sample">
-                <input type="hidden"  />
-                <!-- صفوف الحقول -->
-                <div class="row row-cols-2 g-2">
-                    <div class="col">
-                        <label class="form-label">كود المرحلة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
+
+        <div class="card-body">
+            <form id="classTypeNameForm" class="forms-sample">
+                <!-- Static Fields -->
+                <div class="errorContainer">
+
+                </div>
+                <input type="hidden" id="classtypeId" asp-for="Id"/>
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-6">كود المرحلة</label>
+                        <input type="number" id="classTypeCodeInput" asp-for="Code" class="form-control form-control-sm custom-input" placeholder="ادخل كود المرحلة">
                     </div>
-                    <div class="col">
-                        <label class="form-label">مسمي المرحلة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل مسمي المرحلة">
+                    <div class="col-md-4">
+                        <label class="fs-6">المراحل الدراسية</label>
+                        <select name="StageId" id="classTypeNameStageId" class="form-control form-control-sm custom-input">
+                            <option value="0">اختر المرحلة</option>
+                            @foreach (var stage in (IEnumerable<SelectListItem>)ViewBag.listStages)
+                            {
+                                <option value="@stage.Value">@stage.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6"> تاريخ اليوم</label>
+                        <input readonly type="date" asp-for="CurrentDateClassType" id="classTypeDateInput"  class="form-control form-control-sm custom-input" >
                     </div>
                 </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الأول</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الأول">
+                <!-- Additional Static Fields e.g., Books Fee, Registration Fee, Uniform Fee -->
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الكتب</label>
+                        <input type="number" name="CLSAcpt" id="cLSAcpt" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الكتب">
                     </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم التسجيل</label>
+                        <input type="number" name="CLSRegs" id="cLsRegs" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم التسجيل">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الزي</label>
+                        <input type="number" name="CLSCloth" id="cLSCloth" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الزي">
                     </div>
                 </div>
 
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الثاني</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثاني">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
+                <!-- Dynamic Section for Semester Fees -->
+                <div id="dynamicRows">
+                    <!-- Dynamic rows will be appended here; they will have names: amounts[i].AmountPrice, amounts[i].AmountDate, amounts[i].ClassTypeNameId -->
                 </div>
+                
 
-
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الثالث</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثالث">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الرابع</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الرابع">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الخامس</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الخامس">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل السادس</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل السادس">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل السابع</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل السابع">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2 mt-1">
-                    <div class="col">
-                        <label class="form-label">رسوم الفصل الثامن</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رسوم الفصل الثامن">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">تاريخ الاستحقاق</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل تاريخ الاستحقاق">
-                    </div>
-                </div>
-                <p class="fw-bold mt-2">دليل المحاسبة</p>
-                <div class="row row-cols-2 g-2">
-                    <div class="col">
-                        <label class="form-label">كود المرحلة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">الرسوم المستحقة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2">
-                    <div class="col">
-                        <label class="form-label">كود المرحلة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">الرسوم المستحقة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
-                    </div>
-                </div>
-                <div class="row row-cols-2 g-2">
-                    <div class="col">
-                        <label class="form-label">كود المرحلة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل كود المرحلة">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">الرسوم المستحقة /ح</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم المستحقة">
-                    </div>
-                </div>
-               
-
+                <!-- Submit Buttons -->
                 <div class="form-group">
-                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
-                    <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
-                    <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                    <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">حفظ</button>
+                    <button type="button" id="btnEdit" class="btn btn-secondary btn-sm custom-button">تعديل</button>
+                    <button type="button" id="btnDelete" class="btn btn-danger btn-sm custom-button">حذف</button>
                 </div>
-
             </form>
+
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 for alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            // الحصول على تاريخ اليوم بتنسيق YYYY-MM-DD
+            let today = new Date().toISOString().split("T")[0];
+
+            // تعيين التاريخ في حقل الإدخال
+            document.getElementById("classTypeDateInput").value = today;
+        });
+                    function addDynamicRow(selectedClassTypeNameId, classTypeName, Id, amountPrice = "", amountDate = "") {
+            var rowIndex = $(".dynamic-row").length; // Ensure unique index for each row
+
+            var rowHtml =
+                '<div class="row custom-form-group dynamic-row" data-index="' + rowIndex + '">' +
+                    '<div class="col-md-6">' +
+                        '<label class="fs-6">' + classTypeName + '</label>' +
+                        '<input type="number" name="amounts[' + rowIndex + '].AmountPrice" class="form-control form-control-sm custom-input" value="' + amountPrice + '" placeholder="ادخل الرسوم">' +
+                    '</div>' +
+                    '<div class="col-md-6">' +
+                        '<label class="fs-6">تاريخ الاستحقاق</label>' +
+                        '<input type="date" name="amounts[' + rowIndex + '].AmountDate" class="form-control form-control-sm custom-input" value="' + amountDate + '">' +
+                    '</div>' +
+                    '<input type="hidden" name="amounts[' + rowIndex + '].ClassTypeNameId" value="' + selectedClassTypeNameId + '">' +
+                    '<input type="hidden" name="amounts[' + rowIndex + '].Id" value="' + Id + '">' +
+                    '<input type="hidden" class="class-type-name" name="amounts[' + rowIndex + '].ClassTypeName" value="' + classTypeName + '">' + // Ensure class name is included
+                '</div>';
+
+            $("#dynamicRows").append(rowHtml);
+        }
+
+
+        $(document).ready(function () {
+            // On page load, get the next available code from the server
+                      // مثال على استدعاء AJAX عند اختيار مرحلة لتحميل صفوف ديناميكية
+               $("#classTypeNameStageId").change(function () {
+            var stageId = $(this).val();
+
+            if (stageId == "0") {
+                // Clear dynamic rows when "0" is selected
+                $("#dynamicRows").empty();
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                type: 'GET',
+                data: { stageId: stageId },
+                dataType: 'json',
+                success: function (data) {
+                    var container = $("#dynamicRows");
+                    container.empty(); // Clear existing rows
+
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, item) {
+                            addDynamicRow(item.id, item.name, 0, "", "");
+                        });
+                    } else {
+                        container.append('<div class="row custom-form-group"><div class="col"><p class="fs-6">لا توجد بيانات</p></div></div>');
+                    }
+                },
+                error: function () {
+                    Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                }
+            });
+        });
+
+            $.ajax({
+                url: '@Url.Action("GetNextCode", "ClassType")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    $('#classTypeCodeInput').val(response.nextCode);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error retrieving the next code:", errorThrown);
+                }
+            });
+                    $("#btnDelete").click(function () {
+            // Get the record's ID from a hidden field or another element
+            var id =parseInt( $("#classtypeId").val());
+            if (!id) {
+                Swal.fire("تنبيه", "Please select a record first.", "warning");
+                return;
+            }
+
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، احذفها!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, send the delete request
+                    $.ajax({
+                        url: '@Url.Action("Delete", "ClassType")',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            // Assuming your API returns a success message (you can modify as needed)
+                            Swal.fire("تم الحذف!", response.success, "success").then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
+                        }
+                    });
+                }
+            });
+        });
+
+            // Handler for the Add button
+                                  // Submit form with validation on dynamic rows
+        $("#btnAdd").click(function () {
+          var errors = "";
+
+          // Validate stage select
+          var stageId = $("#classTypeNameStageId").val();
+          if (stageId == "0" || stageId == 0) {
+              errors += "يرجى اختيار المرحلة الدراسية.<br/>";
+          }
+
+           
+
+        $(".dynamic-row").each(function(i) { // Use `i` as a reliable index
+            var fee = $(this).find("input[name='amounts[" + i + "].AmountPrice']").val();
+            var dueDate = $(this).find("input[name='amounts[" + i + "].AmountDate']").val();
+            var classTypeName = $(this).find(".class-type-name").val(); // More reliable way to get the name
+
+            if (!classTypeName) {
+                classTypeName = "غير معروف"; // Fallback if name is missing
+            }
+
+            if (!fee || fee.trim() === "" || isNaN(fee)) {
+                errors += "الرجاء إدخال قيمة صحيحة ل " + classTypeName + ".<br/>";
+            }
+            if (!dueDate || dueDate.trim() === "") {
+                errors += "الرجاء تحديد تاريخ الاستحقاق ل " + classTypeName + ".<br/>";
+            }
+        });
+
+        // Display errors if any
+        if (errors !== "") {
+            $("#errorContainer").html(errors).show();
+        }
+
+
+          if (errors !== "") {
+              Swal.fire("خطأ", errors, "error");
+              return;
+          }
+
+          // Serialize form data (both static and dynamic)
+          var formData = $("#classTypeNameForm").serialize();
+          console.log(formData); // Debug
+
+          $.ajax({
+              url: '@Url.Action("Add", "ClassType")', // Adjust the URL as needed
+              type: 'POST',
+              data: formData,
+              success: function (response) {
+                  if (response.success) {
+                      Swal.fire("نجاح", response.message, "success").then(function () {
+                          location.reload();
+                      });
+                  } else {
+                      Swal.fire("خطأ", response.message, "error");
+                  }
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                  var errMsg = "";
+                  if (jqXHR.responseJSON) {
+                      $.each(jqXHR.responseJSON, function (key, value) {
+                          errMsg += value.join("<br/>") + "<br/>";
+                      });
+                  } else {
+                      errMsg = errorThrown;
+                  }
+                  Swal.fire("خطأ", errMsg, "error");
+              }
+          });
+        });
+
+
+            // Handler for the Edit button
+                   $("#btnEdit").click(function () {
+             var errors = "";
+
+          // Validate stage select
+          var stageId = $("#classTypeNameStageId").val();
+          if (stageId == "0" || stageId == 0) {
+              errors += "يرجى اختيار المرحلة الدراسية.<br/>";
+          }
+
+
+
+        $(".dynamic-row").each(function(i) { // Use `i` as a reliable index
+            var fee = $(this).find("input[name='amounts[" + i + "].AmountPrice']").val();
+            var dueDate = $(this).find("input[name='amounts[" + i + "].AmountDate']").val();
+            var classTypeName = $(this).find(".class-type-name").val(); // More reliable way to get the name
+
+            if (!classTypeName) {
+                classTypeName = "غير معروف"; // Fallback if name is missing
+            }
+
+            if (!fee || fee.trim() === "" || isNaN(fee)) {
+                errors += "الرجاء إدخال قيمة صحيحة ل " + classTypeName + ".<br/>";
+            }
+            if (!dueDate || dueDate.trim() === "") {
+                errors += "الرجاء تحديد تاريخ الاستحقاق ل " + classTypeName + ".<br/>";
+            }
+        });
+
+        // Display errors if any
+        if (errors !== "") {
+            $("#errorContainer").html(errors).show();
+        }
+
+
+          if (errors !== "") {
+              Swal.fire("خطأ", errors, "error");
+              return;
+          }
+
+          // Serialize form data (both static and dynamic)
+          var formData = $("#classTypeNameForm").serialize();
+          console.log(formData); // Debug
+            // إرسال الطلب عبر AJAX إلى الـ Action الخاص بالتعديل
+            $.ajax({
+                url: '@Url.Action("Edit", "ClassType")',  // تأكد من أن هذا هو الرابط الصحيح للـ Action
+                 type: 'POST',
+                        data: formData,
+                        // عند استخدام serialize، يتم إرسال البيانات كـ form URL-encoded؛ لذلك لا تحتاج إلى ضبط contentType
+                        success: function (response) {
+                    if (response.success) {
+                        Swal.fire("نجاح", response.message, "success").then(function () {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire("خطأ", response.message, "error");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errMsg = "";
+                    var responseErrors = jqXHR.responseJSON;
+                    if (responseErrors) {
+                        $.each(responseErrors, function (key, value) {
+                            errMsg += value.join("<br/>") + "<br/>";
+                        });
+                    } else {
+                        errMsg = errorThrown;
+                    }
+                    Swal.fire("خطأ", errMsg, "error");
+                }
+            });
+        });
+
+            // Handler for the Min button (gets record with minimum code)
+                           $("#btnMin").click(async function () {
+            try {
+                const response = await $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetMinClassType", "ClassType")',
+                    dataType: "json"
+                });
+
+                if (response) {
+                  
+
+                    $("#dynamicRows").empty(); // Clear previous rows
+                    console.log(response)
+                      $("#classtypeId").val(response.id);
+                        $("#classTypeCodeInput").val(response.code);
+                          $("#classTypeNameStageId").val(response.stageId);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLsRegs").val(response.clsRegs);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                           let formattedDate = response.currentDateClassType.split("T")[0];
+        $("#classTypeDateInput").val(formattedDate);
+
+                          $("#cLSCloth").val(response.clsCloth);
+                    response.amounts.forEach((amount, index) => {
+                                let amountDate = new Date(amount.amountDate);
+        let formattedDate = amountDate.toISOString().split("T")[0];
+        addDynamicRow(amount.classTypeNameId, amount.classTypeName, amount.id, amount.amountPrice, formattedDate);  });
+
+                } else {
+                    Swal.fire("خطأ", "لم يتم العثور على سجلات.", "error");
+                }
+            } catch (error) {
+                console.error("Error fetching minimum class type:", error);
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات.", "error");
+            }
+        });
+
+
+
+            // Handler for the Max button (gets record with maximum code)
+            $("#btnMax").click(async function () {
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetMaxClassType", "ClassType")',
+                        dataType: "json"
+                    });
+                    if (response) {
+                          $("#dynamicRows").empty(); // Clear previous rows
+                    console.log(response)
+                      $("#classtypeId").val(response.id);
+                        $("#classTypeCodeInput").val(response.code);
+                          $("#classTypeNameStageId").val(response.stageId);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLsRegs").val(response.clsRegs);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                            $("#classTypeDateInput").val(response.currentDateClassType);
+                          $("#cLSCloth").val(response.clsCloth);
+                    response.amounts.forEach((amount, index) => {
+                                let amountDate = new Date(amount.amountDate);
+        let formattedDate = amountDate.toISOString().split("T")[0];
+        addDynamicRow(amount.classTypeNameId, amount.classTypeName, amount.id, amount.amountPrice, formattedDate);  });
+
+                    } else {
+                        Swal.fire("خطأ", "No records found.", "error");
+                    }
+                } catch (error) {
+                    console.error("Error fetching max national:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+            });
+
+            // Handler for the Previous button
+                                   
+          $("#btnPrevious").click(async function () {
+                const ClassTypeId =parseInt( $("#classtypeId").val());
+                console.log("ClassTypeId:",ClassTypeId)
+                console.log(typeof(ClassTypeId))
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetPreviousClassType", "ClassType", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", ClassTypeId),
+                        dataType: "json"
+                    });
+                    if (response) {
+
+                             $("#dynamicRows").empty(); // Clear previous rows
+                    console.log(response)
+                      $("#classtypeId").val(response.id);
+                        $("#classTypeCodeInput").val(response.code);
+                          $("#classTypeNameStageId").val(response.stageId);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLsRegs").val(response.clsRegs);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                           $("#classTypeDateInput").val(response.currentDateClassType);
+
+                          $("#cLSCloth").val(response.clsCloth);
+                    response.amounts.forEach((amount, index) => {
+                                let amountDate = new Date(amount.amountDate);
+        let formattedDate = amountDate.toISOString().split("T")[0];
+        addDynamicRow(amount.classTypeNameId, amount.classTypeName, amount.id, amount.amountPrice, formattedDate);  });
+
+                    } else {
+                        Swal.fire("تنبيه", "No next record found.", "info");
+                    }
+                } catch (error) {
+                    // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد مرحلة دراسية  قبل تلك.", "info");
+        } else {
+            console.error("Error fetching previous national:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+       
+
+
+
+
+            // Handler for the Next button
+            $("#btnNext").click(async function () {
+                const ClassTypeId = $("#classtypeId").val();
+               
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetNextClassType", "ClassType", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", ClassTypeId),
+                        dataType: "json"
+                    });
+                    if (response) {
+
+                             $("#dynamicRows").empty(); // Clear previous rows
+                    console.log(response)
+                      $("#classtypeId").val(response.id);
+                        $("#classTypeCodeInput").val(response.code);
+                          $("#classTypeNameStageId").val(response.stageId);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLsRegs").val(response.clsRegs);
+                          $("#cLSAcpt").val(response.clsAcpt);
+                                   $("#classTypeDateInput").val(response.currentDateClassType);
+                          $("#cLSCloth").val(response.clsCloth);
+                    response.amounts.forEach((amount, index) => {
+                                let amountDate = new Date(amount.amountDate);
+        let formattedDate = amountDate.toISOString().split("T")[0];
+        addDynamicRow(amount.classTypeNameId, amount.classTypeName, amount.id, amount.amountPrice, formattedDate);  });
+
+                    } else {
+                        Swal.fire("تنبيه", "No next record found.", "info");
+                    }
+                } catch (error) {
+                    // If the status code is 404, display a specific warning message.
+        if (error.status == 404) {
+            Swal.fire("تنبيه", "لا يوجد مرحلة دراسية  بعد تلك.", "info");
+        } else {
+            console.error("Error fetching previous national:", error);
+            Swal.fire("خطأ", "Error fetching data.", "error");
+        }
+                }
+            });
+        });
+    </script>
+}

@@ -10,18 +10,18 @@ namespace SchoolApp.DAL.Models
     {
         public ClassType()
         {
-            Stage=new Stage();
+           
             Amounts = new List<Amount>();
         }
         public int Id { get; set; }
         public int Code { get; set; }
         
         public int StageId { get; set; }
-        public Stage Stage { get; set; }    
-        public decimal CLSAmountBus {  get; set; }
-        public decimal CLSAmountBook {  get; set; }
-        public decimal CLSAmountAdvs {  get; set; }
-        public decimal CLSAmountInst { get; set; }
+        
+        public DateTime CurrentDateClassType { get; set; }
+        public decimal CLSAcpt {  get; set; }
+        public decimal CLSRegs {  get; set; }
+        public decimal CLSCloth { get; set; }
         public List<Amount> Amounts { get; set; }    
         
     }
