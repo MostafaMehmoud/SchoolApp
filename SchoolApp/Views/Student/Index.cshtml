@@ -1,0 +1,404 @@
+﻿@using SchoolApp.DAL.Models
+
+
+
+<style>
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+</style>
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <!-- قسم العنوان والأزرار -->
+        <div class="d-flex justify-content-between align-items-center p-1">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-4">ملف الطلبة </h1>
+            </div>
+            <div class="d-flex justify-content-end navigation-buttons">
+                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الكارد (المعلومات) -->
+        <div class="card-body p-1">
+            <form id="fileBusForm" class="form-sample">
+                <input type="hidden"  id="busId" />
+                <!-- صفوف الحقول -->
+                <div class="row row-cols-2 g-2">
+                          <div class="col">
+                                <label class="form-label">رقم الحاسب</label>
+                                <input type="text" class="form-control form-control-sm" id="fileBusCodeInput" placeholder="ادخل رقم الحاسب">
+                            </div>
+                    <div class="col">
+                        <label class="form-label">اسم القسم</label>
+                        <select class="form-control form-control-sm">
+                            <option>اختر القسم</option>
+                        </select>
+                    </div>
+                   
+                </div>
+
+                <div  class="row row-cols-4 g-2" >
+                    <div class="col">
+                        <label class="form-label">اسم الطالب</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الطالب">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">اسم الاب</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الاب">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">اسم الجد</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الجد">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">اسم العائلة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                    </div>
+                   
+                    
+                   
+                   
+                </div>
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label">تاريخ الميلاد</label>
+                        <input type="date" class="form-control form-control-sm">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">مكان الولادة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل مكان الولادة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label d-block">الجنس</label>
+                        <div class="row me-1">
+                            <input type="radio" class="col-sm-2" name="gender" value="male">
+                            <label class="form-check-label text-muted col-sm-10">ذكر</label>
+                        </div>
+                        <div class="row me-1">
+                            <input type="radio" class=" col-sm-2" name="gender" value="female">
+                            <label class="form-check-label text-muted col-sm-10">انثي</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الجنسية</label>
+                        <select class="form-control form-control-sm">
+                            <option>اختر الجنسية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row row-cols-3 g-2">
+                    <div class="col">
+                        <label class="form-label">المرحلة</label>
+                        <select class="form-control form-control-sm">
+                            <option>اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الصف</label>
+                        <select class="form-control form-control-sm">
+                            <option value="0">اختر الصف</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">اسم الفصل</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الفصل">
+                    </div>
+                   
+
+
+
+
+                </div>
+
+               
+
+                <div class="row row-cols-2 g-2 d-flex justify-content-between">
+                    <div class="col-sm-5">
+
+                        <label class="form-label">المدرسة المنقول منها  </label>
+                           
+                                <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم المدرسة ">
+                          
+                       
+                    </div>
+                    <div class="col-sm-5">
+
+                        <label class="form-label">الرصيد السابق </label>
+             
+                                <input type="number" class="form-control form-control-sm" placeholder="ادخل الرصيد السابق ">
+                      
+                    </div>
+                </div>
+                <div class="row row-cols-5 g-2">
+                    <div class="col">
+                        <label class="form-label">الحالة الشخصية</label>
+                        <select class="form-control form-control-sm">
+                            <option value="1">بطاقة احوال</option>
+                            <option value="2">جواز سفر</option>
+                            <option value="3">اقامة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الرقم </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاصدار </label>
+                        <input type="date" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> مكان الاصدار</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">تاريخ الانتهاء </label>
+                        <input type="date" class="form-control form-control-sm">
+                    </div>
+
+
+                </div>
+                <div class="row row-cols-4 g-2">
+
+                    <div class="col">
+                        <label class="form-label"> دفعة مقدمة </label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">القسط الشهري  </label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
+                    </div>
+                    <div class="col">
+                        <label class="form-label d-block">طريقة الدفع </label>
+                        <div class="row me-1">
+                            <input type="radio" class="col-sm-2" name="gender" value="yes">
+                            <label class="form-check-label text-muted col-sm-10">قسط</label>
+                        </div>
+                        <div class="row me-1">
+                            <input type="radio" class=" col-sm-2" name="gender" value="no">
+                            <label class="form-check-label text-muted col-sm-10">مقدم</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label d-block">فترة الالتحاق  </label>
+                        <div class="row me-1">
+                            <input type="radio" class="col-sm-2" name="applydate" value="1">
+                            <label class="form-check-label text-muted col-sm-10">اول</label>
+                        </div>
+                        <div class="row me-1">
+                            <input type="radio" class=" col-sm-2" name="applydate" value="2">
+                            <label class="form-check-label text-muted col-sm-10">الثاني</label>
+                        </div>
+                        <div class="row me-1">
+                            <input type="radio" class=" col-sm-2" name="applydate" value="3">
+                            <label class="form-check-label text-muted col-sm-10">كامل</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-3 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label">اسم ولي الامر</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ولي الامر">
+                   </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">صلة القرابة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل صلة القرابة">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">الجنسية</label>
+                        <select class="form-control form-control-sm">
+                            <option>اختر الجنسية</option>
+                        </select>
+                    </div>
+
+
+
+
+
+                </div>
+
+                <div class="row row-cols-2 g-2 d-flex justify-content-between">
+                    <div class="col-sm-5">
+
+                        <label class="form-label">جهة العمل  </label>
+
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
+
+
+                    </div>
+                    <div class="col-sm-5">
+
+                        <label class="form-label"> الوظيفة </label>
+
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+
+                    </div>
+                </div>
+                <div class="row row-cols-3 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label">الايميل</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الايميل الكتروني">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">رمز البريدي </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رمز البريدي">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label"> هاتف العمل </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف العمل">
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="row row-cols-3 g-2">
+                    
+                    <div class="col">
+                        <label class="form-label">رقم الجوال </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
+                    </div>
+                    <div class="col">
+                        <label class="form-label d-block">من العاملين</label>
+                        <div class="row me-1">
+                            <input type="radio" class="col-sm-2" name="gender" value="yes">
+                            <label class="form-check-label text-muted col-sm-10">نعم</label>
+                        </div>
+                        <div class="row me-1">
+                            <input type="radio" class=" col-sm-2" name="gender" value="no">
+                            <label class="form-check-label text-muted col-sm-10">لا</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">رقم الفاكس </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
+                    </div>
+                </div>
+                <div class="row row-cols-5 g-2">
+                    <div class="col">
+                        <label class="form-label">الحالة الشخصية</label>
+                        <select class="form-control form-control-sm">
+                            <option value="1">بطاقة احوال</option>
+                            <option value="2">جواز سفر</option>
+                            <option value="3">اقامة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الرقم </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">تاريخ الاصدار </label>
+                        <input type="date" class="form-control form-control-sm">
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> مكان الاصدار</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">تاريخ الانتهاء </label>
+                        <input type="date" class="form-control form-control-sm">
+                    </div>
+
+
+                </div>
+                <div class="row row-cols-3 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label">اسم اقرب شخص </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">صلة القرابة  </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل صلة القرابة ">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">رقم الجوال</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label">جهة العمل </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">هاتف العمل </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف العمل ">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">عنوان منزله</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل عنوان منزله">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">هاتف المنزل</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف المنزل">
+                    </div>
+
+
+
+
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
+                    <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
