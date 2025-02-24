@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
+using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
 
 namespace SchoolApp.Controllers
 {
     public class InstallmentController : Controller
     {
+        private readonly IServiceClassTypeName _serviceClassTypeName;
         private readonly IServiceStage _serviceStage;
         private readonly IServiceInstallment _serviceInstallment;
-        public InstallmentController(IServiceStage serviceStage, IServiceInstallment serviceInstallment)
+        public InstallmentController(IServiceStage serviceStage, IServiceInstallment serviceInstallment, IServiceClassTypeName serviceClassTypeName)
         {
             _serviceStage = serviceStage;
             _serviceInstallment = serviceInstallment;
+            _serviceClassTypeName = serviceClassTypeName;
         }
         public IActionResult Index()
         {
@@ -135,5 +139,12 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);
         }
+        [HttpGet]
+        public IActionResult GetClassTypeNamesByStage(int stageId)
+        {
+            var list = _serviceClassTypeName.GetAllClassTypesByStageId(stageId) ?? new List<ClassTypeName>();
+            return Json(list);
+        }
+
     }
 }

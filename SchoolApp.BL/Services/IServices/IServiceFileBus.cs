@@ -22,5 +22,6 @@ namespace SchoolApp.BL.Services.IServices
         Task<FileBus> GetMinFileBus();
         Task<FileBus> GetMaxFileBus();
         int GetMaxFileBusId();
+        public VWCostBus GetBusCostByBusIdAndBusCostTypeId(int busId, int busCostTypeId);
     }
 }

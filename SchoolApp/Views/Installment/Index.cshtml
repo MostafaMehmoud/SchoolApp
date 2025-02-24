@@ -23,7 +23,7 @@
     <div class="card">
         <div class="d-flex justify-content-between">
             <div class="m-0">
-                <h1 class="card-title text-dark font-weight-bold fs-2">ادخل اسم الفصل</h1>
+                <h1 class="card-title text-dark font-weight-bold fs-2">ادخل اسم القسط </h1>
             </div>
             <div class="d-flex justify-content-end navigation-buttons">
                 <div class="btn btn-primary btn-sm custom-button" id="btnMin">
@@ -45,7 +45,7 @@
             <form id="InstallmentForm" class="forms-sample">
                 <!-- Hidden field for ID -->
                 <input type="hidden" asp-for="Id" id="installmentId" />
-                <div class="row row-cols-2 g-2">
+                <div class="row row-cols-3 g-2">
                     <div class="col">
                         <label class="fs-6" for="installmentCodeInput">كود</label>
                         <input asp-for="Code" readonly type="number" class="form-control form-control-sm custom-input" id="installmentCodeInput">
@@ -53,6 +53,12 @@
                     <div class="col">
                         <label class="fs-6">المراحل الدراسية</label>
                         <select asp-for="StageId" id="installmentStageId" asp-items="ViewBag.listStages" type="text" class="form-control form-control-sm custom-input">
+                            <option value="0">اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="fs-6">الفصول </label>
+                        <select asp-for="ClassTypeId" id="ClassTypeId" type="text" class="form-control form-control-sm custom-input">
                             <option value="0">اختر المرحلة</option>
                         </select>
                     </div>
@@ -86,6 +92,39 @@
     <script>
         $(document).ready(function () {
             // On page load, get the next available code from the server
+                                                 async function loadClassTypesByStage(stageId) {
+            var classTypeDropdown = $("#ClassTypeId");
+            classTypeDropdown.empty(); // تفريغ القائمة
+            classTypeDropdown.append('<option value="0">اختر الفصل</option>'); // إعادة الخيار الافتراضي
+
+            if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+            try {
+                const data = await $.ajax({
+                    url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                    type: 'GET',
+                    data: { stageId: stageId },
+                    dataType: 'json'
+                });
+
+                if (data && data.length > 0) {
+                    $.each(data, function (i, item) {
+                        classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                } else {
+                    classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                }
+            } catch (error) {
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+            }
+        }
+
+        // استدعاء الدالة عند تغيير المرحلة الدراسية
+        $("#installmentStageId").change(function () {
+            var stageId = $(this).val();
+            loadClassTypesByStage(stageId);
+        });
+
             $.ajax({
                 url: '@Url.Action("GetNextCode", "Installment")',
                 type: 'GET',
@@ -135,11 +174,17 @@
 
             // Handler for the Add button
        $("#btnAdd").click(function () {
+                   var errors = "";
     var code = parseInt($('#installmentCodeInput').val()) || 0;
     var name = $('#installmentNameInput').val();
     var stageId = parseInt($('#installmentStageId').val()) || 0;
     var Id = parseInt($('#installmentId').val()) || 0;
-    var errors = "";
+                            var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
+
+                             if (classtypeId === 0) {
+                        errors += "رجا اختر الفصل الدراسي<br/>";
+                    }
+    
 
     // Client-side validation
     if (!name || name.trim() === "") {
@@ -148,6 +193,7 @@
     if (stageId === 0) {
         errors += "رجا اختر المرحلة<br/>";
     }
+                   
     if (name.length > 100) {
         errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
     }
@@ -160,7 +206,8 @@
         Id: Id,
                 InstallName: name,
         Code: code,
-        StageId: stageId
+        StageId: stageId,
+                        ClassTypeId:classtypeId
     };
 
     console.log("Sending Data:", InstallmentData); // Debugging
@@ -203,7 +250,11 @@ $("#btnEdit").click(function () {
     var stageId = parseInt($('#installmentStageId').val()) || 0;
     var Id = parseInt($('#installmentId').val()) || 0;
     var errors = "";
+                    var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
 
+                                     if (classtypeId === 0) {
+                                errors += "رجا اختر الفصل الدراسي<br/>";
+                            }
     // Client-side validation
     if (!name || name.trim() === "") {
         errors += "اسم  القسط مطلوب<br/>";
@@ -223,7 +274,8 @@ $("#btnEdit").click(function () {
         Id: Id,
                 InstallName: name,
         Code: code,
-        StageId: stageId
+                StageId: stageId,
+                                ClassTypeId:classtypeId
     };
 
     console.log("Editing Data:", InstallmentData); // Debugging
@@ -262,6 +314,8 @@ $("#btnEdit").click(function () {
 
             // Handler for the Min button (gets record with minimum code)
             $("#btnMin").click(async function () {
+                       
+
                 try {
                     const response = await $.ajax({
                         type: "GET",
@@ -274,6 +328,11 @@ $("#btnEdit").click(function () {
                         $("#installmentCodeInput").val(response.code);
                         $("#installmentNameInput").val(response.installName);
                         $("#installmentStageId").val(response.stageId);
+                                                         // انتظر حتى يتم تحميل قائمة الفصول
+                    await loadClassTypesByStage(response.stageId);
+
+                    // تأكد من تعيين الفئة بعد تحميل القائمة
+                    $("#ClassTypeId").val(parseInt(response.classTypeId));
                     } else {
                         Swal.fire("خطأ", "No records found.", "error");
                     }
@@ -296,6 +355,11 @@ $("#btnEdit").click(function () {
                         $("#installmentCodeInput").val(response.code);
                                 $("#installmentNameInput").val(response.installName);
                         $("#installmentStageId").val(response.stageId);
+                                        // انتظر حتى يتم تحميل قائمة الفصول
+                    await loadClassTypesByStage(response.stageId);
+
+                    // تأكد من تعيين الفئة بعد تحميل القائمة
+                    $("#ClassTypeId").val(parseInt(response.classTypeId));
                     } else {
                         Swal.fire("خطأ", "No records found.", "error");
                     }
@@ -326,6 +390,11 @@ $("#btnEdit").click(function () {
                         $("#installmentCodeInput").val(response.code);
                                 $("#installmentNameInput").val(response.installName);
                         $("#installmentStageId").val(response.stageId);
+                                         // انتظر حتى يتم تحميل قائمة الفصول
+                    await loadClassTypesByStage(response.stageId);
+
+                    // تأكد من تعيين الفئة بعد تحميل القائمة
+                    $("#ClassTypeId").val(parseInt(response.classTypeId));
                     } else {
                         Swal.fire("تنبيه", "No previous record found.", "info");
                     }
@@ -361,6 +430,11 @@ $("#btnEdit").click(function () {
                         $("#installmentCodeInput").val(response.code);
                                 $("#installmentNameInput").val(response.installName);
                         $("#installmentStageId").val(response.stageId);
+                                        // انتظر حتى يتم تحميل قائمة الفصول
+                    await loadClassTypesByStage(response.stageId);
+
+                    // تأكد من تعيين الفئة بعد تحميل القائمة
+                    $("#ClassTypeId").val(parseInt(response.classTypeId));
                     } else {
                         Swal.fire("تنبيه", "No next record found.", "info");
                     }

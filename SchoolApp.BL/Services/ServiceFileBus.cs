@@ -21,21 +21,21 @@ namespace SchoolApp.BL.Services
         {
             var filBus = new FileBus
             {
-                BusId=fileBus.BusId,
-                BusCode=fileBus.BusCode,
-                BusAll=fileBus.BusAll,
-                BusDrive=fileBus.BusDrive,
-                BusGo=fileBus.BusGo,
-                BusNumber=fileBus.BusNumber,
-                BusPlate=fileBus.BusPlate,
-                BusReturn=fileBus.BusReturn,
-                BusRoute=fileBus.BusRoute,
-                BusState=fileBus.BusState,
-                BusStud=fileBus.BusStud,
-                BusSup=fileBus.BusSup,
-                MobilPhone1=fileBus.MobilPhone1,
-                MobilPhone2=fileBus.MobilPhone2,
-                
+                BusId = fileBus.BusId,
+                BusCode = fileBus.BusCode,
+                BusAll = fileBus.BusAll,
+                BusDrive = fileBus.BusDrive,
+                BusGo = fileBus.BusGo,
+                BusNumber = fileBus.BusNumber,
+                BusPlate = fileBus.BusPlate,
+                BusReturn = fileBus.BusReturn,
+                BusRoute = fileBus.BusRoute,
+                BusState = fileBus.BusState,
+                BusStud = fileBus.BusStud,
+                BusSup = fileBus.BusSup,
+                MobilPhone1 = fileBus.MobilPhone1,
+                MobilPhone2 = fileBus.MobilPhone2,
+
             };
             if (_unitOfWork.fileBus.Add(filBus))
             {
@@ -105,7 +105,7 @@ namespace SchoolApp.BL.Services
             return await _unitOfWork.fileBus.GetMax();
         }
 
-        public  int GetMaxFileBusId()
+        public int GetMaxFileBusId()
         {
             return _unitOfWork.fileBus.GetMaxIdOfItem();
         }
@@ -130,6 +130,33 @@ namespace SchoolApp.BL.Services
         {
             return await _unitOfWork.fileBus.GetNextOrPreviousItemByCode(id, "previous");
 
+        }
+        public VWCostBus GetBusCostByBusIdAndBusCostTypeId(int busId, int busCostTypeId)
+        {
+            var busFile = _unitOfWork.fileBus.GetById(busId);
+            VWCostBus vWCostBus = new VWCostBus();
+            if (busCostTypeId == 1)
+            {
+                vWCostBus.BusCostTypeId = busCostTypeId;
+                vWCostBus.BusId = busId;
+                vWCostBus.FristTremCost = busFile.BusAll / 2;
+                vWCostBus.SecondTremCost = busFile.BusAll / 2;
+            }
+            else if (busCostTypeId == 2)
+            {
+                vWCostBus.BusCostTypeId = busCostTypeId;
+                vWCostBus.BusId = busId;
+                vWCostBus.FristTremCost = busFile.BusGo / 2;
+                vWCostBus.SecondTremCost = busFile.BusGo / 2;
+            }
+            else if (busCostTypeId == 3)
+            {
+                vWCostBus.BusCostTypeId = busCostTypeId;
+                vWCostBus.BusId = busId;
+                vWCostBus.FristTremCost = busFile.BusReturn / 2;
+                vWCostBus.SecondTremCost = busFile.BusReturn / 2;
+            }
+           return vWCostBus;    
         }
     }
 }

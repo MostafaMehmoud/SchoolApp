@@ -53,22 +53,28 @@
         </div>
 
         <!-- محتوى الكارد (المعلومات) -->
-        <div class="card-body p-1">
+        <div class="card-body ">
             <form id="fileBusForm" class="form-sample">
                 <input type="hidden"  id="busId" />
+                <div class="p-3">
                 <!-- صفوف الحقول -->
-                <div class="row row-cols-2 g-2">
-                          <div class="col">
-                                <label class="form-label">رقم الحاسب</label>
-                                <input type="text" class="form-control form-control-sm" id="fileBusCodeInput" placeholder="ادخل رقم الحاسب">
+                <div class="row row-cols-3 g-2">
+                          <div class="col-sm-6">
+                                <label class="form-label">رقم الطالب</label>
+                            <input type="text" class="form-control form-control-sm" id="fileBusCodeInput" placeholder="ادخل رقم الطالب">
                             </div>
-                    <div class="col">
+                    <div class="col-sm-3">
                         <label class="form-label">اسم القسم</label>
-                        <select class="form-control form-control-sm">
+                            <select asp-items="ViewBag.departments" class="form-control form-control-sm">
                             <option>اختر القسم</option>
                         </select>
                     </div>
-                   
+                        <div class="col-sm-3">
+                            <label class="form-label">المرحلة</label>
+                            <select asp-items=" ViewBag.Stages" id="StageId" class="form-control form-control-sm">
+                                <option>اختر المرحلة</option>
+                            </select>
+                        </div>
                 </div>
 
                 <div  class="row row-cols-4 g-2" >
@@ -102,55 +108,50 @@
                         <label class="form-label">مكان الولادة</label>
                         <input type="text" class="form-control form-control-sm" placeholder="ادخل مكان الولادة">
                     </div>
-                    <div class="col">
-                        <label class="form-label d-block">الجنس</label>
-                        <div class="row me-1">
-                            <input type="radio" class="col-sm-2" name="gender" value="male">
-                            <label class="form-check-label text-muted col-sm-10">ذكر</label>
-                        </div>
-                        <div class="row me-1">
-                            <input type="radio" class=" col-sm-2" name="gender" value="female">
-                            <label class="form-check-label text-muted col-sm-10">انثي</label>
-                        </div>
-                    </div>
+                    
                     <div class="col">
                         <label class="form-label">الجنسية</label>
-                        <select class="form-control form-control-sm">
+                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
                             <option>اختر الجنسية</option>
                         </select>
                     </div>
-                </div>
+                        <div class="col">
+                            <label class="form-label d-block">الجنس</label>
+                            <div class="pe-0 d-flex row ">
+                                <div class="pe-0 row col d-flex justify-content-around me-1">
+                                    <input type="radio" class="pe-0 col-sm-2" name="gender" value="male">
+                                    <label class="pe-0 form-check-label text-muted col-sm-10">ذكر</label>
+                                </div>
+                                <div class="pr-0 row col d-flex justify-content-around me-1">
+                                    <input type="radio" class="pe-0 col-sm-2" name="gender" value="female">
+                                    <label class="pe-0 form-check-label text-muted col-sm-10">انثي</label>
+                                </div>
+                            </div>
 
+                        </div>
+                </div>
+<br />
+<hr />
                 <div class="row row-cols-3 g-2">
-                    <div class="col">
-                        <label class="form-label">المرحلة</label>
-                        <select class="form-control form-control-sm">
-                            <option>اختر المرحلة</option>
-                        </select>
-                    </div>
-                    <div class="col">
+
+                        <div class="col-sm-4">
                         <label class="form-label">الصف</label>
-                        <select class="form-control form-control-sm">
+                        <select id="classTypeId" class="form-control form-control-sm">
                             <option value="0">اختر الصف</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
+                            
                         </select>
                     </div>
-                    <div class="col">
+                        <div class="col-sm-4">
                         <label class="form-label">اسم الفصل</label>
                         <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الفصل">
                     </div>
-                   
+                        <div class="col-sm-4">
+
+                            <label class="form-label">الرصيد السابق </label>
+
+                            <input type="number" class="form-control form-control-sm" placeholder="ادخل الرصيد السابق ">
+
+                        </div>
 
 
 
@@ -159,8 +160,8 @@
 
                
 
-                <div class="row row-cols-2 g-2 d-flex justify-content-between">
-                    <div class="col-sm-5">
+                <div class="row row-cols-3 g-2 ">
+                    <div class="col-sm-4">
 
                         <label class="form-label">المدرسة المنقول منها  </label>
                            
@@ -168,13 +169,14 @@
                           
                        
                     </div>
-                    <div class="col-sm-5">
-
-                        <label class="form-label">الرصيد السابق </label>
-             
-                                <input type="number" class="form-control form-control-sm" placeholder="ادخل الرصيد السابق ">
-                      
-                    </div>
+                        <div class="col-sm-4">
+                            <label class="form-label"> دفعة مقدمة </label>
+                            <input type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label">القسط الشهري  </label>
+                            <input type="number" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
+                        </div>
                 </div>
                 <div class="row row-cols-5 g-2">
                     <div class="col">
@@ -207,41 +209,47 @@
                 </div>
                 <div class="row row-cols-4 g-2">
 
-                    <div class="col">
-                        <label class="form-label"> دفعة مقدمة </label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">القسط الشهري  </label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
-                    </div>
-                    <div class="col">
-                        <label class="form-label d-block">طريقة الدفع </label>
-                        <div class="row me-1">
-                            <input type="radio" class="col-sm-2" name="gender" value="yes">
-                            <label class="form-check-label text-muted col-sm-10">قسط</label>
+                    
+                    <div class="col-sm-4">
+                            <label class="form-label d-block">طريقة الدفع </label>
+                        <div class="d-flex row">
+                                
+                                <div class="row col-sm-6 d-flex justify-content-around me-1">
+                                    <input type="radio" class="col-sm-2" name="gender" value="1">
+                                    <label class="form-check-label text-muted col-sm-10">قسط</label>
+                                </div>
+                                <div class="row  col-sm-6 d-flex justify-content-around me-1">
+                                    <input type="radio" class=" col-sm-2" name="gender" value="2">
+                                    <label class="form-check-label text-muted col-sm-10">مقدم</label>
+                                </div>
                         </div>
-                        <div class="row me-1">
-                            <input type="radio" class=" col-sm-2" name="gender" value="no">
-                            <label class="form-check-label text-muted col-sm-10">مقدم</label>
-                        </div>
+                        
                     </div>
-                    <div class="col">
+                    <div class="col-sm-8">
                         <label class="form-label d-block">فترة الالتحاق  </label>
-                        <div class="row me-1">
-                            <input type="radio" class="col-sm-2" name="applydate" value="1">
-                            <label class="form-check-label text-muted col-sm-10">اول</label>
+                        <div class=" d-flex justify-content-start row">
+                                <div class="row col-sm-4 d-flex justify-content-around me-1">
+                                    <input type="radio" class="col-sm-2" name="applydate" value="1">
+                                    <label class="form-check-label text-muted col-sm-10">اول</label>
+                                </div>
+                                <div class="row col-sm-4 d-flex justify-content-around me-1">
+                                    <input type="radio" class=" col-sm-2" name="applydate" value="2">
+                                    <label class="form-check-label text-muted col-sm-10">الثاني</label>
+                                </div>
+                                <div class="row col-sm-4 d-flex justify-content-around me-1">
+                                    <input type="radio" class=" col-sm-2" name="applydate" value="3">
+                                    <label class="form-check-label text-muted col-sm-10">كامل</label>
+                                </div>
                         </div>
-                        <div class="row me-1">
-                            <input type="radio" class=" col-sm-2" name="applydate" value="2">
-                            <label class="form-check-label text-muted col-sm-10">الثاني</label>
-                        </div>
-                        <div class="row me-1">
-                            <input type="radio" class=" col-sm-2" name="applydate" value="3">
-                            <label class="form-check-label text-muted col-sm-10">كامل</label>
-                        </div>
+                       
                     </div>
                 </div>
+                </div>
+                <br />
+                <hr />
+                <br />
+                @* //////////// *@
+                <div class="p-3">
                 <div class="row row-cols-3 g-2">
                     <div class="col-sm-6">
                         <label class="form-label">اسم ولي الامر</label>
@@ -253,7 +261,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label">الجنسية</label>
-                        <select class="form-control form-control-sm">
+                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
                             <option>اختر الجنسية</option>
                         </select>
                     </div>
@@ -264,8 +272,8 @@
 
                 </div>
 
-                <div class="row row-cols-2 g-2 d-flex justify-content-between">
-                    <div class="col-sm-5">
+                <div class="row row-cols-3 g-2 ">
+                    <div class="col-sm-6">
 
                         <label class="form-label">جهة العمل  </label>
 
@@ -273,18 +281,22 @@
 
 
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-3">
 
                         <label class="form-label"> الوظيفة </label>
 
                         <input type="number" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
 
                     </div>
+                        <div class="col-sm-3">
+                            <label class="form-label">رقم الجوال </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
+                        </div>
                 </div>
                 <div class="row row-cols-3 g-2">
                     <div class="col-sm-6">
                         <label class="form-label">الايميل</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الايميل الكتروني">
+                        <input type="email" class="form-control form-control-sm" placeholder="ادخل الايميل الكتروني">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label">رمز البريدي </label>
@@ -301,26 +313,26 @@
 
                 </div>
                 <div class="row row-cols-3 g-2">
-                    
-                    <div class="col">
-                        <label class="form-label">رقم الجوال </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
-                    </div>
-                    <div class="col">
+                        <div class="col-sm-6">
+                            <label class="form-label">رقم الفاكس </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
+                        </div>
+                   
+                    <div class="col-sm-6">
                         <label class="form-label d-block">من العاملين</label>
-                        <div class="row me-1">
-                            <input type="radio" class="col-sm-2" name="gender" value="yes">
-                            <label class="form-check-label text-muted col-sm-10">نعم</label>
+                        <div class="d-flex row ">
+                                <div class="d-flex justify-content-around col-sm-6 row me-1">
+                                    <input type="radio" class="col-sm-2" name="IsYouWorkWithThem" value="yes">
+                                    <label class="form-check-label text-muted col-sm-10">نعم</label>
+                                </div>
+                                <div class="d-flex justify-content-around col-sm-6 row me-1">
+                                    <input type="radio" class=" col-sm-2" name="IsYouWorkWithThem" value="no">
+                                    <label class="form-check-label text-muted col-sm-10">لا</label>
+                                </div>
                         </div>
-                        <div class="row me-1">
-                            <input type="radio" class=" col-sm-2" name="gender" value="no">
-                            <label class="form-check-label text-muted col-sm-10">لا</label>
-                        </div>
+                       
                     </div>
-                    <div class="col">
-                        <label class="form-label">رقم الفاكس </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
-                    </div>
+                    
                 </div>
                 <div class="row row-cols-5 g-2">
                     <div class="col">
@@ -351,6 +363,11 @@
 
 
                 </div>
+                </div>
+                <br />
+                <hr />
+                <br />
+                <div class=" p-3">
                 <div class="row row-cols-3 g-2">
                     <div class="col-sm-6">
                         <label class="form-label">اسم اقرب شخص </label>
@@ -392,6 +409,184 @@
 
 
                 </div>
+                </div>
+                
+                <br />
+                <hr />
+                <br />
+                <p>بيانات الرسوم</p>
+                <div id="installmentsContainer" class="row row-cols-4 g-2">
+                    <p  class="text-muted w-100"> يتم تحميل أي بيانات بعد تحديد الفصل و المرحلة.</p>
+                </div>
+               
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label"> ايراد الزي </label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل ايراد الزي">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">رسوم الكتب  </label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل رسوم الكتب ">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">البوكليت </label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل البوكليت">
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> رسوم التسجيل</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="ادخل رسوم التسجيل">
+                    </div>
+
+
+
+
+                </div>
+                 
+                <div class="row row-cols-4 g-2">
+                  <div class="col-sm-3">
+                        <label class="form-label">اتجاه السير </label>
+                        <select id="busCostTypeId" class="form-control form-control-sm">
+                            <option value="1"> ذهب و عودة</option>
+                            <option value="2">الذهب فقط </option>
+                            <option value="3">العودة فقط</option>
+                        </select>
+                    </div>
+                   <div class="col-sm-3">
+                        <label class="form-label">الباص </label>
+                        <select asp-items=" ViewBag.buses" id="buscostId" class="form-control form-control-sm">
+                            <option value="0"> اختر الباص</option>
+                           
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">الفصل الاول </label>
+                        <input readonly type="number" id="costFirstTrem" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label"> الفصل الثاني </label>
+                        <input readonly id="costSecondTrem" type="number" class="form-control form-control-sm" >
+                    </div>
+
+
+
+
+                </div>
+                <br />
+                <hr />
+                <br />
+                <p>بيانات الخصم</p>
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label">%  خصم عام </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> % خصم ابناء العاملين    </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> خصم تعجيل الدفع</label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label">  خصم الاشقاء</label>
+                        <input type="number" class="form-control form-control-sm">
+                    </div>
+
+
+
+
+                </div>
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label"> صندوق رعاية الجاليات  </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> خصم خاص  </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label">قيمة خصم </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> خصم باص </label>
+                        <input type="number" class="form-control form-control-sm" >
+                    </div>
+
+
+
+
+                </div>
+                <p>بيانات الخصم الاقساط</p>
+                <br />
+                <hr />
+                <br />
+                <p> بيانات الام</p>
+                 <div class="row row-cols-3 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label"> اسم ام الطالب    </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ام الطالب ">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label"> صلة القرابة   </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  صلة القرابة  ">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">الجنسية</label>
+                        <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
+                            <option>اختر الجنسية</option>
+                        </select>
+                    </div>
+                   
+
+
+
+
+                </div>
+                <div class="row row-cols-3 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label">جهة العمل</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label"> رقم الفاكس    </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  رقم الفاكس  ">
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">هاتف العمل</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  هاتف العمل   ">
+                    </div>
+
+
+
+
+                </div>
+                <div class="row row-cols-2 g-2">
+                    <div class="col-sm-6">
+                        <label class="form-label">الوظيفة</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">رقم الجوال</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال  ">
+                    </div>
+                   
+
+
+
+
+
+                </div>
+                <div class="row row-cols-1 g-2">
+                    <div class="col-sm-12">
+                        <label class="form-label">الملاحظات </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الملاحظات  ">
+
+                    </div>
+                </div>
                 <div class="form-group">
                     <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
                     <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
@@ -402,3 +597,480 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 for alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        <script>
+            
+    </script>
+    </script>
+    <script>
+                $(document).ready(function () {
+                                    async function fetchBusCost() {
+            var busCostTypeId = parseInt($("#busCostTypeId").val());
+            var buseId = parseInt($("#buscostId").val());
+
+            if (buseId === 0 || busCostTypeId === 0) {
+                Swal.fire("تنبيه", "يرجى اختيار الباص واتجاه خط سير الباص", "warning");
+                return;
+            }
+
+            try {
+                const response = await $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetBusCostByClassType", "Student")',
+                    data: { buseId: buseId, busCostTypeId: busCostTypeId },
+                    dataType: "json"
+                });
+
+                console.log(response);
+                $("#costFirstTrem").val(response.fristTremCost);
+                $("#costSecondTrem").val(response.secondTremCost);
+            } catch (error) {
+                console.error("Error fetching installments:", error);
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+            }
+        }
+            $("#buscostId").change(async function () {
+            await fetchBusCost();
+        });
+                       $(document).ready(function () {
+            $("#classTypeId").change(async function () {
+                var stageId = parseInt($("#StageId").val());
+                var classTypeId = parseInt($(this).val());
+
+                if (stageId == 0 || classTypeId == 0) {
+                    Swal.fire("تنبيه", "يرجى اختيار المرحلة والصف", "warning");
+                    return;
+                }
+
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetInstallmentsByClassType", "Student")',
+                        data: { stageId: stageId, classTypeId: classTypeId },
+                        dataType: "json"
+                    });
+
+                    if (response && response.length > 0) {
+                        var totalAmount = response.reduce((sum, item) => sum + parseFloat(item.amountInstallment), 0);
+                        var resultHtml = "";
+
+                        $.each(response, function (i, item) {
+                            resultHtml += `
+                                <div class="col">
+                                    <label class="form-label">${item.installName} </label>
+                                    <input type="number" class="form-control form-control-sm installmentAmount"
+                                           value="${item.amountInstallment}" data-id="${item.id}"
+                                           data-initial="${item.amountInstallment}" placeholder="أدخل المبلغ">
+                                </div>`;
+                        });
+
+                        $("#installmentsContainer").html(resultHtml);
+                        $("#installmentsContainer").attr("data-total", totalAmount);
+                    } else {
+                        $("#installmentsContainer").html(`
+                            <div class="col">
+                                <label class="form-label">اجمالي قيمة المبلغ </label>
+                                <input readonly type="number" class="form-control form-control-sm installmentAmount"
+                                       value="${response.amountInstallment}" data-id="${response.id}"
+                                       placeholder="أدخل المبلغ">
+                            </div>`);
+                    }
+
+                    // Bind input change event
+                    $(".installmentAmount").on("input", function () {
+                        adjustOtherInputs($(this));
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching installments:", error);
+                    Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                }
+            });
+
+            function adjustOtherInputs(changedInput) {
+                var totalAmount = parseFloat($("#installmentsContainer").attr("data-total"));
+                var inputs = $(".installmentAmount");
+                var changedValue = parseFloat(changedInput.val()) || 0;
+                var initialValue = parseFloat(changedInput.attr("data-initial")) || 0;
+                var remainingAmount = totalAmount - changedValue;
+
+                var otherInputs = inputs.not(changedInput);
+                var sumOtherInputs = otherInputs.toArray().reduce((sum, input) => sum + parseFloat($(input).val() || 0), 0);
+
+                if (sumOtherInputs === 0) return;
+
+                otherInputs.each(function () {
+                    var $this = $(this);
+                    var originalValue = parseFloat($this.attr("data-initial")) || 0;
+                    var newValue = (originalValue / sumOtherInputs) * remainingAmount;
+                    $this.val(newValue.toFixed(2));
+                });
+            }
+        });
+
+                    // On page load, get the next available code from the server
+                                                         async function loadClassTypesByStage(stageId) {
+                    var classTypeDropdown = $("#classTypeId");
+                    classTypeDropdown.empty(); // تفريغ القائمة
+                    classTypeDropdown.append('<option value="0">اختر الفصل</option>'); // إعادة الخيار الافتراضي
+
+                    if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+                    try {
+                        const data = await $.ajax({
+                            url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                            type: 'GET',
+                            data: { stageId: stageId },
+                            dataType: 'json'
+                        });
+
+                        if (data && data.length > 0) {
+                            $.each(data, function (i, item) {
+                                classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        } else {
+                            classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                        }
+                    } catch (error) {
+                        Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                    }
+                }
+
+                // استدعاء الدالة عند تغيير المرحلة الدراسية
+                $("#StageId").change(function () {
+                    var stageId = $(this).val();
+                    loadClassTypesByStage(stageId);
+                });
+
+                    // $.ajax({
+                    //     url: '@Url.Action("GetNextCode", "Installment")',
+                    //     type: 'GET',
+                    //     dataType: 'json',
+                    //     success: function (response) {
+                    //         $('#installmentCodeInput').val(response.nextCode);
+                    //     },
+                    //     error: function (jqXHR, textStatus, errorThrown) {
+                    //         console.error("Error retrieving the next code:", errorThrown);
+                    //     }
+                    // });
+                            $("#btnDelete").click(function () {
+                    // Get the record's ID from a hidden field or another element
+                    var id = $("#installmentId").val();
+
+
+                    // Show confirmation dialog
+                    Swal.fire({
+                        title: 'هل أنت متأكد؟',
+                        text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'نعم، احذفها!',
+                        cancelButtonText: 'إلغاء'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If confirmed, send the delete request
+                            $.ajax({
+                                url: '@Url.Action("Delete", "Installment")',
+                                type: 'POST',
+                                data: { id: id },
+                                success: function (response) {
+                                    // Assuming your API returns a success message (you can modify as needed)
+                                    Swal.fire("تم الحذف!", response.success, "success").then(function () {
+                                        location.reload();
+                                    });
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
+                                }
+                            });
+                        }
+                    });
+                });
+
+                    // Handler for the Add button
+               $("#btnAdd").click(function () {
+                           var errors = "";
+            var code = parseInt($('#installmentCodeInput').val()) || 0;
+            var name = $('#installmentNameInput').val();
+            var stageId = parseInt($('#installmentStageId').val()) || 0;
+            var Id = parseInt($('#installmentId').val()) || 0;
+                                    var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
+
+                                     if (classtypeId === 0) {
+                                errors += "رجا اختر الفصل الدراسي<br/>";
+                            }
+
+
+            // Client-side validation
+            if (!name || name.trim() === "") {
+                errors += "اسم الفصل مطلوب<br/>";
+            }
+            if (stageId === 0) {
+                errors += "رجا اختر المرحلة<br/>";
+            }
+
+            if (name.length > 100) {
+                errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
+            }
+            if (errors !== "") {
+                Swal.fire('خطأ', errors, 'error');
+                return;
+            }
+
+            var InstallmentData = {
+                Id: Id,
+                        InstallName: name,
+                Code: code,
+                StageId: stageId,
+                                ClassTypeId:classtypeId
+            };
+
+            console.log("Sending Data:", InstallmentData); // Debugging
+
+            $.ajax({
+                url: '@Url.Action("Add", "Installment")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',  // Ensures correct format
+                data: JSON.stringify(InstallmentData),  // Convert to JSON
+                dataType: 'json',  // Expect JSON response
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire('نجاح', response.message, 'success').then(function () {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('خطأ', response.message, 'error');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errors = "";
+                    var responseErrors = jqXHR.responseJSON;
+                    if (responseErrors) {
+                        $.each(responseErrors, function (key, value) {
+                            errors += value.join("<br/>") + "<br/>";
+                        });
+                    } else {
+                        errors = errorThrown;
+                    }
+                    Swal.fire('خطأ', errors, 'error');
+                }
+            });
+        });
+
+
+                   // Handler for the Edit button
+        $("#btnEdit").click(function () {
+            var code = parseInt($('#installmentCodeInput').val()) || 0;
+            var name = $('#installmentNameInput').val();
+            var stageId = parseInt($('#installmentStageId').val()) || 0;
+            var Id = parseInt($('#installmentId').val()) || 0;
+            var errors = "";
+                            var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
+
+                                             if (classtypeId === 0) {
+                                        errors += "رجا اختر الفصل الدراسي<br/>";
+                                    }
+            // Client-side validation
+            if (!name || name.trim() === "") {
+                errors += "اسم  القسط مطلوب<br/>";
+            }
+            if (stageId === 0) {
+                errors += "رجا اختر المرحلة<br/>";
+            }
+            if (name.length > 100) {
+                errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
+            }
+            if (errors !== "") {
+                Swal.fire('خطأ', errors, 'error');
+                return;
+            }
+
+            var InstallmentData = {
+                Id: Id,
+                        InstallName: name,
+                Code: code,
+                        StageId: stageId,
+                                        ClassTypeId:classtypeId
+            };
+
+            console.log("Editing Data:", InstallmentData); // Debugging
+
+            // AJAX call for EditInstallment
+            $.ajax({
+                url: '@Url.Action("Edit", "Installment")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',  // Ensures correct format
+                data: JSON.stringify(InstallmentData),  // Convert to JSON
+                dataType: 'json',  // Expect JSON response
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire('نجاح', response.message, 'success').then(function () {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('خطأ', response.message, 'error');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errors = "";
+                    var responseErrors = jqXHR.responseJSON;
+                    if (responseErrors) {
+                        $.each(responseErrors, function (key, value) {
+                            errors += value.join("<br/>") + "<br/>";
+                        });
+                    } else {
+                        errors = errorThrown;
+                    }
+                    Swal.fire('خطأ', errors, 'error');
+                }
+            });
+        });
+
+
+                    // Handler for the Min button (gets record with minimum code)
+                    $("#btnMin").click(async function () {
+
+
+                        try {
+                            const response = await $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetMinInstallment", "Installment")',
+                                dataType: "json"
+                            });
+                            if (response) {
+                                console.log(response)
+                                $("#installmentId").val(response.id);
+                                $("#installmentCodeInput").val(response.code);
+                                $("#installmentNameInput").val(response.installName);
+                                $("#installmentStageId").val(response.stageId);
+                                                                 // انتظر حتى يتم تحميل قائمة الفصول
+                            await loadClassTypesByStage(response.stageId);
+
+                            // تأكد من تعيين الفئة بعد تحميل القائمة
+                            $("#ClassTypeId").val(parseInt(response.classTypeId));
+                            } else {
+                                Swal.fire("خطأ", "No records found.", "error");
+                            }
+                        } catch (error) {
+                            console.error("Error fetching min Installment:", error);
+                            Swal.fire("خطأ", "Error fetching data.", "error");
+                        }
+                    });
+
+                    // Handler for the Max button (gets record with maximum code)
+                    $("#btnMax").click(async function () {
+                        try {
+                            const response = await $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetMaxInstallment", "Installment")',
+                                dataType: "json"
+                            });
+                            if (response) {
+                                 $("#installmentId").val(response.id);
+                                $("#installmentCodeInput").val(response.code);
+                                        $("#installmentNameInput").val(response.installName);
+                                $("#installmentStageId").val(response.stageId);
+                                                // انتظر حتى يتم تحميل قائمة الفصول
+                            await loadClassTypesByStage(response.stageId);
+
+                            // تأكد من تعيين الفئة بعد تحميل القائمة
+                            $("#ClassTypeId").val(parseInt(response.classTypeId));
+                            } else {
+                                Swal.fire("خطأ", "No records found.", "error");
+                            }
+                        } catch (error) {
+                            console.error("Error fetching max Installment:", error);
+                            Swal.fire("خطأ", "Error fetching data.", "error");
+                        }
+                    });
+
+                    // Handler for the Previous button
+                    $("#btnPrevious").click(async function () {
+                        const installmentId =$("#installmentId").val();
+                        // console.log(installmentId);
+
+                        // console.log(typeof(+installmentId));
+                        // if (+installmentId!==0) {
+                        //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                        //     return;
+                        // }
+                        try {
+                            const response = await $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetPreviousInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
+                                dataType: "json"
+                            });
+                            if (response) {
+                                 $("#installmentId").val(response.id);
+                                $("#installmentCodeInput").val(response.code);
+                                        $("#installmentNameInput").val(response.installName);
+                                $("#installmentStageId").val(response.stageId);
+                                                 // انتظر حتى يتم تحميل قائمة الفصول
+                            await loadClassTypesByStage(response.stageId);
+
+                            // تأكد من تعيين الفئة بعد تحميل القائمة
+                            $("#ClassTypeId").val(parseInt(response.classTypeId));
+                            } else {
+                                Swal.fire("تنبيه", "No previous record found.", "info");
+                            }
+                        } catch (error) {
+                             // If the status code is 404, display a specific warning message.
+                if (error.status == 404) {
+                    Swal.fire("تنبيه", "لا يوجد  اسم القسط قبل تلك", "info");
+                } else {
+                    console.error("Error fetching previous Installment:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+                        }
+                    });
+
+                    // Handler for the Next button
+                    $("#btnNext").click(async function () {
+                        const installmentId =parseInt( $("#installmentId").val());
+                        // console.log(installmentId);
+                        // console.log(typeof(installmentId));
+                        // if (+installmentId!==0) {
+                        //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                        //     return;
+                        // }
+                        try {
+                            const response = await $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetNextInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
+                                dataType: "json"
+                            });
+                            if (response) {
+
+                                 $("#installmentId").val(response.id);
+                                $("#installmentCodeInput").val(response.code);
+                                        $("#installmentNameInput").val(response.installName);
+                                $("#installmentStageId").val(response.stageId);
+                                                // انتظر حتى يتم تحميل قائمة الفصول
+                            await loadClassTypesByStage(response.stageId);
+
+                            // تأكد من تعيين الفئة بعد تحميل القائمة
+                            $("#ClassTypeId").val(parseInt(response.classTypeId));
+                            } else {
+                                Swal.fire("تنبيه", "No next record found.", "info");
+                            }
+                        } catch (error) {
+                            // If the status code is 404, display a specific warning message.
+                if (error.status == 404) {
+                    Swal.fire("تنبيه", "لا يوجد اسم القسط بعد تلك.", "info");
+                } else {
+                    console.error("Error fetching previous Installment:", error);
+                    Swal.fire("خطأ", "Error fetching data.", "error");
+                }
+                        }
+                    });
+                });
+    </script>
+}
