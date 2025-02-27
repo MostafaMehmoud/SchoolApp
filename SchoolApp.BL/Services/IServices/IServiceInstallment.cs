@@ -22,7 +22,7 @@ namespace SchoolApp.BL.Services.IServices
         Task<Installment> GetMaxInstallment();
         int GetMaxInstallmentId();
         public List<Installment> GetAllInstallmentsByStageId(int StageId);
-        public List<VWInstallmentStudent> GetAllInstallmentsByStageIdAndClassTypeId(int StageId, int ClassTypeId);      
-        public Amount GetAmountofClassType(int StageId, int ClassTypeId);
+        public InstallmentMain GetAllInstallmentsByStageIdAndClassTypeId(int StageId, int ClassTypeId);      
+        public InstallmentMain GetAInstallmentofClassType(int StageId, int ClassTypeId);
     }
 }

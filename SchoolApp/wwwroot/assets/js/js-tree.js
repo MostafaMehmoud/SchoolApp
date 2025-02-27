@@ -3,10 +3,10 @@
     $('#jstree_sample_1').jstree({
         "types": {
             "default": {
-                "icon": "../../../assets/images/file-icons/extension/folder.png"
+                "icon": "~/assets/images/file-icons/extension/folder.png"
             },
             "file": {
-                "icon": "../../../assets/images/file-icons/extension/doc-file.png",
+                "icon": "~/assets/images/file-icons/extension/doc-file.png",
                 "valid_children": []
             }
         },
@@ -17,10 +17,10 @@
     $('#jstree_sample_2').jstree({
         "types": {
             "default": {
-                "icon": "../../../assets/images/file-icons/extension/folder.png"
+                "icon": "~/assets/images/file-icons/extension/folder.png"
             },
             "file": {
-                "icon": "../../../assets/images/file-icons/extension/doc-file.png",
+                "icon": "~/assets/images/file-icons/extension/doc-file.png",
                 "valid_children": []
             }
         },
@@ -32,10 +32,10 @@
     $('#jstree_sample_3').jstree({
         "types": {
             "default": {
-                "icon": "../../../assets/images/file-icons/extension/folder.png"
+                "icon": "~/assets/images/file-icons/extension/folder.png"
             },
             "file": {
-                "icon": "../../../assets/images/file-icons/extension/doc-file.png",
+                "icon": "~/assets/images/file-icons/extension/doc-file.png",
                 "valid_children": []
             }
         },
@@ -51,10 +51,10 @@
     $('#jstree_sample_4').jstree({
         "types": {
             "default": {
-                "icon": "../../../assets/images/file-icons/extension/folder.png"
+                "icon": "~/assets/images/file-icons/extension/folder.png"
             },
             "file": {
-                "icon": "../../../assets/images/file-icons/extension/doc-file.png",
+                "icon": "~/assets/images/file-icons/extension/doc-file.png",
                 "valid_children": []
             },
             'f-open': {

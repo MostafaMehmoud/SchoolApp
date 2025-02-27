@@ -37,6 +37,7 @@ namespace SchoolApp.BL.Services
             classType.CLSAcpt=ClassTypes.CLSAcpt;
             classType.CLSCloth=ClassTypes.CLSCloth;
             classType.CLSRegs = ClassTypes.CLSRegs;
+            classType.CLSBakelite=ClassTypes.CLSBakelite;
            classType.CurrentDateClassType=ClassTypes.CurrentDateClassType;  
             if (_unitOfWork.classTypesSpecial.Add(classType))
             {
@@ -75,6 +76,7 @@ namespace SchoolApp.BL.Services
             existingClassType.CLSAcpt = ClassTypes.CLSAcpt;
             existingClassType.CLSCloth = ClassTypes.CLSCloth;
             existingClassType.CLSRegs = ClassTypes.CLSRegs;
+            existingClassType.CLSBakelite= ClassTypes.CLSBakelite;
             existingClassType.CurrentDateClassType=ClassTypes.CurrentDateClassType; 
             // Update Amounts
             foreach (var amount in ClassTypes.amounts)
@@ -139,6 +141,7 @@ namespace SchoolApp.BL.Services
             vWClassType.CLSRegs = classtype.CLSRegs;
             vWClassType.CLSCloth = classtype.CLSCloth;
             vWClassType.CLSAcpt=classtype.CLSAcpt;
+            vWClassType.CLSBakelite=classtype.CLSBakelite;
             vWClassType.CurrentDateClassType= classtype.CurrentDateClassType;   
             VWAmoumt vWAmoumt = null;
             List<VWAmoumt> vWAmoumts = new List<VWAmoumt>();
@@ -150,6 +153,7 @@ namespace SchoolApp.BL.Services
                 vWAmoumt.AmountPrice = amount.AmountPrice;
                 vWAmoumt.AmountDate = amount.AmountDate;
                 vWAmoumt.ClassTypeId = amount.ClassTypeId;
+                
                 vWAmoumt.ClassTypeName = _unitOfWork.classTypes.GetById(amount.ClassTypeNameId).Name;
                 vWAmoumts.Add(vWAmoumt);
             }
@@ -175,6 +179,7 @@ namespace SchoolApp.BL.Services
             vWClassType.CLSRegs = classtype.CLSRegs;
             vWClassType.CLSCloth = classtype.CLSCloth;
             vWClassType.CLSAcpt = classtype.CLSAcpt;
+            vWClassType.CLSBakelite = classtype.CLSBakelite;
             vWClassType.CurrentDateClassType = classtype.CurrentDateClassType;
             VWAmoumt vWAmoumt = null;
             List<VWAmoumt> vWAmoumts = new List<VWAmoumt>();
@@ -214,6 +219,7 @@ namespace SchoolApp.BL.Services
             vWClassType.CLSRegs = classtype.CLSRegs;
             vWClassType.CLSCloth = classtype.CLSCloth;
             vWClassType.CLSAcpt = classtype.CLSAcpt;
+            vWClassType.CLSBakelite = classtype.CLSBakelite;
             vWClassType.CurrentDateClassType= classtype.CurrentDateClassType;   
             VWAmoumt vWAmoumt = null;
             List<VWAmoumt> vWAmoumts = new List<VWAmoumt>();
@@ -225,6 +231,7 @@ namespace SchoolApp.BL.Services
                 vWAmoumt.AmountPrice = amount.AmountPrice;
                 vWAmoumt.AmountDate = amount.AmountDate;
                 vWAmoumt.ClassTypeId = amount.ClassTypeId;
+                
                 vWAmoumt.ClassTypeName = _unitOfWork.classTypes.GetById(amount.ClassTypeNameId).Name;
                 vWAmoumts.Add(vWAmoumt);
             }
@@ -247,6 +254,7 @@ namespace SchoolApp.BL.Services
             vWClassType.CLSRegs = classtype.CLSRegs;
             vWClassType.CLSCloth = classtype.CLSCloth;
             vWClassType.CLSAcpt = classtype.CLSAcpt;
+            vWClassType.CLSBakelite = classtype.CLSBakelite;
             vWClassType.CurrentDateClassType = classtype.CurrentDateClassType;  
             VWAmoumt vWAmoumt = null;
             List<VWAmoumt> vWAmoumts = new List<VWAmoumt>();

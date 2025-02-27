@@ -22,6 +22,7 @@ namespace SchoolApp.DAL.Models
         public decimal CLSAcpt {  get; set; }
         public decimal CLSRegs {  get; set; }
         public decimal CLSCloth { get; set; }
+        public decimal CLSBakelite {  get; set; }
         public List<Amount> Amounts { get; set; }    
         
     }

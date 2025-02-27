@@ -79,9 +79,11 @@ namespace SchoolApp.BL.Services
             return _unitOfWork.installments.GetAll().Where(i => i.StageId == StageId).ToList();
         }
 
-        public List<VWInstallmentStudent> GetAllInstallmentsByStageIdAndClassTypeId(int StageId, int ClassTypeId)
+        public InstallmentMain GetAllInstallmentsByStageIdAndClassTypeId(int StageId, int ClassTypeId)
         {
             List<VWInstallmentStudent> vWInstallmentStudent = new List<VWInstallmentStudent>();
+            var classtype = _unitOfWork.classTypesSpecial.GetAll()
+                .Where(i => i.StageId == StageId).FirstOrDefault();
             var amounts = _unitOfWork.classTypesSpecial
                .GetAllWithInclude(i => i.Amounts).Where(i=>i.StageId==StageId)
                .Select(i => i.Amounts).FirstOrDefault();
@@ -91,7 +93,7 @@ namespace SchoolApp.BL.Services
             // If no amountPrice is found, return an empty list
             if (amountPrice == null)
             {
-                return vWInstallmentStudent;
+                return null;
             }
 
             // Get installments
@@ -104,11 +106,11 @@ namespace SchoolApp.BL.Services
             int lengthOfInstallments = installments.Count;
             if (lengthOfInstallments == 0)
             {
-                return vWInstallmentStudent;
+                return null;
             }
 
             decimal amount = amountPrice / lengthOfInstallments;
-
+            
             // Construct VWInstallmentStudent list
             foreach (var student in installments)
             {
@@ -119,20 +121,43 @@ namespace SchoolApp.BL.Services
                     StageId = student.StageId,
                     ClassTypeId = student.ClassTypeId,
                     Id = student.Id,
-                    AmountInstallment = amount
+                    AmountInstallment = amount,
+                    
                 });
             }
-
-            return vWInstallmentStudent;
+            InstallmentMain installmentMain = new InstallmentMain()
+            {
+                CLSAcpt = classtype.CLSAcpt,
+                CLSBakelite = classtype.CLSBakelite,
+                CLSCloth = classtype.CLSCloth,
+                CLSRegs = classtype.CLSRegs,
+                Installments= vWInstallmentStudent
+            };
+            return installmentMain;
         }
 
-        public Amount GetAmountofClassType(int StageId,int ClassTypeId)
+        public InstallmentMain GetAInstallmentofClassType(int StageId,int ClassTypeId)
         {
+            var classtype = _unitOfWork.classTypesSpecial.GetAll()
+                .Where(i => i.StageId == StageId).FirstOrDefault();
             var amounts = _unitOfWork.classTypesSpecial
                 .GetAllWithInclude(i => i.Amounts).Where(i=>i.StageId== StageId)
                 .Select(i => i.Amounts).FirstOrDefault();
             var amount = amounts.FirstOrDefault(i => i.ClassTypeNameId == ClassTypeId);
-            return amount;
+            List<VWInstallmentStudent> vWInstallmentStudent=new List<VWInstallmentStudent>();
+            vWInstallmentStudent.Add(new VWInstallmentStudent
+            {
+                AmountInstallment = amount.AmountPrice
+            });
+            InstallmentMain installmentMain = new InstallmentMain()
+            {
+                CLSAcpt = classtype.CLSAcpt,
+                CLSBakelite = classtype.CLSBakelite,
+                CLSCloth = classtype.CLSCloth,
+                CLSRegs = classtype.CLSRegs,
+                Installments = vWInstallmentStudent
+            };
+            return installmentMain;
         }
 
         public Installment GetbyId(int id)

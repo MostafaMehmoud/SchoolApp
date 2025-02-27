@@ -33,17 +33,16 @@ namespace SchoolApp.Controllers
         [HttpGet]
         public IActionResult GetInstallmentsByClassType(int stageId, int classTypeId)
         {
-            var installments = _serviceInstallment.GetAllInstallmentsByStageIdAndClassTypeId(stageId, classTypeId);
-            var amountclasstype = _serviceInstallment.GetAmountofClassType(stageId, classTypeId);
-            if (installments == null || !installments.Any())
+            InstallmentMain installments = _serviceInstallment.GetAllInstallmentsByStageIdAndClassTypeId(stageId, classTypeId);
+           
+            if (installments == null || !installments.Installments.Any())
             {
-                return Json(new VWInstallmentStudent()
+                InstallmentMain InstallmentMain = _serviceInstallment.GetAInstallmentofClassType(stageId, classTypeId);
+               if(InstallmentMain == null)
                 {
-                    AmountInstallment= amountclasstype.AmountPrice,
-                    ClassTypeId=classTypeId,
-                    Id=amountclasstype.Id
-
-                }); // إرجاع مصفوفة فارغة عند عدم وجود بيانات
+                    return Json(new { message = "لا توجد بيانات متاحة" });
+                }
+                return Json(InstallmentMain); // إرجاع مصفوفة فارغة عند عدم وجود بيانات
             }
 
             return Json(installments);

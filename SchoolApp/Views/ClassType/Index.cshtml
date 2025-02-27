@@ -84,6 +84,10 @@
                         <label class="fs-6">رسوم الزي</label>
                         <input type="number" name="CLSCloth" id="cLSCloth" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الزي">
                     </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الباكليت</label>
+                        <input type="number" name="CLSBakelite" id="cLSBakelite" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الزي">
+                    </div>
                 </div>
 
                 <!-- Dynamic Section for Semester Fees -->
@@ -391,6 +395,7 @@
                           $("#cLSAcpt").val(response.clsAcpt);
                           $("#cLsRegs").val(response.clsRegs);
                           $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLSBakelite").val(response.clsBakelite);
                            let formattedDate = response.currentDateClassType.split("T")[0];
         $("#classTypeDateInput").val(formattedDate);
 
@@ -428,6 +433,7 @@
                           $("#cLSAcpt").val(response.clsAcpt);
                           $("#cLsRegs").val(response.clsRegs);
                           $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLSBakelite").val(response.clsBakelite);
                             $("#classTypeDateInput").val(response.currentDateClassType);
                           $("#cLSCloth").val(response.clsCloth);
                     response.amounts.forEach((amount, index) => {
@@ -466,6 +472,7 @@
                           $("#cLSAcpt").val(response.clsAcpt);
                           $("#cLsRegs").val(response.clsRegs);
                           $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLSBakelite").val(response.clsBakelite);
                            $("#classTypeDateInput").val(response.currentDateClassType);
 
                           $("#cLSCloth").val(response.clsCloth);
@@ -512,6 +519,7 @@
                           $("#cLSAcpt").val(response.clsAcpt);
                           $("#cLsRegs").val(response.clsRegs);
                           $("#cLSAcpt").val(response.clsAcpt);
+                          $("#cLSBakelite").val(response.clsBakelite);
                                    $("#classTypeDateInput").val(response.currentDateClassType);
                           $("#cLSCloth").val(response.clsCloth);
                     response.amounts.forEach((amount, index) => {

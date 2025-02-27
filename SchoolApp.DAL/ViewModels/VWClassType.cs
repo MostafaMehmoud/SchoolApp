@@ -23,6 +23,7 @@ namespace SchoolApp.DAL.ViewModels
         public decimal CLSAcpt { get; set; }
         public decimal CLSRegs { get; set; }
         public decimal CLSCloth { get; set; }
+        public decimal CLSBakelite { get; set; }
         public List<VWAmoumt> amounts { get; set; }   
     }
     public class VWAmoumt

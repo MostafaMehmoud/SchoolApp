@@ -409,7 +409,73 @@
 
 
                 </div>
-                </div>
+                    <br />
+                    <hr />
+                    <br />
+                    <p> بيانات الام</p>
+                    <div class="row row-cols-3 g-2">
+                        <div class="col-sm-6">
+                            <label class="form-label"> اسم ام الطالب    </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ام الطالب ">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label"> صلة القرابة   </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  صلة القرابة  ">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label">الجنسية</label>
+                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
+                                <option>اختر الجنسية</option>
+                            </select>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="row row-cols-3 g-2">
+                        <div class="col-sm-6">
+                            <label class="form-label">جهة العمل</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label"> رقم الفاكس    </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  رقم الفاكس  ">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="form-label">هاتف العمل</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  هاتف العمل   ">
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="row row-cols-2 g-2">
+                        <div class="col-sm-6">
+                            <label class="form-label">الوظيفة</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label">رقم الجوال</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال  ">
+                        </div>
+
+
+
+
+
+
+                    </div>
+                    <div class="row row-cols-1 g-2">
+                        <div class="col-sm-12">
+                            <label class="form-label">الملاحظات </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل الملاحظات  ">
+
+                        </div>
+                    </div>
                 
                 <br />
                 <hr />
@@ -418,31 +484,53 @@
                 <div id="installmentsContainer" class="row row-cols-4 g-2">
                     <p  class="text-muted w-100"> يتم تحميل أي بيانات بعد تحديد الفصل و المرحلة.</p>
                 </div>
-               
-                <div class="row row-cols-4 g-2">
+                <br />
+                <div class="row row-cols-2 g-3">
+                    <!-- رسوم الزي -->
                     <div class="col">
-                        <label class="form-label"> ايراد الزي </label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل ايراد الزي">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">رسوم الكتب  </label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل رسوم الكتب ">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">البوكليت </label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل البوكليت">
-                    </div>
-                    <div class="col">
-                        <label class="form-label"> رسوم التسجيل</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل رسوم التسجيل">
+                        <div class="d-flex align-items-center p-2 border rounded shadow-sm">
+                            <label class="form-label flex-grow-1">ايراد الزي</label>
+                            <input type="number" id="CLSCloth" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="ايراد الزي">
+                        </div>
                     </div>
 
+                    <!-- رسوم الكتب -->
+                    <div class="col">
+                        <div class="d-flex align-items-center p-2 border rounded shadow-sm">
+                            <label class="form-label flex-grow-1">رسوم الكتب</label>
+                            <input type="number" id="CLSAcpt" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="رسوم الكتب">
+                        </div>
+                    </div>
 
+                    <!-- رسوم البوكليت -->
+                    <div class="col">
+                        <div class="d-flex align-items-center p-2 border rounded shadow-sm">
+                            <label class="form-label flex-grow-1">البوكليت</label>
+                            <input type="number" id="CLSBakelite" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="البوكليت">
+                        </div>
+                    </div>
 
-
+                    <!-- رسوم التسجيل (دائمًا محدد وغير قابل للتعديل) -->
+                    <div class="col">
+                        <div class="d-flex align-items-center p-2 border rounded shadow-sm bg-light">
+                            <label class="form-label flex-grow-1">رسوم التسجيل</label>
+                            <input type="number" id="CLSRegs" class="form-control form-control-sm w-25 text-center" data-value="0" readonly>
+                            <input type="checkbox" class="form-check-input ms-2" checked disabled>
+                        </div>
+                    </div>
                 </div>
-                 
-                <div class="row row-cols-4 g-2">
+                </div>
+                <div class=" d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="checkbox" role="switch" id="showDivBus" checked>
+                    <label class="form-check-label fw-bold mb-0" for="showDivBus">هل تريد الذهاب بالباص المدرسي؟</label>
+                </div>
+
+                <div id="divBus" class="row row-cols-4 g-2">
+                   
+                    
                   <div class="col-sm-3">
                         <label class="form-label">اتجاه السير </label>
                         <select id="busCostTypeId" class="form-control form-control-sm">
@@ -458,13 +546,13 @@
                            
                         </select>
                     </div>
-                    <div class="col-sm-3">
+                   <div class="col-sm-3">
                         <label class="form-label">الفصل الاول </label>
-                        <input readonly type="number" id="costFirstTrem" class="form-control form-control-sm" >
+                        <input readonly type="number" id="costFirstTrem" class="form-control form-control-sm">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label"> الفصل الثاني </label>
-                        <input readonly id="costSecondTrem" type="number" class="form-control form-control-sm" >
+                        <input readonly id="costSecondTrem" type="number" class="form-control form-control-sm">
                     </div>
 
 
@@ -477,116 +565,66 @@
                 <p>بيانات الخصم</p>
                 <div class="row row-cols-4 g-2">
                     <div class="col">
-                        <label class="form-label">%  خصم عام </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">% خصم عام</label>
+                        <input type="number" id="generalDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
                     <div class="col">
-                        <label class="form-label"> % خصم ابناء العاملين    </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">% خصم أبناء العاملين</label>
+                        <input type="number" id="employeeDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
                     <div class="col">
-                        <label class="form-label"> خصم تعجيل الدفع</label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">خصم تعجيل الدفع</label>
+                        <input type="number" id="earlyPaymentDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
-                        <label class="form-label">  خصم الاشقاء</label>
-                        <input type="number" class="form-control form-control-sm">
+                        <label class="form-label">خصم الأشقاء</label>
+                        <input type="number" id="siblingsDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
-
-
-
-
                 </div>
+
                 <div class="row row-cols-4 g-2">
                     <div class="col">
-                        <label class="form-label"> صندوق رعاية الجاليات  </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">صندوق رعاية الجاليات</label>
+                        <input type="number" id="communityFundDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
-                        <label class="form-label"> خصم خاص  </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">خصم خاص</label>
+                        <input type="number" id="specialDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
-                        <label class="form-label">قيمة خصم </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">قيمة خصم</label>
+                        <input type="number" id="fixedDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
-                        <label class="form-label"> خصم باص </label>
-                        <input type="number" class="form-control form-control-sm" >
+                        <label class="form-label">خصم باص</label>
+                        <input type="number" id="busDiscount" class="form-control form-control-sm ">
                     </div>
+                </div>
 
 
 
+                <p>بيانات الخصم الاقساط</p>
+                <div id="installmentsContainerAfterDiscount" class="row row-cols-4 g-2">
+                    <p class="text-muted w-100"> يتم تحميل أي بيانات بعد تحديد الفصل و المرحلة.</p>
+                </div>
+                <div class="row row-cols-4 g-2" id="container">
 
                 </div>
-                <p>بيانات الخصم الاقساط</p>
+                <div class="row" id="DivBusAfterChoose">
+                    <div class="col-sm-3">
+                        <label class="form-label"> مصروف الباص لفصل الاول  </label>
+                        <input readonly type="number" id="costFirstTremAfterChooseBus" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label"> مصروف الباص لفصل الثاني </label>
+                        <input readonly id="costSecondTremAfterChooseBus" type="number" class="form-control form-control-sm">
+                    </div>
+                </div>
+                
                 <br />
                 <hr />
                 <br />
-                <p> بيانات الام</p>
-                 <div class="row row-cols-3 g-2">
-                    <div class="col-sm-6">
-                        <label class="form-label"> اسم ام الطالب    </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ام الطالب ">
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="form-label"> صلة القرابة   </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  صلة القرابة  ">
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="form-label">الجنسية</label>
-                        <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
-                            <option>اختر الجنسية</option>
-                        </select>
-                    </div>
-                   
-
-
-
-
-                </div>
-                <div class="row row-cols-3 g-2">
-                    <div class="col-sm-6">
-                        <label class="form-label">جهة العمل</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="form-label"> رقم الفاكس    </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  رقم الفاكس  ">
-                    </div>
-
-                    <div class="col-sm-3">
-                        <label class="form-label">هاتف العمل</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  هاتف العمل   ">
-                    </div>
-
-
-
-
-                </div>
-                <div class="row row-cols-2 g-2">
-                    <div class="col-sm-6">
-                        <label class="form-label">الوظيفة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="form-label">رقم الجوال</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال  ">
-                    </div>
-                   
-
-
-
-
-
-                </div>
-                <div class="row row-cols-1 g-2">
-                    <div class="col-sm-12">
-                        <label class="form-label">الملاحظات </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل الملاحظات  ">
-
-                    </div>
-                </div>
+             
                 <div class="form-group">
                     <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
                     <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
@@ -599,16 +637,541 @@
 </div>
 @section Scripts {
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- SweetAlert2 for alerts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        //                       $(document).ready(function () {
+        //     $(".installmentAmount").on("input", function () {
+        //         let changedInput = $(this);
+        //         let newValue = parseFloat(changedInput.val()) || 0;
+        //         let id = changedInput.attr("data-id");
+        //         console.log("🔹 القسط الذي تم تغييره:", id, "القيمة الجديدة:", newValue);
+
+        //         let totalAmount = parseFloat($("#installmentsContainer").attr("data-total")) || 0;
+        //         let otherInputs = $(".installmentAmount").not(`[data-id='${id}']`);
+        //         let sumOtherInstallments = 0;
+        //         alert("id",id)
+        //         console.log("🔹 القسط الذي تم تغييره:", id, "القيمة الجديدة:", newValue);
+
+        //         // حساب مجموع باقي الأقساط بدون القسط الذي تم تغييره
+        //         otherInputs.each(function () {
+        //             sumOtherInstallments += parseFloat($(this).val()) || 0;
+        //         });
+
+        //         // التحقق من تجاوز المجموع الكلي
+        //         if (newValue + sumOtherInstallments > totalAmount) {
+        //             Swal.fire("خطأ!", "إجمالي الأقساط تجاوز المبلغ الإجمالي!", "error");
+        //             changedInput.val((totalAmount - sumOtherInstallments).toFixed(2));
+        //             return;
+        //         }
+
+        //         // توزيع باقي المبلغ على الأقساط الأخرى
+        //         let remainingAmount = totalAmount - newValue;
+        //         let newAmountPerOther = (remainingAmount / otherInputs.length).toFixed(2);
+
+        //         otherInputs.each(function () {
+        //             $(this).val(newAmountPerOther);
+        //         });
+
+        //         console.log("🔹 تحديث القيم في installmentsContainerAfterDiscount");
+        //         updateDiscountedInstallments(id, newValue);
+        //     });
+
+        //     function updateDiscountedInstallments(changedId, newValue) {
+        //         console.log("🔹 تحديث installmentAmountReadonly:", changedId, "بقيمة:", newValue);
+
+        //         let targetInput = $(`.installmentAmountReadonly[data-id='${changedId}']`);
+        //         if (targetInput.length === 0) {
+        //             console.warn("⚠️ لم يتم العثور على installmentAmountReadonly بالمعرف:", changedId);
+        //             return;
+        //         }
+
+        //         targetInput.val(newValue.toFixed(2));
+
+        //         $(".installmentAmount").each(function () {
+        //             let id = $(this).attr("data-id");
+        //             let value = parseFloat($(this).val()) || 0;
+
+        //             let correspondingReadonly = $(`.installmentAmountReadonly[data-id='${id}']`);
+        //             if (correspondingReadonly.length > 0) {
+        //                 correspondingReadonly.val(value.toFixed(2));
+        //             } else {
+        //                 console.warn("⚠️ لم يتم العثور على القسط المناظر داخل installmentsContainerAfterDiscount:", id);
+        //             }
+        //         });
+
+        //         let totalAfterChange = 0;
+        //         $(".installmentAmountReadonly").each(function () {
+        //             totalAfterChange += parseFloat($(this).val()) || 0;
+        //         });
+
+        //         $("#discountedTotalAmount").val(totalAfterChange.toFixed(2));
+        //     }
+        // });
+
+
+
+                     $(document).ready(function () {
+            $("#busDiscount").on("input", function () {
+                let busDiscount = parseFloat($(this).val()) || 0; // قيمة الخصم المدخلة
+                let firstTermCost = parseFloat($("#costFirstTrem").val()) || 0;
+                let secondTermCost = parseFloat($("#costSecondTrem").val()) || 0;
+
+                // منع إدخال قيمة سالبة
+                if (busDiscount < 0) {
+                    Swal.fire({
+                        title: "خطأ!",
+                        text: "لا يمكن إدخال نسبة خصم سالبة!",
+                        icon: "error",
+                        confirmButtonText: "حسناً"
+                    });
+                    $(this).val(0);
+                    return;
+                }
+
+                let totalBusCost = firstTermCost + secondTermCost; // مجموع المصاريف
+                let discountAmount = (busDiscount / 100) * totalBusCost; // حساب الخصم بالنسبة المئوية
+
+                if (discountAmount > totalBusCost) {
+                    Swal.fire({
+                        title: "تنبيه!",
+                        text: "إجمالي الخصم أكبر من مصاريف الباص!",
+                        icon: "warning",
+                        confirmButtonText: "حسناً"
+                    });
+
+                    // إعادة تعيين قيمة الخصم إلى 0
+                    $(this).val(0);
+                    return;
+                }
+
+                // توزيع الخصم بالتساوي على الفصلين
+                let newFirstTermCost = firstTermCost - (discountAmount / 2);
+                let newSecondTermCost = secondTermCost - (discountAmount / 2);
+
+                // التأكد من أن القيم لا تصبح سالبة
+                newFirstTermCost = Math.max(newFirstTermCost, 0);
+                newSecondTermCost = Math.max(newSecondTermCost, 0);
+
+                // تحديث القيم في الحقول
+                $("#costFirstTremAfterChooseBus").val(newFirstTermCost.toFixed(2));
+                $("#costSecondTremAfterChooseBus").val(newSecondTermCost.toFixed(2));
+
+                // إظهار إجمالي الخصم
+                $("#busDiscountAmount").text(`إجمالي الخصم المطبق: ${discountAmount.toFixed(2)} ج.م`);
+            });
+        });
+
+
+              $(document).ready(function () {
+            $("#showDivBus").change(function () {
+                if ($(this).is(":checked")) {
+                    $("#divBus").removeClass("d-none"); // عرض الـ divBus
+                    $("#DivBusAfterChoose").removeClass("d-none"); // عرض الـ divBus
+                } else {
+                    $("#divBus").addClass("d-none"); // إخفاء الـ divBus
+                    $("#DivBusAfterChoose").addClass("d-none"); // إخفاء الـ divBus
+                     $("#costFirstTrem").val(0.0);
+        $("#costFirstTremAfterChooseBus").val(0.0);
+                $("#costSecondTrem").val(0.0);
+                $("#costSecondTremAfterChooseBus").val(0.0);
+                }
+            });
+        });
+                      $(document).ready(function () {
+            let totalAmount = 0, baseTotalAmount = 0;
+            let installmentsData = [];
+
+            $("#classTypeId").change(async function () {
+                var stageId = parseInt($("#StageId").val());
+                var classTypeId = parseInt($(this).val());
+
+                if (!stageId || !classTypeId) {
+                    Swal.fire("تنبيه", "يرجى اختيار المرحلة والصف", "warning");
+                    return;
+                }
+
+                try {
+                    const response = await $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetInstallmentsByClassType", "Student")',
+                        data: { stageId: stageId, classTypeId: classTypeId },
+                        dataType: "json"
+                    });
+
+                    baseTotalAmount = response.installments.reduce((sum, item) => sum + (parseFloat(item.amountInstallment) || 0), 0);
+                    totalAmount = baseTotalAmount;
+                    installmentsData = response.installments;
+
+                    $("#CLSAcpt").val(response.clsAcpt || 0).attr("data-value", response.clsAcpt || 0);
+                    $("#CLSRegs").val(response.clsRegs || 0).attr("data-value", response.clsRegs || 0);
+                    $("#cLSRegs").val(response.clsRegs || 0).attr("data-value", response.clsRegs || 0);
+                    $("#CLSCloth").val(response.clsCloth || 0).attr("data-value", response.clsCloth || 0);
+                    $("#CLSBakelite").val(response.clsBakelite || 0).attr("data-value", response.clsBakelite || 0);
+
+                    displayInstallments("#installmentsContainer", installmentsData, baseTotalAmount, false);
+                    displayInstallments("#installmentsContainerAfterDiscount", installmentsData, baseTotalAmount, true);
+
+                    $(".installmentAmount").on("input", function () {
+                        adjustInstallments($(this));
+                    });
+
+                    $(".additional-checkbox").change(function () {
+                        updateTotalWithExtras();
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching installments:", error);
+                    Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                }
+            });
+                    $(document).on("input", ".installmentAmount", function () {
+            let id = $(this).data("id");
+            let newValue = parseFloat($(this).val()) || 0;
+
+            // تحديث الحقل readonly المقابل
+            $(`.installmentAmountReadonly[data-id='${id}']`).val(newValue.toFixed(2));
+
+            // تحديث بيانات القسط في المصفوفة
+            let installment = installmentsData.find(i => i.id == id);
+            if (installment) {
+                installment.amountInstallment = newValue;
+            }
+        });
+        function distributeInstallments(total) {
+            let installmentInputs = $(".installmentAmount");
+            let installmentCount = installmentInputs.length;
+
+            if (installmentCount === 0) return;
+
+            let currentTotalInstallments = installmentsData.reduce((sum, inst) => sum + inst.amountInstallment, 0);
+
+            if (currentTotalInstallments === 0) {
+                // توزيع المبلغ بالتساوي
+                let newAmountPerInstallment = (total / installmentCount).toFixed(2);
+                installmentInputs.each(function (index) {
+                    $(this).val(newAmountPerInstallment);
+                    installmentsData[index].amountInstallment = parseFloat(newAmountPerInstallment);
+                });
+            } else {
+                // إعادة حساب القيم بناءً على النسب الأصلية
+                installmentInputs.each(function (index) {
+                    let originalValue = installmentsData[index].amountInstallment || 0;
+                    let newInstallmentValue = parseFloat(((originalValue / currentTotalInstallments) * total).toFixed(2));
+
+                    $(this).val(newInstallmentValue);
+                    installmentsData[index].amountInstallment = newInstallmentValue;
+                });
+            }
+
+            // تحديث جميع الحقول readonly
+            $(".installmentAmountReadonly").each(function () {
+                let id = $(this).data("id");
+                let matchingInput = $(`.installmentAmount[data-id='${id}']`);
+                if (matchingInput.length > 0) {
+                    $(this).val(matchingInput.val());
+                }
+            });
+
+            updateReadonlyInstallments();
+        }
+        function updateReadonlyInstallments() {
+            $(".installmentAmountReadonly").each(function () {
+                let id = $(this).data("id");
+                let matchingInput = $(`.installmentAmount[data-id='${id}']`);
+                if (matchingInput.length > 0) {
+                    $(this).val(matchingInput.val());
+                }
+            });
+        }
+
+                               function applyDiscounts() {
+            let generalDiscount = parseFloat($("#generalDiscount").val()) || 0;
+            let employeeDiscount = parseFloat($("#employeeDiscount").val()) || 0;
+            let earlyPaymentDiscount = parseFloat($("#earlyPaymentDiscount").val()) || 0;
+            let siblingsDiscount = parseFloat($("#siblingsDiscount").val()) || 0;
+            let communityFundDiscount = parseFloat($("#communityFundDiscount").val()) || 0;
+            let specialDiscount = parseFloat($("#specialDiscount").val()) || 0;
+            let fixedDiscount = parseFloat($("#fixedDiscount").val()) || 0;
+            let busDiscount = parseFloat($("#busDiscount").val()) || 0;
+
+            let generalDiscountAmount = (generalDiscount / 100) * baseTotalAmount;
+            let employeeDiscountAmount = (employeeDiscount / 100) * baseTotalAmount;
+
+            let totalDiscount = generalDiscountAmount + employeeDiscountAmount + earlyPaymentDiscount +
+                siblingsDiscount + communityFundDiscount + specialDiscount + fixedDiscount + busDiscount;
+
+            if (totalDiscount > baseTotalAmount) {
+                Swal.fire("تنبيه", "إجمالي الخصومات أكبر من المبلغ الإجمالي!", "warning");
+                return;
+            }
+
+            let discountedTotal = Math.max(0, baseTotalAmount - totalDiscount);
+            $("#discountedTotalAmount").val(discountedTotal.toFixed(2));
+
+            // تحديث الأقساط بعد الخصم
+            distributeInstallments(discountedTotal);
+        }
+
+
+
+        //                      function distributeInstallments(total) {
+        //     let installmentInputs = $(".installmentAmountReadonly");
+        //     let installmentCount = installmentInputs.length;
+
+        //     if (installmentCount === 0) {
+        //         $("#installmentsContainerAfterDiscount").html(`
+        //             <div class="col">
+        //                 <label class="form-label">المبلغ الإجمالي بعد الخصم</label>
+        //                 <input type="number" class="form-control form-control-sm" value="${total.toFixed(2)}" readonly>
+        //             </div>
+        //         `);
+        //         return;
+        //     }
+
+        //     let currentTotalInstallments = installmentsData.reduce((sum, inst) => sum + inst.amountInstallment, 0);
+
+        //     if (currentTotalInstallments === 0) {
+        //         // توزيع المبلغ بالتساوي على جميع الأقساط
+        //         let newAmountPerInstallment = (total / installmentCount).toFixed(2);
+        //         installmentInputs.each(function (index) {
+        //             $(this).val(newAmountPerInstallment);
+        //             installmentsData[index].amountInstallment = parseFloat(newAmountPerInstallment);
+        //         });
+        //     } else {
+        //         // تعديل الأقساط بناءً على النسب الأصلية
+        //         installmentInputs.each(function (index) {
+        //             let originalValue = installmentsData[index].amountInstallment || 0;
+        //             let newInstallmentValue = parseFloat(((originalValue / currentTotalInstallments) * total).toFixed(2));
+
+        //             $(this).val(newInstallmentValue);
+        //             installmentsData[index].amountInstallment = parseFloat(newInstallmentValue);
+        //         });
+        //     }
+
+        //     // تحديث الحقول القابلة للقراءة فقط
+        //     updateReadonlyInstallments();
+        // }
+
+
+        //                      function updateReadonlyInstallments() {
+        //     let totalAfterDiscount = 0;
+
+        //     $(".installmentAmountReadonly").each(function () {
+        //         let id = $(this).data("id");
+        //         let correspondingInput = $(`.installmentAmount[data-id='${id}']`);
+
+        //         let value = parseFloat($(this).val()) || 0;
+
+        //         // تحديث الحقول القابلة للقراءة
+        //         if (correspondingInput.length > 0) {
+        //             correspondingInput.val(value.toFixed(2));
+        //         }
+
+        //         // تحديث بيانات القسط في المصفوفة
+        //         let installment = installmentsData.find(i => i.id == id);
+        //         if (installment) {
+        //             installment.amountInstallment = value;
+        //         }
+
+        //         totalAfterDiscount += value;
+        //     });
+
+        //     $("#discountedTotalAmount").val(totalAfterDiscount.toFixed(2));
+        // }
+
+
+
+
+
+
+
+
+            $(".discount-input").on("input", function () {
+                let value = parseFloat($(this).val()) || 0;
+                if (value < 0) {
+                    $(this).val(0);
+                    Swal.fire("خطأ", "لا يمكن إدخال خصم سلبي!", "error");
+                }
+                applyDiscounts();
+            });
+
+            function displayInstallments(container, data, amount, readonly) {
+                let html = "";
+                if(readonly){
+                     if (data.length === 1) {
+                    html = `
+                        <div class="col">
+                            <label class="form-label">المبلغ الإجمالي</label>
+                            <input type="number" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
+                        </div>`;
+                } else {
+                    data.forEach(item => {
+                        html += `
+                            <div class="col">
+                                <label class="form-label">${item.installName}</label>
+                                <input type="number" class="form-control form-control-sm installmentAmountReadonly "
+                                       value="${(amount / data.length).toFixed(2)}"
+                                       data-id="${item.id}" readonly>
+                            </div>`;
+                    });
+                }
+                }else{
+                     if (data.length === 1) {
+                    html = `
+                        <div class="col">
+                            <label class="form-label">المبلغ الإجمالي</label>
+                            <input type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                        </div>`;
+                } else {
+                    data.forEach(item => {
+                        html += `
+                            <div class="col">
+                                <label class="form-label">${item.installName}</label>
+                                <input type="number" class="form-control form-control-sm installmentAmount"
+                                       value="${(amount / data.length).toFixed(2)}"
+                                       data-id="${item.id}" >
+                            </div>`;
+                    });
+                }
+                }
+               
+
+                $(container).html(html);
+            }
+
+        function adjustInstallments(changedInput) {
+            let newValue = parseFloat(changedInput.val()) || 0;
+            let id = changedInput.data("id");
+            let otherInputs = $(".installmentAmount").not(`[data-id='${id}']`);
+
+            // إجمالي المبلغ بعد الخصم
+            let totalAfterDiscount = parseFloat($("#discountedTotalAmount").val()) || baseTotalAmount;
+
+            let remainingSum = totalAfterDiscount - newValue;
+            let newAmountPerInput = (remainingSum / otherInputs.length).toFixed(2);
+
+            if (newAmountPerInput < 0) {
+                Swal.fire("تنبيه", "القيمة المدخلة أكبر من المبلغ الإجمالي بعد الخصم!", "warning");
+                changedInput.val((totalAfterDiscount / $(".installmentAmount").length).toFixed(2));
+                return;
+            }
+
+            // توزيع القيم على باقي الأقساط
+            otherInputs.each(function () {
+                $(this).val(newAmountPerInput);
+            });
+
+            // تحديث القيم داخل installmentsContainerAfterDiscount
+            updateReadonlyInstallments();
+        }
+
+
+                      function updateReadonlyInstallments() {
+            let totalAfterDiscount = 0;
+
+            $(".installmentAmountReadonly").each(function () {
+                let id = $(this).data("id");
+                let correspondingInput = $(`.installmentAmount[data-id='${id}']`);
+                let value = parseFloat(correspondingInput.val()) || 0;
+
+                $(this).val(value.toFixed(2));
+
+                let installment = installmentsData.find(i => i.id == id);
+                if (installment) {
+                    installment.amountInstallment = value;
+                }
+
+                totalAfterDiscount += value;
+            });
+
+            $("#discountedTotalAmount").val(totalAfterDiscount.toFixed(2));
+        }
+
+
+
+
+            function updateTotalWithExtras() {
+                let extraAmount = 0;
+
+                $(".additional-input").each(function () {
+                    let inputValue = parseFloat($(this).attr("data-value")) || 0;
+                    let isChecked = $(this).closest(".d-flex").find(".additional-checkbox").prop("checked");
+
+                    if (isChecked) {
+                        extraAmount += inputValue;
+                    }
+                });
+
+                let finalAmount = baseTotalAmount + extraAmount;
+                $("#installmentsContainerAfterDiscount").attr("data-total", finalAmount);
+                $("#discountedTotalAmount").val(finalAmount.toFixed(2));
+            }
+        });
+
+    </script>
+
+
+
+
     <script>
 
-        <script>
-            
-    </script>
-    </script>
-    <script>
+                     $(document).ready(function () {
+            $(".additional-checkbox").change(function () {
+                let container = $("#container");
+                let parentDiv = $(this).closest(".d-flex");
+                let labelText = parentDiv.find("label").text().trim();
+                let inputValue = parentDiv.find(".additional-input").val() || "0";
+                let inputId = parentDiv.find(".additional-input").attr("id");
+
+                if ($(this).prop("checked")) {
+                    // ✅ إضافة العنصر إلى #container فقط إذا لم يكن مضافًا بالفعل
+                    if (container.find(`.added-item[data-id="${inputId}"]`).length === 0) {
+                        container.append(`
+                            <div class="col added-item" data-id="${inputId}">
+                                <label class="form-label">${labelText}</label>
+                                <input type="number" class="form-control form-control-sm" value="${inputValue}" readonly>
+                            </div>
+                        `);
+                    }
+                } else {
+                    // ❌ حذف العنصر إذا تم إلغاء تحديد الـ checkbox
+                    container.find(`.added-item[data-id="${inputId}"]`).remove();
+                }
+            });
+
+            // ✅ تحديث قيمة الإدخال داخل #container عند التغيير
+            $(".additional-input").on("input", function () {
+                let inputId = $(this).attr("id");
+                let newValue = $(this).val() || "0";
+
+                // ✅ تحديث قيمة الـ input المرتبط داخل #container إذا كان موجودًا
+                let inputField = $(`.added-item[data-id="${inputId}"] input`);
+                if (inputField.length > 0) {
+                    inputField.val(newValue);
+                }
+            });
+        });
+
+
+                $(document).ready(function () {
+            // إضافة رسوم التسجيل تلقائيًا عند تحميل الصفحة
+            addFixedFee("رسوم التسجيل", $("#CLSRegs").val());
+
+            // عند تغيير قيمة رسوم التسجيل، يتم تحديثها داخل الحاوية
+            $("#CLSRegs").on("input", function () {
+                $("#container .cls-regs-value").val($(this).val());
+            });
+
+            function addFixedFee(label, value) {
+                $("#container").append(`
+                    <div class="col">
+                        <label class="form-label">${label}</label>
+                        <input type="number" id='cLSRegs' class="form-control form-control-sm cls-regs-value" value="${value}" readonly>
+                    </div>
+                `);
+            }
+        });
+
                 $(document).ready(function () {
                                     async function fetchBusCost() {
             var busCostTypeId = parseInt($("#busCostTypeId").val());
@@ -629,7 +1192,10 @@
 
                 console.log(response);
                 $("#costFirstTrem").val(response.fristTremCost);
+        $("#costFirstTremAfterChooseBus").val(response.fristTremCost);
                 $("#costSecondTrem").val(response.secondTremCost);
+                $("#costSecondTremAfterChooseBus").val(response.secondTremCost);
+                $("#busDiscount").val(0);
             } catch (error) {
                 console.error("Error fetching installments:", error);
                 Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
@@ -638,81 +1204,38 @@
             $("#buscostId").change(async function () {
             await fetchBusCost();
         });
-                       $(document).ready(function () {
-            $("#classTypeId").change(async function () {
-                var stageId = parseInt($("#StageId").val());
-                var classTypeId = parseInt($(this).val());
-
-                if (stageId == 0 || classTypeId == 0) {
-                    Swal.fire("تنبيه", "يرجى اختيار المرحلة والصف", "warning");
-                    return;
-                }
-
-                try {
-                    const response = await $.ajax({
-                        type: "GET",
-                        url: '@Url.Action("GetInstallmentsByClassType", "Student")',
-                        data: { stageId: stageId, classTypeId: classTypeId },
-                        dataType: "json"
-                    });
-
-                    if (response && response.length > 0) {
-                        var totalAmount = response.reduce((sum, item) => sum + parseFloat(item.amountInstallment), 0);
-                        var resultHtml = "";
-
-                        $.each(response, function (i, item) {
-                            resultHtml += `
-                                <div class="col">
-                                    <label class="form-label">${item.installName} </label>
-                                    <input type="number" class="form-control form-control-sm installmentAmount"
-                                           value="${item.amountInstallment}" data-id="${item.id}"
-                                           data-initial="${item.amountInstallment}" placeholder="أدخل المبلغ">
-                                </div>`;
-                        });
-
-                        $("#installmentsContainer").html(resultHtml);
-                        $("#installmentsContainer").attr("data-total", totalAmount);
-                    } else {
-                        $("#installmentsContainer").html(`
-                            <div class="col">
-                                <label class="form-label">اجمالي قيمة المبلغ </label>
-                                <input readonly type="number" class="form-control form-control-sm installmentAmount"
-                                       value="${response.amountInstallment}" data-id="${response.id}"
-                                       placeholder="أدخل المبلغ">
-                            </div>`);
-                    }
-
-                    // Bind input change event
-                    $(".installmentAmount").on("input", function () {
-                        adjustOtherInputs($(this));
-                    });
-
-                } catch (error) {
-                    console.error("Error fetching installments:", error);
-                    Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
-                }
-            });
-
-            function adjustOtherInputs(changedInput) {
-                var totalAmount = parseFloat($("#installmentsContainer").attr("data-total"));
-                var inputs = $(".installmentAmount");
-                var changedValue = parseFloat(changedInput.val()) || 0;
-                var initialValue = parseFloat(changedInput.attr("data-initial")) || 0;
-                var remainingAmount = totalAmount - changedValue;
-
-                var otherInputs = inputs.not(changedInput);
-                var sumOtherInputs = otherInputs.toArray().reduce((sum, input) => sum + parseFloat($(input).val() || 0), 0);
-
-                if (sumOtherInputs === 0) return;
-
-                otherInputs.each(function () {
-                    var $this = $(this);
-                    var originalValue = parseFloat($this.attr("data-initial")) || 0;
-                    var newValue = (originalValue / sumOtherInputs) * remainingAmount;
-                    $this.val(newValue.toFixed(2));
-                });
-            }
+                   $("#busCostTypeId").change(async function () {
+            await fetchBusCostByType();
         });
+          async function fetchBusCostByType() {
+            var busCostTypeId = parseInt($("#busCostTypeId").val());
+            var buseId = parseInt($("#buscostId").val());
+            if (buseId === 0 || busCostTypeId === 0) {
+               
+                return;
+            }
+
+           
+
+            try {
+                const response = await $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetBusCostByClassType", "Student")',
+                    data: { buseId: buseId, busCostTypeId: busCostTypeId },
+                    dataType: "json"
+                });
+
+                console.log(response);
+                $("#costFirstTrem").val(response.fristTremCost);
+        $("#costFirstTremAfterChooseBus").val(response.fristTremCost);
+                $("#costSecondTrem").val(response.secondTremCost);
+                $("#costSecondTremAfterChooseBus").val(response.secondTremCost);
+                $("#busDiscount").val(0);
+            } catch (error) {
+                console.error("Error fetching installments:", error);
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+            }
+        }
 
                     // On page load, get the next available code from the server
                                                          async function loadClassTypesByStage(stageId) {
