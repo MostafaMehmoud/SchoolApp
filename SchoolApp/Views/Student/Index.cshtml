@@ -312,6 +312,25 @@
 
 
                 </div>
+                    <div class="row row-cols-3 g-2">
+                        <div class="col-sm-6">
+                            <label class="form-label">اسم اقرب شخص </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="form-label">عنوان منزله</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل عنوان منزله">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="form-label">هاتف المنزل</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف المنزل">
+                        </div>
+
+
+
+
+                    </div>
                 <div class="row row-cols-3 g-2">
                         <div class="col-sm-6">
                             <label class="form-label">رقم الفاكس </label>
@@ -364,51 +383,10 @@
 
                 </div>
                 </div>
-                <br />
-                <hr />
-                <br />
+              
                 <div class=" p-3">
-                <div class="row row-cols-3 g-2">
-                    <div class="col-sm-6">
-                        <label class="form-label">اسم اقرب شخص </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم">
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="form-label">صلة القرابة  </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل صلة القرابة ">
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="form-label">رقم الجوال</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
-                    </div>
-
-
-
-
-
-                </div>
-                <div class="row row-cols-4 g-2">
-                    <div class="col">
-                        <label class="form-label">جهة العمل </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">هاتف العمل </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف العمل ">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">عنوان منزله</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل عنوان منزله">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">هاتف المنزل</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف المنزل">
-                    </div>
-
-
-
-
-                </div>
+               
+                
                     <br />
                     <hr />
                     <br />
@@ -490,7 +468,7 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">ايراد الزي</label>
-                            <input type="number" id="CLSCloth" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input type="number" readonly id="CLSCloth" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
                             <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="ايراد الزي">
                         </div>
                     </div>
@@ -499,7 +477,7 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">رسوم الكتب</label>
-                            <input type="number" id="CLSAcpt" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                                <input type="number" readonly id="CLSAcpt" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
                             <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="رسوم الكتب">
                         </div>
                     </div>
@@ -508,7 +486,7 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">البوكليت</label>
-                            <input type="number" id="CLSBakelite" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                                <input type="number" readonly id="CLSBakelite" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
                             <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="البوكليت">
                         </div>
                     </div>
@@ -891,14 +869,15 @@
             let siblingsDiscount = parseFloat($("#siblingsDiscount").val()) || 0;
             let communityFundDiscount = parseFloat($("#communityFundDiscount").val()) || 0;
             let specialDiscount = parseFloat($("#specialDiscount").val()) || 0;
-            let fixedDiscount = parseFloat($("#fixedDiscount").val()) || 0;
+           let fixedDiscount = parseFloat($("#fixedDiscount").val()) || 0;
             let busDiscount = parseFloat($("#busDiscount").val()) || 0;
 
             let generalDiscountAmount = (generalDiscount / 100) * baseTotalAmount;
             let employeeDiscountAmount = (employeeDiscount / 100) * baseTotalAmount;
 
             let totalDiscount = generalDiscountAmount + employeeDiscountAmount + earlyPaymentDiscount +
-                siblingsDiscount + communityFundDiscount + specialDiscount + fixedDiscount + busDiscount;
+                siblingsDiscount + communityFundDiscount + specialDiscount + busDiscount;
+               
 
             if (totalDiscount > baseTotalAmount) {
                 Swal.fire("تنبيه", "إجمالي الخصومات أكبر من المبلغ الإجمالي!", "warning");
@@ -906,6 +885,8 @@
             }
 
             let discountedTotal = Math.max(0, baseTotalAmount - totalDiscount);
+             $("#fixedDiscount").val(0.0);
+                $("#fixedDiscount").val(totalDiscount.toFixed(2));
             $("#discountedTotalAmount").val(discountedTotal.toFixed(2));
 
             // تحديث الأقساط بعد الخصم

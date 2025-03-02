@@ -87,7 +87,7 @@ namespace SchoolApp.BL.Services
             var amounts = _unitOfWork.classTypesSpecial
                .GetAllWithInclude(i => i.Amounts).Where(i=>i.StageId==StageId)
                .Select(i => i.Amounts).FirstOrDefault();
-            var amountPrice = amounts.FirstOrDefault(i => i.ClassTypeNameId == ClassTypeId).AmountPrice;
+            var amountPrice = amounts.FirstOrDefault(i => i.ClassTypeNameId == ClassTypeId);
             // Get amount price safely
             
             // If no amountPrice is found, return an empty list
@@ -109,7 +109,7 @@ namespace SchoolApp.BL.Services
                 return null;
             }
 
-            decimal amount = amountPrice / lengthOfInstallments;
+            decimal amount = amountPrice.AmountPrice / lengthOfInstallments;
             
             // Construct VWInstallmentStudent list
             foreach (var student in installments)
