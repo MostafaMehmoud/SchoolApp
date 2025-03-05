@@ -48,7 +48,7 @@ namespace SchoolApp.DAL.Models
         public string? HouseLocationGuardian { get; set; }
         public string? HouseMobileGuardian { get; set; }
         public string? GuardianFaxNumber {  get; set; }
-        public bool GuardianWorkingWithUs {  get; set; }
+        public short GuardianWorkingWithUs {  get; set; }
         public short PersonalStatusGuardianId { get; set; }
         public string PersonalStatusGuardianNumber { get; set; }
         public DateOnly PersonalStatusGuardianStartDate { get; set; }
@@ -71,8 +71,6 @@ namespace SchoolApp.DAL.Models
         public bool AreYouWantGoWithBusSchool { get; set; }
         public short? DirectionBus { get;set; }
         public int? BusId { get; set; }
-        public decimal CostFirstTerm { get; set; } = 0;
-        public decimal CostSecondTerm { get; set; } = 0;
         public decimal CostFirstTermBeforeDiscount { get; set; } = 0;
         public decimal CostSecondTermBeforeDiscount { get; set; } = 0;
         public decimal GeneralDiscount { get; set; } = 0;
@@ -86,6 +84,7 @@ namespace SchoolApp.DAL.Models
         public decimal CostFirstTermAfterDiscount { get; set; } = 0;
         public decimal CostSecondTermAfterDiscount { get; set; } = 0;
         public decimal TotalCost { get; set;  }
+        public decimal TotalCostAfterDiscount { get; set;  }
         public List<InstallmentCostBeforeDiscount> installmentCostBeforeDiscounts { get; set; } = new List<InstallmentCostBeforeDiscount>();
         public List<InstallmentCostAfterDiscount> installmentCostAfterDiscounts { get; set; } = new List<InstallmentCostAfterDiscount>();
     }

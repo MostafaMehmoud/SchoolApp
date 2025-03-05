@@ -25,6 +25,7 @@ builder.Services.AddScoped<IServiceClassTypeName, ServiceClassTypeName>();
 builder.Services.AddScoped<IServiceClassType, ServiceClassType>();  
 builder.Services.AddScoped<IServiceInstallment, ServiceInstallment>();  
 builder.Services.AddScoped<IServiceDepartment, ServiceDepartment>();  
+builder.Services.AddScoped<IServiceStudent, ServiceStudent>();  
 
 var app = builder.Build();
 

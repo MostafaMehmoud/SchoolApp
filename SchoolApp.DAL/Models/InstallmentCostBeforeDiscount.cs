@@ -11,5 +11,7 @@ namespace SchoolApp.DAL.Models
         public int InstallmentId { get; set; }
         public decimal CostInstallment { get; set; }
         public int StudentId { get; set; }
+        public string InstallmentName { get; set; }
+
     }
 }

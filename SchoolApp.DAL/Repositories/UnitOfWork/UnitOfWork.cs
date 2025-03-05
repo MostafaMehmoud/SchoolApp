@@ -25,6 +25,8 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
 
         public IRepositorySpecial<Department> departments {  get; }
 
+        public IRepositorySpecial<Student> students { get; }
+
         public UnitOfWork(ApplicationDBContext context)
         {
             _context = context;
@@ -36,6 +38,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             classTypesSpecial = new RepositoryClassType(_context);
             installments = new RepositoryInstallment(_context);
             departments=new RepositoryDepartment(_context);
+            students=new RepositoryStudent(_context);   
         }
 
         public int Complete() => _context.SaveChanges();

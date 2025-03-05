@@ -1,5 +1,6 @@
-﻿@using SchoolApp.DAL.Models
-
+﻿
+@using SchoolApp.DAL.ViewModels
+@model VWStudent
 
 
 <style>
@@ -54,46 +55,52 @@
 
         <!-- محتوى الكارد (المعلومات) -->
         <div class="card-body ">
-            <form id="fileBusForm" class="form-sample">
-                <input type="hidden"  id="busId" />
+            <form id="StudentForm" class="form-sample">
+                <input type="hidden"  id="studentId" asp-for="Id" />
                 <div class="p-3">
                 <!-- صفوف الحقول -->
                 <div class="row row-cols-3 g-2">
                           <div class="col-sm-6">
                                 <label class="form-label">رقم الطالب</label>
-                            <input type="text" class="form-control form-control-sm" id="fileBusCodeInput" placeholder="ادخل رقم الطالب">
+                            <input required  asp-for="StudentNumber" type="text" class="form-control form-control-sm" id="studentCodeInput" readonly placeholder="ادخل رقم الطالب">
                             </div>
                     <div class="col-sm-3">
                         <label class="form-label">اسم القسم</label>
-                            <select asp-items="ViewBag.departments" class="form-control form-control-sm">
+                            <select required asp-for="DepartmentId" asp-items="ViewBag.departments" id="departmentId" class="form-control form-control-sm">
                             <option>اختر القسم</option>
                         </select>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
                     </div>
                         <div class="col-sm-3">
                             <label class="form-label">المرحلة</label>
-                            <select asp-items=" ViewBag.Stages" id="StageId" class="form-control form-control-sm">
+                            <select required asp-for=StageId asp-items=" ViewBag.Stages" id="StageId" class="form-control form-control-sm">
                                 <option>اختر المرحلة</option>
                             </select>
+                            <span asp-validation-for="StageId" class="text-danger"></span>
                         </div>
                 </div>
 
                 <div  class="row row-cols-4 g-2" >
                     <div class="col">
                         <label class="form-label">اسم الطالب</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الطالب">
+                        <input id="studentName" required maxlength="30" type="text" asp-for="StudentName" class="form-control form-control-sm" placeholder="ادخل اسم الطالب">
+                            <span asp-validation-for="StudentName" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label">اسم الاب</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الاب">
-                    </div>
+                            <input id="fatherName" required maxlength="30" asp-for="FatherName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم الاب">
+                            <span asp-validation-for="FatherName" class="text-danger"></span>
+                        </div>
                     <div class="col">
                         <label class="form-label">اسم الجد</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الجد">
-                    </div>
+                            <input id="grandFatherName" required maxlength="30" asp-for="GrandFatherName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم الجد">
+                            <span asp-validation-for="GrandFatherName" class="text-danger"></span>
+                        </div>
                     <div class="col">
                         <label class="form-label">اسم العائلة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
-                    </div>
+                            <input id="familyName" required maxlength="30" type="text" asp-for="FamilyName" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                            <span asp-validation-for="FamilyName" class="text-danger"></span>
+                        </div>
                    
                     
                    
@@ -102,28 +109,31 @@
                 <div class="row row-cols-4 g-2">
                     <div class="col">
                         <label class="form-label">تاريخ الميلاد</label>
-                        <input type="date" class="form-control form-control-sm">
+                            <input id="brithDate" value="@(Model.BrithDate?.ToString("yyyy-MM-dd") ?? "")" required asp-for="BrithDate" type="date" class="form-control form-control-sm">
+                            <span asp-validation-for="BrithDate" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label">مكان الولادة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل مكان الولادة">
-                    </div>
+                            <input id="brithPlace" required maxlength="100" asp-for="BrithPlace" type="text" class="form-control form-control-sm" placeholder="ادخل مكان الولادة">
+                            <span asp-validation-for="BrithPlace" class="text-danger"></span>
+                        </div>
                     
                     <div class="col">
                         <label class="form-label">الجنسية</label>
-                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
+                            <select id="nationalId" required asp-for="NationalId" asp-items="ViewBag.nationals" class="form-control form-control-sm">
                             <option>اختر الجنسية</option>
                         </select>
+                            <span asp-validation-for="NationalId" class="text-danger"></span>
                     </div>
                         <div class="col">
                             <label class="form-label d-block">الجنس</label>
                             <div class="pe-0 d-flex row ">
                                 <div class="pe-0 row col d-flex justify-content-around me-1">
-                                    <input type="radio" class="pe-0 col-sm-2" name="gender" value="male">
+                                    <input checked type="radio" class="pe-0 col-sm-2" asp-for="GanderType" value="1">
                                     <label class="pe-0 form-check-label text-muted col-sm-10">ذكر</label>
                                 </div>
                                 <div class="pr-0 row col d-flex justify-content-around me-1">
-                                    <input type="radio" class="pe-0 col-sm-2" name="gender" value="female">
+                                    <input type="radio" class="pe-0 col-sm-2" asp-for="GanderType" value="2">
                                     <label class="pe-0 form-check-label text-muted col-sm-10">انثي</label>
                                 </div>
                             </div>
@@ -136,20 +146,22 @@
 
                         <div class="col-sm-4">
                         <label class="form-label">الصف</label>
-                        <select id="classTypeId" class="form-control form-control-sm">
+                        <select  required asp-for="ClassTypeId" id="classTypeId" class="form-control form-control-sm">
                             <option value="0">اختر الصف</option>
                             
                         </select>
+                            <span asp-validation-for="ClassTypeId" class="text-danger"></span>
                     </div>
                         <div class="col-sm-4">
                         <label class="form-label">اسم الفصل</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم الفصل">
+                        <input id="classTypeName" required maxlength="30" asp-for="ClassTypeName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم الفصل">
+                            <span asp-validation-for="ClassTypeName" class="text-danger"></span>
                     </div>
                         <div class="col-sm-4">
 
                             <label class="form-label">الرصيد السابق </label>
 
-                            <input type="number" class="form-control form-control-sm" placeholder="ادخل الرصيد السابق ">
+                            <input id="lastBalance" asp-for="LastBalance" type="number" class="form-control form-control-sm" placeholder="ادخل الرصيد السابق ">
 
                         </div>
 
@@ -164,46 +176,51 @@
                     <div class="col-sm-4">
 
                         <label class="form-label">المدرسة المنقول منها  </label>
-                           
-                                <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم المدرسة ">
+
+                            <input id="lastSchoolName" asp-for="LastSchoolName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم المدرسة ">
                           
                        
                     </div>
                         <div class="col-sm-4">
                             <label class="form-label"> دفعة مقدمة </label>
-                            <input type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
+                            <input id="advanceRepayment" asp-for="AdvanceRepayment" type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label">القسط الشهري  </label>
-                            <input type="number" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
+                            <input type="number" id="monthlyInstallment" asp-for="MonthlyInstallment" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
                         </div>
                 </div>
                 <div class="row row-cols-5 g-2">
                     <div class="col">
                         <label class="form-label">الحالة الشخصية</label>
-                        <select class="form-control form-control-sm">
+                        <select id="personalStatusStudentId" required asp-for="PersonalStatusStudentId" class="form-control form-control-sm">
                             <option value="1">بطاقة احوال</option>
                             <option value="2">جواز سفر</option>
                             <option value="3">اقامة</option>
                         </select>
+                            <span asp-validation-for="PersonalStatusStudentId" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label">الرقم </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                            <input id="personalStatusStudentNumber" required maxlength="20" asp-for="PersonalStatusStudentNumber" type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                            <span asp-validation-for="PersonalStatusStudentNumber" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label">تاريخ الاصدار </label>
-                        <input type="date" class="form-control form-control-sm" >
+                            <input id="personalStatusStudentStartDate" required value="@(Model.PersonalStatusStudentStartDate?.ToString("yyyy-MM-dd") ?? "")" asp-for="PersonalStatusStudentStartDate" type="date" class="form-control form-control-sm">
+                            <span asp-validation-for="PersonalStatusStudentStartDate" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label"> مكان الاصدار</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                            <input required id="personalStatusStudentPlace" maxlength="30" asp-for="PersonalStatusStudentPlace" type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                            <span asp-validation-for="PersonalStatusStudentPlace" class="text-danger"></span>
                     </div>
 
                     <div class="col">
                         <label class="form-label">تاريخ الانتهاء </label>
-                        <input type="date" class="form-control form-control-sm">
-                    </div>
+                            <input id="personalStatusStudentEndDate" value="@(Model.PersonalStatusStudentEndDate?.ToString("yyyy-MM-dd") ?? "")" required asp-for="PersonalStatusStudentEndDate" type="date" class="form-control form-control-sm">
+                            <span asp-validation-for="PersonalStatusStudentEndDate" class="text-danger"></span>
+                        </div>
 
 
                 </div>
@@ -215,11 +232,11 @@
                         <div class="d-flex row">
                                 
                                 <div class="row col-sm-6 d-flex justify-content-around me-1">
-                                    <input type="radio" class="col-sm-2" name="gender" value="1">
+                                    <input checked type="radio" class="col-sm-2" asp-for="PaymentTypeId" value="1">
                                     <label class="form-check-label text-muted col-sm-10">قسط</label>
                                 </div>
                                 <div class="row  col-sm-6 d-flex justify-content-around me-1">
-                                    <input type="radio" class=" col-sm-2" name="gender" value="2">
+                                    <input type="radio" class=" col-sm-2" asp-for="PaymentTypeId" value="2">
                                     <label class="form-check-label text-muted col-sm-10">مقدم</label>
                                 </div>
                         </div>
@@ -229,15 +246,15 @@
                         <label class="form-label d-block">فترة الالتحاق  </label>
                         <div class=" d-flex justify-content-start row">
                                 <div class="row col-sm-4 d-flex justify-content-around me-1">
-                                    <input type="radio" class="col-sm-2" name="applydate" value="1">
+                                    <input checked asp-for="EnrollmentPeriodId" type="radio" class="col-sm-2" value="1">
                                     <label class="form-check-label text-muted col-sm-10">اول</label>
                                 </div>
                                 <div class="row col-sm-4 d-flex justify-content-around me-1">
-                                    <input type="radio" class=" col-sm-2" name="applydate" value="2">
+                                    <input asp-for="EnrollmentPeriodId" type="radio" class=" col-sm-2"  value="2">
                                     <label class="form-check-label text-muted col-sm-10">الثاني</label>
                                 </div>
                                 <div class="row col-sm-4 d-flex justify-content-around me-1">
-                                    <input type="radio" class=" col-sm-2" name="applydate" value="3">
+                                    <input asp-for="EnrollmentPeriodId" type="radio" class=" col-sm-2"  value="3">
                                     <label class="form-check-label text-muted col-sm-10">كامل</label>
                                 </div>
                         </div>
@@ -253,17 +270,20 @@
                 <div class="row row-cols-3 g-2">
                     <div class="col-sm-6">
                         <label class="form-label">اسم ولي الامر</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ولي الامر">
-                   </div>
+                            <input id="guardianName" required maxlength="30" asp-for="GuardianName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم ولي الامر">
+                            <span asp-validation-for="GuardianName" class="text-danger"></span>
+                    </div>
                     <div class="col-sm-3">
                         <label class="form-label">صلة القرابة</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل صلة القرابة">
+                            <input id="kinship" required maxlength="30" asp-for="Kinship" type="text" class="form-control form-control-sm" placeholder="ادخل صلة القرابة">
+                            <span asp-validation-for="Kinship" class="text-danger"></span>
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label">الجنسية</label>
-                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
+                            <select id="guardianNationalId" required asp-for="GuardianNationalId" asp-items="ViewBag.nationals" class="form-control form-control-sm">
                             <option>اختر الجنسية</option>
                         </select>
+                            <span asp-validation-for="GuardianNationalId" class="text-danger"></span>
                     </div>
 
 
@@ -277,7 +297,7 @@
 
                         <label class="form-label">جهة العمل  </label>
 
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
+                        <input id="guardianSideWork" asp-for="GuardianSideWork" type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
 
 
                     </div>
@@ -285,26 +305,27 @@
 
                         <label class="form-label"> الوظيفة </label>
 
-                        <input type="number" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
-
+                            <input id="guardianJob" required maxlength="50" asp-for="GuardianJob" type="number" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                            <span asp-validation-for="GuardianJob" class="text-danger"></span>
                     </div>
                         <div class="col-sm-3">
                             <label class="form-label">رقم الجوال </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
+                            <input id="guardianMobile" required maxlength="15" asp-for="GuardianMobile" type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال">
+                            <span asp-validation-for="GuardianMobile" class="text-danger"></span>
                         </div>
                 </div>
                 <div class="row row-cols-3 g-2">
                     <div class="col-sm-6">
                         <label class="form-label">الايميل</label>
-                        <input type="email" class="form-control form-control-sm" placeholder="ادخل الايميل الكتروني">
+                            <input id="guardianEmail" asp-for="GuardianEmail" type="email" class="form-control form-control-sm" placeholder="ادخل الايميل الكتروني">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label">رمز البريدي </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل رمز البريدي">
+                            <input id="guardianZipCode" asp-for="GuardianZipCode" type="text" class="form-control form-control-sm" placeholder="ادخل رمز البريدي">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label"> هاتف العمل </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف العمل">
+                            <input id="guardianWorkMobile" asp-for="GuardianWorkMobile" type="text" class="form-control form-control-sm" placeholder="ادخل هاتف العمل">
                     </div>
 
 
@@ -315,16 +336,16 @@
                     <div class="row row-cols-3 g-2">
                         <div class="col-sm-6">
                             <label class="form-label">اسم اقرب شخص </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم">
+                            <input id="nameOfClosestPerson" asp-for="NameOfClosestPerson" type="text" class="form-control form-control-sm" placeholder="ادخل اسم">
                         </div>
 
                         <div class="col-sm-3">
                             <label class="form-label">عنوان منزله</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل عنوان منزله">
+                            <input id="houseLocationGuardian" asp-for="HouseLocationGuardian" type="text" class="form-control form-control-sm" placeholder="ادخل عنوان منزله">
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label">هاتف المنزل</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل هاتف المنزل">
+                            <input id="houseMobileGuardian" asp-for="HouseMobileGuardian" type="text" class="form-control form-control-sm" placeholder="ادخل هاتف المنزل">
                         </div>
 
 
@@ -334,18 +355,18 @@
                 <div class="row row-cols-3 g-2">
                         <div class="col-sm-6">
                             <label class="form-label">رقم الفاكس </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
+                            <input id="guardianFaxNumber" asp-for="GuardianFaxNumber" type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
                         </div>
                    
                     <div class="col-sm-6">
                         <label class="form-label d-block">من العاملين</label>
                         <div class="d-flex row ">
                                 <div class="d-flex justify-content-around col-sm-6 row me-1">
-                                    <input type="radio" class="col-sm-2" name="IsYouWorkWithThem" value="yes">
+                                    <input  checked asp-for="GuardianWorkingWithUs" type="radio" class="col-sm-2" value="1">
                                     <label class="form-check-label text-muted col-sm-10">نعم</label>
                                 </div>
                                 <div class="d-flex justify-content-around col-sm-6 row me-1">
-                                    <input type="radio" class=" col-sm-2" name="IsYouWorkWithThem" value="no">
+                                    <input asp-for="GuardianWorkingWithUs" type="radio" class=" col-sm-2"  value="2">
                                     <label class="form-check-label text-muted col-sm-10">لا</label>
                                 </div>
                         </div>
@@ -356,7 +377,7 @@
                 <div class="row row-cols-5 g-2">
                     <div class="col">
                         <label class="form-label">الحالة الشخصية</label>
-                        <select class="form-control form-control-sm">
+                            <select id="personalStatusGuardianId" asp-for="PersonalStatusGuardianId" class="form-control form-control-sm">
                             <option value="1">بطاقة احوال</option>
                             <option value="2">جواز سفر</option>
                             <option value="3">اقامة</option>
@@ -364,20 +385,24 @@
                     </div>
                     <div class="col">
                         <label class="form-label">الرقم </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                            <input id="personalStatusGuardianNumber" required maxlength="20" asp-for="PersonalStatusGuardianNumber" type="text" class="form-control form-control-sm" placeholder="ادخل  الرقم">
+                            <span asp-validation-for="PersonalStatusGuardianNumber" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label">تاريخ الاصدار </label>
-                        <input type="date" class="form-control form-control-sm">
+                            <input id="personalStatusGuardianStartDate" required value="@(Model.PersonalStatusGuardianStartDate?.ToString("yyyy-MM-dd") ?? "")" asp-for="PersonalStatusGuardianStartDate" type="date" class="form-control form-control-sm">
+                            <span asp-validation-for="PersonalStatusGuardianStartDate" class="text-danger"></span>
                     </div>
                     <div class="col">
                         <label class="form-label"> مكان الاصدار</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                            <input id="personalStatusGuardianPlace" required maxlength="30" asp-for="PersonalStatusGuardianPlace" type="text" class="form-control form-control-sm" placeholder="ادخل اسم العائلة">
+                            <span asp-validation-for="PersonalStatusGuardianPlace" class="text-danger"></span>
                     </div>
 
                     <div class="col">
                         <label class="form-label">تاريخ الانتهاء </label>
-                        <input type="date" class="form-control form-control-sm">
+                            <input id="personalStatusGuardianEndDate" required value="@(Model.PersonalStatusGuardianEndDate?.ToString("yyyy-MM-dd") ?? "")" asp-for="PersonalStatusGuardianEndDate" type="date" class="form-control form-control-sm">
+                            <span asp-validation-for="PersonalStatusGuardianEndDate" class="text-danger"></span>
                     </div>
 
 
@@ -394,17 +419,20 @@
                     <div class="row row-cols-3 g-2">
                         <div class="col-sm-6">
                             <label class="form-label"> اسم ام الطالب    </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل اسم ام الطالب ">
+                            <input id="motherStudentName" required maxlength="30" asp-for="MotherStudentName" type="text" class="form-control form-control-sm" placeholder="ادخل اسم ام الطالب ">
+                            <span asp-validation-for="MotherStudentName" class="text-danger"></span>
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label"> صلة القرابة   </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  صلة القرابة  ">
+                            <input id="kinshipMother" required maxlength="30" type="text" asp-for="KinshipMother" class="form-control form-control-sm" placeholder="ادخل  صلة القرابة  ">
+                            <span asp-validation-for="KinshipMother" class="text-danger"></span>
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label">الجنسية</label>
-                            <select asp-items="ViewBag.nationals" class="form-control form-control-sm">
+                            <select id="motherNationalId" required asp-for="MotherNationalId" asp-items="ViewBag.nationals" class="form-control form-control-sm">
                                 <option>اختر الجنسية</option>
                             </select>
+                            <span asp-validation-for="MotherNationalId" class="text-danger"></span>
                         </div>
 
 
@@ -415,16 +443,16 @@
                     <div class="row row-cols-3 g-2">
                         <div class="col-sm-6">
                             <label class="form-label">جهة العمل</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
+                            <input id="motherWork" asp-for="MotherWork" type="text" class="form-control form-control-sm" placeholder="ادخل جهة العمل ">
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label"> رقم الفاكس    </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  رقم الفاكس  ">
+                            <input id="motherFaxNumber" asp-for="MotherFaxNumber" type="text" class="form-control form-control-sm" placeholder="ادخل  رقم الفاكس  ">
                         </div>
 
                         <div class="col-sm-3">
                             <label class="form-label">هاتف العمل</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل  هاتف العمل   ">
+                            <input id="motherWorkMobile" asp-for="MotherWorkMobile" type="text" class="form-control form-control-sm" placeholder="ادخل  هاتف العمل   ">
                         </div>
 
 
@@ -434,11 +462,13 @@
                     <div class="row row-cols-2 g-2">
                         <div class="col-sm-6">
                             <label class="form-label">الوظيفة</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                            <input id="motherJob" required maxlength="30" asp-for="MotherJob" type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                            <span asp-validation-for="MotherJob" class="text-danger"></span>
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label">رقم الجوال</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال  ">
+                            <input id="motherMobilePhone" required maxlength="30" asp-for="MotherMobilePhone" type="text" class="form-control form-control-sm" placeholder="ادخل رقم الجوال  ">
+                            <span asp-validation-for="MotherMobilePhone" class="text-danger"></span>
                         </div>
 
 
@@ -450,7 +480,7 @@
                     <div class="row row-cols-1 g-2">
                         <div class="col-sm-12">
                             <label class="form-label">الملاحظات </label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ادخل الملاحظات  ">
+                            <input id="notes" asp-for="Notes" type="text" class="form-control form-control-sm" placeholder="ادخل الملاحظات  ">
 
                         </div>
                     </div>
@@ -468,8 +498,8 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">ايراد الزي</label>
-                            <input type="number" readonly id="CLSCloth" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
-                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="ايراد الزي">
+                            <input  type="number" readonly id="CLSCloth" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input type="checkbox" id="checkCLSCloth" class="form-check-input ms-2 additional-checkbox" data-label="ايراد الزي">
                         </div>
                     </div>
 
@@ -477,8 +507,8 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">رسوم الكتب</label>
-                                <input type="number" readonly id="CLSAcpt" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
-                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="رسوم الكتب">
+                                <input  type="number" readonly id="CLSAcpt" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input id="checkCLSAcpt" type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="رسوم الكتب">
                         </div>
                     </div>
 
@@ -486,8 +516,8 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm">
                             <label class="form-label flex-grow-1">البوكليت</label>
-                                <input type="number" readonly id="CLSBakelite" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
-                            <input type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="البوكليت">
+                                <input   type="number" readonly id="CLSBakelite" class="form-control form-control-sm w-25 text-center additional-input" data-value="0">
+                            <input id="checkCLSBakelite" type="checkbox" class="form-check-input ms-2 additional-checkbox" data-label="البوكليت">
                         </div>
                     </div>
 
@@ -495,14 +525,14 @@
                     <div class="col">
                         <div class="d-flex align-items-center p-2 border rounded shadow-sm bg-light">
                             <label class="form-label flex-grow-1">رسوم التسجيل</label>
-                            <input type="number" id="CLSRegs" class="form-control form-control-sm w-25 text-center" data-value="0" readonly>
+                            <input asp-for="CLSRegs" type="number" id="CLSRegs" class="form-control form-control-sm w-25 text-center" data-value="0" readonly>
                             <input type="checkbox" class="form-check-input ms-2" checked disabled>
                         </div>
                     </div>
                 </div>
                 </div>
                 <div class=" d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="checkbox" role="switch" id="showDivBus" checked>
+                    <input asp-for="AreYouWantGoWithBusSchool" class="form-check-input" type="checkbox" role="switch" id="showDivBus" checked>
                     <label class="form-check-label fw-bold mb-0" for="showDivBus">هل تريد الذهاب بالباص المدرسي؟</label>
                 </div>
 
@@ -511,7 +541,7 @@
                     
                   <div class="col-sm-3">
                         <label class="form-label">اتجاه السير </label>
-                        <select id="busCostTypeId" class="form-control form-control-sm">
+                        <select asp-for="DirectionBus" id="busCostTypeId" class="form-control form-control-sm">
                             <option value="1"> ذهب و عودة</option>
                             <option value="2">الذهب فقط </option>
                             <option value="3">العودة فقط</option>
@@ -519,18 +549,18 @@
                     </div>
                    <div class="col-sm-3">
                         <label class="form-label">الباص </label>
-                        <select asp-items=" ViewBag.buses" id="buscostId" class="form-control form-control-sm">
+                        <select asp-for="BusId" asp-items=" ViewBag.buses" id="buscostId" class="form-control form-control-sm">
                             <option value="0"> اختر الباص</option>
                            
                         </select>
                     </div>
                    <div class="col-sm-3">
                         <label class="form-label">الفصل الاول </label>
-                        <input readonly type="number" id="costFirstTrem" class="form-control form-control-sm">
+                        <input asp-for="CostFirstTermBeforeDiscount" readonly type="number" id="costFirstTrem" class="form-control form-control-sm">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label"> الفصل الثاني </label>
-                        <input readonly id="costSecondTrem" type="number" class="form-control form-control-sm">
+                        <input readonly asp-for="CostSecondTermBeforeDiscount" id="costSecondTrem" type="number" class="form-control form-control-sm">
                     </div>
 
 
@@ -544,38 +574,38 @@
                 <div class="row row-cols-4 g-2">
                     <div class="col">
                         <label class="form-label">% خصم عام</label>
-                        <input type="number" id="generalDiscount" class="form-control form-control-sm discount-input discount-percentage">
+                        <input asp-for="GeneralDiscount" type="number" id="generalDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
                     <div class="col">
                         <label class="form-label">% خصم أبناء العاملين</label>
-                        <input type="number" id="employeeDiscount" class="form-control form-control-sm discount-input discount-percentage">
+                        <input asp-for="EmployeeDiscount" type="number" id="employeeDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
                     <div class="col">
                         <label class="form-label">خصم تعجيل الدفع</label>
-                        <input type="number" id="earlyPaymentDiscount" class="form-control form-control-sm discount-input discount-fixed">
+                        <input asp-for="EarlyPaymentDiscount" type="number" id="earlyPaymentDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
                         <label class="form-label">خصم الأشقاء</label>
-                        <input type="number" id="siblingsDiscount" class="form-control form-control-sm discount-input discount-fixed">
+                        <input asp-for="SiblingsDiscount" type="number" id="siblingsDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                 </div>
 
                 <div class="row row-cols-4 g-2">
                     <div class="col">
                         <label class="form-label">صندوق رعاية الجاليات</label>
-                        <input type="number" id="communityFundDiscount" class="form-control form-control-sm discount-input discount-fixed">
+                        <input asp-for="CommunityFundDiscount" type="number" id="communityFundDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
                         <label class="form-label">خصم خاص</label>
-                        <input type="number" id="specialDiscount" class="form-control form-control-sm discount-input discount-fixed">
+                        <input asp-for="SpecialDiscount" type="number" id="specialDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
                         <label class="form-label">قيمة خصم</label>
-                        <input type="number" id="fixedDiscount" class="form-control form-control-sm discount-input discount-fixed">
+                        <input asp-for="TotalDiscount" type="number" id="fixedDiscount" class="form-control form-control-sm discount-input discount-fixed">
                     </div>
                     <div class="col">
                         <label class="form-label">خصم باص</label>
-                        <input type="number" id="busDiscount" class="form-control form-control-sm ">
+                        <input asp-for="BusDiscount" type="number" id="busDiscount" class="form-control form-control-sm ">
                     </div>
                 </div>
 
@@ -591,11 +621,11 @@
                 <div class="row" id="DivBusAfterChoose">
                     <div class="col-sm-3">
                         <label class="form-label"> مصروف الباص لفصل الاول  </label>
-                        <input readonly type="number" id="costFirstTremAfterChooseBus" class="form-control form-control-sm">
+                        <input asp-for="CostFirstTermAfterDiscount" readonly type="number" id="costFirstTremAfterChooseBus" class="form-control form-control-sm">
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label"> مصروف الباص لفصل الثاني </label>
-                        <input readonly id="costSecondTremAfterChooseBus" type="number" class="form-control form-control-sm">
+                        <input readonly asp-for="CostSecondTermAfterDiscount" id="costSecondTremAfterChooseBus" type="number" class="form-control form-control-sm">
                     </div>
                 </div>
                 
@@ -615,6 +645,10 @@
 </div>
 @section Scripts {
     <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
 
     <script>
         //                       $(document).ready(function () {
@@ -983,7 +1017,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input type="number" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
+                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1001,7 +1035,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                            <input readonly asp-for="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1091,9 +1125,6 @@
 
     </script>
 
-
-
-
     <script>
 
                      $(document).ready(function () {
@@ -1133,7 +1164,111 @@
             });
         });
 
+        $(document).ready(function () {
+            // تأكد من تهيئة jQuery Validation
+              var form = $("#StudentForm");
+               $("#StudentForm").validate();
+            $("#btnAdd").click(function (e) {
+               
 
+                e.preventDefault(); // منع إعادة تحميل الصفحة
+
+                var form = $("#StudentForm");
+
+                // 🔹 تحقق مما إذا كان النموذج صالحًا
+                if (!form.valid()) {
+                    return; // لا يتم إرسال الطلب إذا كان هناك أخطاء
+                }
+
+                       function getInstallmentData() {
+            let installments = [];
+            document.querySelectorAll("#installmentsContainer .installmentAmount").forEach(input => {
+                let installment = {
+                    Id: 0,
+                    InstallmentId: parseInt(input.dataset.id),
+                    CostInstallment: parseFloat(input.value),
+                    InstallmentName: input.previousElementSibling.textContent.trim() // Get the label text
+                };
+                installments.push(installment);
+            });
+            return installments;
+        }
+
+
+                function getInstallmentDataAfterDiscount() {
+                    let installments = [];
+                    document.querySelectorAll("#installmentsContainerAfterDiscount .installmentAmountReadonly").forEach(input => {
+                        let installment = {
+                            Id: 0,
+                            InstallmentId: parseInt(input.dataset.id),
+                            CostInstallment: parseFloat(input.value),
+                    InstallmentName: input.previousElementSibling.textContent.trim()
+                        };
+                        installments.push(installment);
+                    });
+                    return installments;
+                }
+
+                // إنشاء كائن FormData لتخزين البيانات
+                var formData = new FormData($("#StudentForm")[0]);
+
+                // 🔹 إضافة البيانات بناءً على الـ checkboxes المحددة
+                let checkboxes = [
+                    { id: "checkCLSCloth", inputId: "CLSCloth" },
+                    { id: "checkCLSAcpt", inputId: "CLSAcpt" },
+                    { id: "checkCLSBakelite", inputId: "CLSBakelite" }
+                ];
+
+                checkboxes.forEach(item => {
+                    let checkbox = document.getElementById(item.id);
+                    if (checkbox && checkbox.checked) {
+                        let inputValue = document.getElementById(item.inputId).value;
+                        formData.append(item.inputId, inputValue);
+                    }
+                });
+                let installments = getInstallmentData();
+                let installmentsAfterDiscount = getInstallmentDataAfterDiscount();
+                                installments.forEach((item, index) => {
+            formData.append(`installmentCostBeforeDiscounts[${index}].Id`, item.Id);
+            formData.append(`installmentCostBeforeDiscounts[${index}].InstallmentId`, item.InstallmentId);
+            formData.append(`installmentCostBeforeDiscounts[${index}].CostInstallment`, item.CostInstallment);
+            formData.append(`installmentCostBeforeDiscounts[${index}].InstallmentName`, item.InstallmentName);
+        });
+
+
+        // Add installmentCostAfterDiscounts
+        installmentsAfterDiscount.forEach((item, index) => {
+            formData.append(`installmentCostAfterDiscounts[${index}].Id`, item.Id);
+            formData.append(`installmentCostAfterDiscounts[${index}].InstallmentId`, item.InstallmentId);
+            formData.append(`installmentCostAfterDiscounts[${index}].CostInstallment`, item.CostInstallment);
+            formData.append(`installmentCostAfterDiscounts[${index}].InstallmentName`, item.InstallmentName);
+        });
+                // إضافة بيانات الأقساط
+                
+               
+                // إرسال البيانات عبر AJAX
+                $.ajax({
+                    url: '@Url.Action("Add", "Student")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire("نجاح", response.message, "success").then(function () {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("خطأ", response.message, "error");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        var errMsg = jqXHR.responseJSON ? jqXHR.responseJSON.join("<br/>") : errorThrown;
+                        Swal.fire("خطأ", errMsg, "error");
+                    }
+                });
+            });
+        });
                 $(document).ready(function () {
             // إضافة رسوم التسجيل تلقائيًا عند تحميل الصفحة
             addFixedFee("رسوم التسجيل", $("#CLSRegs").val());
@@ -1154,6 +1289,17 @@
         });
 
                 $(document).ready(function () {
+                     $.ajax({
+                url: '@Url.Action("GetNextCode", "Student")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    $('#studentCodeInput').val(response.nextCode);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error retrieving the next code:", errorThrown);
+                }
+            });
                                     async function fetchBusCost() {
             var busCostTypeId = parseInt($("#busCostTypeId").val());
             var buseId = parseInt($("#buscostId").val());
@@ -1265,7 +1411,7 @@
                     // });
                             $("#btnDelete").click(function () {
                     // Get the record's ID from a hidden field or another element
-                    var id = $("#installmentId").val();
+                    var id = $("#studentId").val();
 
 
                     // Show confirmation dialog
@@ -1282,7 +1428,7 @@
                         if (result.isConfirmed) {
                             // If confirmed, send the delete request
                             $.ajax({
-                                url: '@Url.Action("Delete", "Installment")',
+                                url: '@Url.Action("Delete", "Student")',
                                 type: 'POST',
                                 data: { id: id },
                                 success: function (response) {
@@ -1300,122 +1446,94 @@
                 });
 
                     // Handler for the Add button
-               $("#btnAdd").click(function () {
-                           var errors = "";
-            var code = parseInt($('#installmentCodeInput').val()) || 0;
-            var name = $('#installmentNameInput').val();
-            var stageId = parseInt($('#installmentStageId').val()) || 0;
-            var Id = parseInt($('#installmentId').val()) || 0;
-                                    var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
-
-                                     if (classtypeId === 0) {
-                                errors += "رجا اختر الفصل الدراسي<br/>";
-                            }
+                                       var form = $("#StudentForm");
 
 
-            // Client-side validation
-            if (!name || name.trim() === "") {
-                errors += "اسم الفصل مطلوب<br/>";
-            }
-            if (stageId === 0) {
-                errors += "رجا اختر المرحلة<br/>";
-            }
-
-            if (name.length > 100) {
-                errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
-            }
-            if (errors !== "") {
-                Swal.fire('خطأ', errors, 'error');
-                return;
-            }
-
-            var InstallmentData = {
-                Id: Id,
-                        InstallName: name,
-                Code: code,
-                StageId: stageId,
-                                ClassTypeId:classtypeId
-            };
-
-            console.log("Sending Data:", InstallmentData); // Debugging
-
-            $.ajax({
-                url: '@Url.Action("Add", "Installment")',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',  // Ensures correct format
-                data: JSON.stringify(InstallmentData),  // Convert to JSON
-                dataType: 'json',  // Expect JSON response
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire('نجاح', response.message, 'success').then(function () {
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire('خطأ', response.message, 'error');
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    var errors = "";
-                    var responseErrors = jqXHR.responseJSON;
-                    if (responseErrors) {
-                        $.each(responseErrors, function (key, value) {
-                            errors += value.join("<br/>") + "<br/>";
-                        });
-                    } else {
-                        errors = errorThrown;
-                    }
-                    Swal.fire('خطأ', errors, 'error');
-                }
-            });
-        });
 
 
                    // Handler for the Edit button
-        $("#btnEdit").click(function () {
-            var code = parseInt($('#installmentCodeInput').val()) || 0;
-            var name = $('#installmentNameInput').val();
-            var stageId = parseInt($('#installmentStageId').val()) || 0;
-            var Id = parseInt($('#installmentId').val()) || 0;
-            var errors = "";
-                            var classtypeId = parseInt($('#ClassTypeId').val()) || 0;
+        $("#btnEdit").click(function (e) {
+            $("#StudentForm").validate();
+              e.preventDefault(); // منع إعادة تحميل الصفحة
 
-                                             if (classtypeId === 0) {
-                                        errors += "رجا اختر الفصل الدراسي<br/>";
-                                    }
-            // Client-side validation
-            if (!name || name.trim() === "") {
-                errors += "اسم  القسط مطلوب<br/>";
-            }
-            if (stageId === 0) {
-                errors += "رجا اختر المرحلة<br/>";
-            }
-            if (name.length > 100) {
-                errors += "لا يمكن أن يتجاوز الاسم 100 حرف<br/>";
-            }
-            if (errors !== "") {
-                Swal.fire('خطأ', errors, 'error');
-                return;
-            }
+              
+                // 🔹 تحقق مما إذا كان النموذج صالحًا
+                if (!form.valid()) {
+                    return; // لا يتم إرسال الطلب إذا كان هناك أخطاء
+                }
 
-            var InstallmentData = {
-                Id: Id,
-                        InstallName: name,
-                Code: code,
-                        StageId: stageId,
-                                        ClassTypeId:classtypeId
-            };
+                       function getInstallmentData() {
+            let installments = [];
+            document.querySelectorAll("#installmentsContainer .installmentAmount").forEach(input => {
+                let installment = {
+                    Id: 0,
+                    InstallmentId: parseInt(input.dataset.id),
+                    CostInstallment: parseFloat(input.value),
+                    InstallmentName: input.previousElementSibling.textContent.trim() // Get the label text
+                };
+                installments.push(installment);
+            });
+            return installments;
+        }
 
-            console.log("Editing Data:", InstallmentData); // Debugging
 
+                function getInstallmentDataAfterDiscount() {
+                    let installments = [];
+                    document.querySelectorAll("#installmentsContainerAfterDiscount .installmentAmountReadonly").forEach(input => {
+                        let installment = {
+                            Id: 0,
+                            InstallmentId: parseInt(input.dataset.id),
+                            CostInstallment: parseFloat(input.value),
+                    InstallmentName: input.previousElementSibling.textContent.trim()
+                        };
+                        installments.push(installment);
+                    });
+                    return installments;
+                }
+
+                // إنشاء كائن FormData لتخزين البيانات
+                var formData = new FormData($("#StudentForm")[0]);
+
+                // 🔹 إضافة البيانات بناءً على الـ checkboxes المحددة
+                let checkboxes = [
+                    { id: "checkCLSCloth", inputId: "CLSCloth" },
+                    { id: "checkCLSAcpt", inputId: "CLSAcpt" },
+                    { id: "checkCLSBakelite", inputId: "CLSBakelite" }
+                ];
+
+                checkboxes.forEach(item => {
+                    let checkbox = document.getElementById(item.id);
+                    if (checkbox && checkbox.checked) {
+                        let inputValue = document.getElementById(item.inputId).value;
+                        formData.append(item.inputId, inputValue);
+                    }
+                });
+                let installments = getInstallmentData();
+                let installmentsAfterDiscount = getInstallmentDataAfterDiscount();
+                                installments.forEach((item, index) => {
+            formData.append(`installmentCostBeforeDiscounts[${index}].Id`, item.Id);
+            formData.append(`installmentCostBeforeDiscounts[${index}].InstallmentId`, item.InstallmentId);
+            formData.append(`installmentCostBeforeDiscounts[${index}].CostInstallment`, item.CostInstallment);
+            formData.append(`installmentCostBeforeDiscounts[${index}].InstallmentName`, item.InstallmentName);
+        });
+
+
+        // Add installmentCostAfterDiscounts
+        installmentsAfterDiscount.forEach((item, index) => {
+            formData.append(`installmentCostAfterDiscounts[${index}].Id`, item.Id);
+            formData.append(`installmentCostAfterDiscounts[${index}].InstallmentId`, item.InstallmentId);
+            formData.append(`installmentCostAfterDiscounts[${index}].CostInstallment`, item.CostInstallment);
+            formData.append(`installmentCostAfterDiscounts[${index}].InstallmentName`, item.InstallmentName);
+        });
             // AJAX call for EditInstallment
             $.ajax({
-                url: '@Url.Action("Edit", "Installment")',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',  // Ensures correct format
-                data: JSON.stringify(InstallmentData),  // Convert to JSON
-                dataType: 'json',  // Expect JSON response
-                success: function (response) {
-                    if (response.success) {
+                url: '@Url.Action("Edit", "Student")',
+               type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                          if (response.success) {
                         Swal.fire('نجاح', response.message, 'success').then(function () {
                             location.reload();
                         });
@@ -1437,7 +1555,50 @@
                 }
             });
         });
+         function displayInstallmentsWhenSlectdata(container, data, amount, readonly) {
+                let html = "";
+                if(readonly){
+                     if (data.length === 1) {
+                    html = `
+                        <div class="col">
+                            <label class="form-label">المبلغ الإجمالي</label>
+                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
+                        </div>`;
+                } else {
+                    data.forEach(item => {
+                        html += `
+                            <div class="col">
+                                <label class="form-label">${item.installmentName}</label>
+                                <input type="number" class="form-control form-control-sm installmentAmountReadonly "
+                                       value="${(item.costInstallment).toFixed(2)}"
+                                       data-id="${item.id}" data-installmentId="${item.installmentId}" readonly>
+                            </div>`;
+                    });
+                }
+                }else{
+                     if (data.length === 1) {
+                    html = `
+                        <div class="col">
+                            <label class="form-label">المبلغ الإجمالي</label>
+                            <input readonly asp-for="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                        </div>`;
+                } else {
+                    data.forEach(item => {
+                        html += `
+                            <div class="col">
+                                <label class="form-label">${item.installmentName}</label>
+                                <input type="number" class="form-control form-control-sm installmentAmount"
+                                       value="${(item.costInstallment).toFixed(2)}"
+                                       data-id="${item.id}"
+                                       data-installmentId="${item.installmentId}">
+                            </div>`;
+                    });
+                }
+                }
 
+
+                $(container).html(html);
+            }
 
                     // Handler for the Min button (gets record with minimum code)
                     $("#btnMin").click(async function () {
@@ -1446,17 +1607,140 @@
                         try {
                             const response = await $.ajax({
                                 type: "GET",
-                                url: '@Url.Action("GetMinInstallment", "Installment")',
+                                url: '@Url.Action("GetMinStudent", "Student")',
                                 dataType: "json"
                             });
                             if (response) {
                                 console.log(response)
-                                $("#installmentId").val(response.id);
-                                $("#installmentCodeInput").val(response.code);
-                                $("#installmentNameInput").val(response.installName);
-                                $("#installmentStageId").val(response.stageId);
-                                                                 // انتظر حتى يتم تحميل قائمة الفصول
-                            await loadClassTypesByStage(response.stageId);
+                               // إزالة التحقق من النموذج
+            let validator = $("#StudentForm").validate();
+            validator.resetForm(); // إزالة الأخطاء الظاهرة
+            $("#StudentForm")[0].reset(); // إعادة تعيين القيم الافتراضية
+            $(".error").removeClass("error"); // إزالة تنسيقات الأخطاء
+
+            // إزالة رسائل الخطأ يدويًا
+            $(".text-danger").text("");
+            $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
+
+                               $("#studentId").val(response.id);
+                               $("#studentCodeInput").val(response.studentNumber);
+                               $("#departmentId").val(response.departmentId);
+                               $("#StageId").val(response.stageId);
+                               $("#studentName").val(response.studentName);
+                               $("#fatherName").val(response.fatherName);
+                               $("#grandFatherName").val(response.grandFatherName);
+                               $("#familyName").val(response.familyName);
+                               $("#brithDate").val(response.brithDate);
+                               $("#brithPlace").val(response.brithPlace);
+                               $("#nationalId").val(response.nationalId);
+                               let genderValue = response.ganderType; // Ensure the key matches the returned data
+
+                                      // Set the correct radio button as checked
+                                      $(`input[name="GanderType"][value="${genderValue}"]`).prop("checked", true);
+
+                               $("#classTypeId").val(response.classTypeId);
+                               $("#classTypeName").val(response.classTypeName);
+                               $("#lastBalance").val(response.lastBalance);
+                               $("#lastSchoolName").val(response.lastSchoolName);
+                               $("#advanceRepayment").val(response.advanceRepayment);
+                               $("#monthlyInstallment").val(response.monthlyInstallment);
+                               $("#personalStatusStudentId").val(response.personalStatusStudentId);
+                               $("#personalStatusStudentNumber").val(response.personalStatusStudentNumber);
+                               $("#personalStatusStudentStartDate").val(response.personalStatusStudentStartDate);
+                               $("#personalStatusStudentPlace").val(response.personalStatusStudentPlace);
+                               $("#personalStatusStudentEndDate").val(response.personalStatusStudentEndDate);
+                                let paymentTypeId = response.paymentTypeId; // Ensure the key matches the returned data
+                               $(`input[name="PaymentTypeId"][value="${paymentTypeId}"]`).prop("checked", true);
+                               let enrollmentPeriodId = response.enrollmentPeriodId; // Ensure the key matches the returned data
+                               $(`input[name="EnrollmentPeriodId"][value="${enrollmentPeriodId}"]`).prop("checked", true);
+
+                               $("#guardianName").val(response.guardianName);
+                               $("#kinship").val(response.kinship);
+                               $("#guardianNationalId").val(response.guardianNationalId);
+                               $("#guardianSideWork").val(response.guardianSideWork);
+                               $("#guardianJob").val(response.guardianJob);
+                               $("#guardianMobile").val(response.guardianMobile);
+                               $("#guardianEmail").val(response.guardianEmail);
+                               $("#guardianZipCode").val(response.guardianZipCode);
+                               $("#guardianWorkMobile").val(response.guardianWorkMobile);
+                               $("#nameOfClosestPerson").val(response.nameOfClosestPerson);
+                               $("#houseLocationGuardian").val(response.houseLocationGuardian);
+                               $("#houseMobileGuardian").val(response.houseMobileGuardian);
+                               $("#guardianFaxNumber").val(response.guardianFaxNumber);
+                                 let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
+                               $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
+                               loadClassTypesByStage(response.stageId);
+                               $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
+                               $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
+                               $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
+                               $("#personalStatusGuardianPlace").val(response.personalStatusGuardianPlace);
+                               $("#personalStatusGuardianEndDate").val(response.personalStatusGuardianEndDate);
+                               $("#motherStudentName").val(response.motherStudentName);
+                               $("#kinshipMother").val(response.kinshipMother);
+                               $("#motherNationalId").val(response.motherNationalId);
+                               $("#motherWork").val(response.motherWork);
+                               $("#motherFaxNumber").val(response.motherFaxNumber);
+                               $("#motherWorkMobile").val(response.motherWorkMobile);
+                               $("#motherJob").val(response.motherJob);
+                               $("#motherMobilePhone").val(response.motherMobilePhone);
+                               $("#notes").val(response.notes);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                    displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
+
+                               $("#CLSCloth").val(response.clsCloth);
+                               $("#CLSAcpt").val(response.clsAcpt);
+                               $("#CLSBakelite").val(response.clsBakelite);
+                               $("#CLSRegs").val(response.clsRegs);
+                               $("#cLSRegs").val(response.clsRegs);
+                               $("#showDivBus").val(response.areYouWantGoWithBusSchool);
+                               $("#busCostTypeId").val(response.directionBus);
+                               $("#buscostId").val(response.busId);
+                               $("#costFirstTrem").val(response.costFirstTermBeforeDiscount);
+                               $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
+                               $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
+                               $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
+                               $("#generalDiscount").val(response.generalDiscount);
+                               $("#employeeDiscount").val(response.employeeDiscount);
+                               $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                               $("#siblingsDiscount").val(response.siblingsDiscount);
+                               $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#specialDiscount").val(response.specialDiscount);
+                               $("#fixedDiscount").val(response.totalDiscount);
+                               $("#busDiscount").val(response.busDiscount);
+                                let container = $("#container");
+                                      if ( response.clsCloth !== 0) {
+            $("#checkCLSCloth").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSCloth">
+                                <label class="form-label">ايراد الزي</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsCloth}" readonly>
+                            </div>
+                        `);
+        }
+             if ( response.clsBakelite !== 0) {
+            $("#checkCLSBakelite").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSBakelite">
+                                <label class="form-label">الباكليت </label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
+                            </div>
+                        `);
+        } if ( response.clsAcpt !== 0) {
+            $("#checkCLSAcpt").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSAcpt">
+                                <label class="form-label">ايراد الكتب</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsAcpt}" readonly>
+                            </div>
+                        `);
+        }
+
+
+                                                   // انتظر حتى يتم تحميل قائمة الفصول
+                           
 
                             // تأكد من تعيين الفئة بعد تحميل القائمة
                             $("#ClassTypeId").val(parseInt(response.classTypeId));
@@ -1474,16 +1758,136 @@
                         try {
                             const response = await $.ajax({
                                 type: "GET",
-                                url: '@Url.Action("GetMaxInstallment", "Installment")',
+                                url: '@Url.Action("GetMaxStudent", "Student")',
                                 dataType: "json"
                             });
-                            if (response) {
-                                 $("#installmentId").val(response.id);
-                                $("#installmentCodeInput").val(response.code);
-                                        $("#installmentNameInput").val(response.installName);
-                                $("#installmentStageId").val(response.stageId);
-                                                // انتظر حتى يتم تحميل قائمة الفصول
-                            await loadClassTypesByStage(response.stageId);
+                           if (response) {
+                                console.log(response)
+                                let validator = $("#StudentForm").validate();
+            validator.resetForm(); // إزالة الأخطاء الظاهرة
+            $("#StudentForm")[0].reset(); // إعادة تعيين القيم الافتراضية
+            $(".error").removeClass("error"); // إزالة تنسيقات الأخطاء
+
+            // إزالة رسائل الخطأ يدويًا
+            $(".text-danger").text("");
+            $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
+
+
+                               $("#studentId").val(response.id);
+                               $("#studentCodeInput").val(response.studentNumber);
+                               $("#departmentId").val(response.departmentId);
+                               $("#StageId").val(response.stageId);
+                               $("#studentName").val(response.studentName);
+                               $("#fatherName").val(response.fatherName);
+                               $("#grandFatherName").val(response.grandFatherName);
+                               $("#familyName").val(response.familyName);
+                               $("#brithDate").val(response.brithDate);
+                               $("#brithPlace").val(response.brithPlace);
+                               $("#nationalId").val(response.nationalId);
+                               let genderValue = response.ganderType; // Ensure the key matches the returned data
+
+                                      // Set the correct radio button as checked
+                                      $(`input[name="GanderType"][value="${genderValue}"]`).prop("checked", true);
+
+                               $("#classTypeId").val(response.classTypeId);
+                               $("#classTypeName").val(response.classTypeName);
+                               $("#lastBalance").val(response.lastBalance);
+                               $("#lastSchoolName").val(response.lastSchoolName);
+                               $("#advanceRepayment").val(response.advanceRepayment);
+                               $("#monthlyInstallment").val(response.monthlyInstallment);
+                               $("#personalStatusStudentId").val(response.personalStatusStudentId);
+                               $("#personalStatusStudentNumber").val(response.personalStatusStudentNumber);
+                               $("#personalStatusStudentStartDate").val(response.personalStatusStudentStartDate);
+                               $("#personalStatusStudentPlace").val(response.personalStatusStudentPlace);
+                               $("#personalStatusStudentEndDate").val(response.personalStatusStudentEndDate);
+                                let paymentTypeId = response.paymentTypeId; // Ensure the key matches the returned data
+                               $(`input[name="PaymentTypeId"][value="${paymentTypeId}"]`).prop("checked", true);
+                               let enrollmentPeriodId = response.enrollmentPeriodId; // Ensure the key matches the returned data
+                               $(`input[name="EnrollmentPeriodId"][value="${enrollmentPeriodId}"]`).prop("checked", true);
+
+                               $("#guardianName").val(response.guardianName);
+                               $("#kinship").val(response.kinship);
+                               $("#guardianNationalId").val(response.guardianNationalId);
+                               $("#guardianSideWork").val(response.guardianSideWork);
+                               $("#guardianJob").val(response.guardianJob);
+                               $("#guardianMobile").val(response.guardianMobile);
+                               $("#guardianEmail").val(response.guardianEmail);
+                               $("#guardianZipCode").val(response.guardianZipCode);
+                               $("#guardianWorkMobile").val(response.guardianWorkMobile);
+                               $("#nameOfClosestPerson").val(response.nameOfClosestPerson);
+                               $("#houseLocationGuardian").val(response.houseLocationGuardian);
+                               $("#houseMobileGuardian").val(response.houseMobileGuardian);
+                               $("#guardianFaxNumber").val(response.guardianFaxNumber);
+                                 let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
+                               $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
+                               loadClassTypesByStage(response.stageId);
+                               $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
+                               $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
+                               $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
+                               $("#personalStatusGuardianPlace").val(response.personalStatusGuardianPlace);
+                               $("#personalStatusGuardianEndDate").val(response.personalStatusGuardianEndDate);
+                               $("#motherStudentName").val(response.motherStudentName);
+                               $("#kinshipMother").val(response.kinshipMother);
+                               $("#motherNationalId").val(response.motherNationalId);
+                               $("#motherWork").val(response.motherWork);
+                               $("#motherFaxNumber").val(response.motherFaxNumber);
+                               $("#motherWorkMobile").val(response.motherWorkMobile);
+                               $("#motherJob").val(response.motherJob);
+                               $("#motherMobilePhone").val(response.motherMobilePhone);
+                               $("#notes").val(response.notes);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                    displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
+
+                               $("#CLSCloth").val(response.clsCloth);
+                               $("#CLSAcpt").val(response.clsAcpt);
+                               $("#CLSBakelite").val(response.clsBakelite);
+                               $("#CLSRegs").val(response.clsRegs);
+                               $("#cLSRegs").val(response.clsRegs);
+                               $("#showDivBus").val(response.areYouWantGoWithBusSchool);
+                               $("#busCostTypeId").val(response.directionBus);
+                               $("#buscostId").val(response.busId);
+                               $("#costFirstTrem").val(response.costFirstTermBeforeDiscount);
+                               $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
+                               $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
+                               $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
+                               $("#generalDiscount").val(response.generalDiscount);
+                               $("#employeeDiscount").val(response.employeeDiscount);
+                               $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                               $("#siblingsDiscount").val(response.siblingsDiscount);
+                               $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#specialDiscount").val(response.specialDiscount);
+                               $("#fixedDiscount").val(response.totalDiscount);
+                               $("#busDiscount").val(response.busDiscount);
+                            let container = $("#container");
+                                      if ( response.clsCloth !== 0) {
+            $("#checkCLSCloth").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSCloth">
+                                <label class="form-label">ايراد الزي</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsCloth}" readonly>
+                            </div>
+                        `);
+        }
+             if ( response.clsBakelite !== 0) {
+            $("#checkCLSBakelite").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSBakelite">
+                                <label class="form-label">الباكليت </label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
+                            </div>
+                        `);
+        } if ( response.clsAcpt !== 0) {
+            $("#checkCLSAcpt").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSAcpt">
+                                <label class="form-label">ايراد الكتب</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsAcpt}" readonly>
+                            </div>
+                        `);
+        }
 
                             // تأكد من تعيين الفئة بعد تحميل القائمة
                             $("#ClassTypeId").val(parseInt(response.classTypeId));
@@ -1498,7 +1902,7 @@
 
                     // Handler for the Previous button
                     $("#btnPrevious").click(async function () {
-                        const installmentId =$("#installmentId").val();
+                        const studentId =$("#studentId").val();
                         // console.log(installmentId);
 
                         // console.log(typeof(+installmentId));
@@ -1509,26 +1913,146 @@
                         try {
                             const response = await $.ajax({
                                 type: "GET",
-                                url: '@Url.Action("GetPreviousInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
+                                url: '@Url.Action("GetPreviousStudent", "Student", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +studentId),
                                 dataType: "json"
                             });
-                            if (response) {
-                                 $("#installmentId").val(response.id);
-                                $("#installmentCodeInput").val(response.code);
-                                        $("#installmentNameInput").val(response.installName);
-                                $("#installmentStageId").val(response.stageId);
-                                                 // انتظر حتى يتم تحميل قائمة الفصول
-                            await loadClassTypesByStage(response.stageId);
+                           if (response) {
+                                console.log(response)
+                                 let validator = $("#StudentForm").validate();
+            validator.resetForm(); // إزالة الأخطاء الظاهرة
+            $("#StudentForm")[0].reset(); // إعادة تعيين القيم الافتراضية
+            $(".error").removeClass("error"); // إزالة تنسيقات الأخطاء
+
+            // إزالة رسائل الخطأ يدويًا
+            $(".text-danger").text("");
+            $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
+
+
+                               $("#studentId").val(response.id);
+                               $("#studentCodeInput").val(response.studentNumber);
+                               $("#departmentId").val(response.departmentId);
+                               $("#StageId").val(response.stageId);
+                               $("#studentName").val(response.studentName);
+                               $("#fatherName").val(response.fatherName);
+                               $("#grandFatherName").val(response.grandFatherName);
+                               $("#familyName").val(response.familyName);
+                               $("#brithDate").val(response.brithDate);
+                               $("#brithPlace").val(response.brithPlace);
+                               $("#nationalId").val(response.nationalId);
+                               let genderValue = response.ganderType; // Ensure the key matches the returned data
+
+                                      // Set the correct radio button as checked
+                                      $(`input[name="GanderType"][value="${genderValue}"]`).prop("checked", true);
+
+                               $("#classTypeId").val(response.classTypeId);
+                               $("#classTypeName").val(response.classTypeName);
+                               $("#lastBalance").val(response.lastBalance);
+                               $("#lastSchoolName").val(response.lastSchoolName);
+                               $("#advanceRepayment").val(response.advanceRepayment);
+                               $("#monthlyInstallment").val(response.monthlyInstallment);
+                               $("#personalStatusStudentId").val(response.personalStatusStudentId);
+                               $("#personalStatusStudentNumber").val(response.personalStatusStudentNumber);
+                               $("#personalStatusStudentStartDate").val(response.personalStatusStudentStartDate);
+                               $("#personalStatusStudentPlace").val(response.personalStatusStudentPlace);
+                               $("#personalStatusStudentEndDate").val(response.personalStatusStudentEndDate);
+                                let paymentTypeId = response.paymentTypeId; // Ensure the key matches the returned data
+                               $(`input[name="PaymentTypeId"][value="${paymentTypeId}"]`).prop("checked", true);
+                               let enrollmentPeriodId = response.enrollmentPeriodId; // Ensure the key matches the returned data
+                               $(`input[name="EnrollmentPeriodId"][value="${enrollmentPeriodId}"]`).prop("checked", true);
+
+                               $("#guardianName").val(response.guardianName);
+                               $("#kinship").val(response.kinship);
+                               $("#guardianNationalId").val(response.guardianNationalId);
+                               $("#guardianSideWork").val(response.guardianSideWork);
+                               $("#guardianJob").val(response.guardianJob);
+                               $("#guardianMobile").val(response.guardianMobile);
+                               $("#guardianEmail").val(response.guardianEmail);
+                               $("#guardianZipCode").val(response.guardianZipCode);
+                               $("#guardianWorkMobile").val(response.guardianWorkMobile);
+                               $("#nameOfClosestPerson").val(response.nameOfClosestPerson);
+                               $("#houseLocationGuardian").val(response.houseLocationGuardian);
+                               $("#houseMobileGuardian").val(response.houseMobileGuardian);
+                               $("#guardianFaxNumber").val(response.guardianFaxNumber);
+                                 let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
+                               $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
+                               loadClassTypesByStage(response.stageId);
+                               $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
+                               $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
+                               $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
+                               $("#personalStatusGuardianPlace").val(response.personalStatusGuardianPlace);
+                               $("#personalStatusGuardianEndDate").val(response.personalStatusGuardianEndDate);
+                               $("#motherStudentName").val(response.motherStudentName);
+                               $("#kinshipMother").val(response.kinshipMother);
+                               $("#motherNationalId").val(response.motherNationalId);
+                               $("#motherWork").val(response.motherWork);
+                               $("#motherFaxNumber").val(response.motherFaxNumber);
+                               $("#motherWorkMobile").val(response.motherWorkMobile);
+                               $("#motherJob").val(response.motherJob);
+                               $("#motherMobilePhone").val(response.motherMobilePhone);
+                               $("#notes").val(response.notes);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                    displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
+
+                               $("#CLSCloth").val(response.clsCloth);
+                               $("#CLSAcpt").val(response.clsAcpt);
+                               $("#CLSBakelite").val(response.clsBakelite);
+                               $("#CLSRegs").val(response.clsRegs);
+                               $("#cLSRegs").val(response.clsRegs);
+                               $("#showDivBus").val(response.areYouWantGoWithBusSchool);
+                               $("#busCostTypeId").val(response.directionBus);
+                               $("#buscostId").val(response.busId);
+                               $("#costFirstTrem").val(response.costFirstTermBeforeDiscount);
+                               $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
+                               $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
+                               $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
+                               $("#generalDiscount").val(response.generalDiscount);
+                               $("#employeeDiscount").val(response.employeeDiscount);
+                               $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                               $("#siblingsDiscount").val(response.siblingsDiscount);
+                               $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#specialDiscount").val(response.specialDiscount);
+                               $("#fixedDiscount").val(response.totalDiscount);
+                               $("#busDiscount").val(response.busDiscount);
+                                let container = $("#container");
+                                      if ( response.clsCloth !== 0) {
+            $("#checkCLSCloth").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSCloth">
+                                <label class="form-label">ايراد الزي</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsCloth}" readonly>
+                            </div>
+                        `);
+        }
+             if ( response.clsBakelite !== 0) {
+            $("#checkCLSBakelite").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSBakelite">
+                                <label class="form-label">الباكليت </label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
+                            </div>
+                        `);
+        } if ( response.clsAcpt !== 0) {
+            $("#checkCLSAcpt").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSAcpt">
+                                <label class="form-label">ايراد الكتب</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsAcpt}" readonly>
+                            </div>
+                        `);
+        }
 
                             // تأكد من تعيين الفئة بعد تحميل القائمة
                             $("#ClassTypeId").val(parseInt(response.classTypeId));
                             } else {
-                                Swal.fire("تنبيه", "No previous record found.", "info");
+                                Swal.fire("خطأ", "No records found.", "error");
                             }
                         } catch (error) {
                              // If the status code is 404, display a specific warning message.
                 if (error.status == 404) {
-                    Swal.fire("تنبيه", "لا يوجد  اسم القسط قبل تلك", "info");
+                    Swal.fire("تنبيه", "لا يوجد  ملف طالب قبل تلك", "info");
                 } else {
                     console.error("Error fetching previous Installment:", error);
                     Swal.fire("خطأ", "Error fetching data.", "error");
@@ -1538,7 +2062,7 @@
 
                     // Handler for the Next button
                     $("#btnNext").click(async function () {
-                        const installmentId =parseInt( $("#installmentId").val());
+                        const studentId =parseInt( $("#studentId").val());
                         // console.log(installmentId);
                         // console.log(typeof(installmentId));
                         // if (+installmentId!==0) {
@@ -1548,27 +2072,145 @@
                         try {
                             const response = await $.ajax({
                                 type: "GET",
-                                url: '@Url.Action("GetNextInstallment", "Installment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +installmentId),
+                                url: '@Url.Action("GetNextStudent", "Student", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", +studentId),
                                 dataType: "json"
                             });
-                            if (response) {
+                          if (response) {
+                                console.log(response)
+                                 let validator = $("#StudentForm").validate();
+            validator.resetForm(); // إزالة الأخطاء الظاهرة
+            $("#StudentForm")[0].reset(); // إعادة تعيين القيم الافتراضية
+            $(".error").removeClass("error"); // إزالة تنسيقات الأخطاء
 
-                                 $("#installmentId").val(response.id);
-                                $("#installmentCodeInput").val(response.code);
-                                        $("#installmentNameInput").val(response.installName);
-                                $("#installmentStageId").val(response.stageId);
-                                                // انتظر حتى يتم تحميل قائمة الفصول
-                            await loadClassTypesByStage(response.stageId);
+            // إزالة رسائل الخطأ يدويًا
+            $(".text-danger").text("");
+            $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
 
+
+                               $("#studentId").val(response.id);
+                               $("#studentCodeInput").val(response.studentNumber);
+                               $("#departmentId").val(response.departmentId);
+                               $("#StageId").val(response.stageId);
+                               $("#studentName").val(response.studentName);
+                               $("#fatherName").val(response.fatherName);
+                               $("#grandFatherName").val(response.grandFatherName);
+                               $("#familyName").val(response.familyName);
+                               $("#brithDate").val(response.brithDate);
+                               $("#brithPlace").val(response.brithPlace);
+                               $("#nationalId").val(response.nationalId);
+                               let genderValue = response.ganderType; // Ensure the key matches the returned data
+
+                                      // Set the correct radio button as checked
+                                      $(`input[name="GanderType"][value="${genderValue}"]`).prop("checked", true);
+
+                               $("#classTypeId").val(response.classTypeId);
+                               $("#classTypeName").val(response.classTypeName);
+                               $("#lastBalance").val(response.lastBalance);
+                               $("#lastSchoolName").val(response.lastSchoolName);
+                               $("#advanceRepayment").val(response.advanceRepayment);
+                               $("#monthlyInstallment").val(response.monthlyInstallment);
+                               $("#personalStatusStudentId").val(response.personalStatusStudentId);
+                               $("#personalStatusStudentNumber").val(response.personalStatusStudentNumber);
+                               $("#personalStatusStudentStartDate").val(response.personalStatusStudentStartDate);
+                               $("#personalStatusStudentPlace").val(response.personalStatusStudentPlace);
+                               $("#personalStatusStudentEndDate").val(response.personalStatusStudentEndDate);
+                                let paymentTypeId = response.paymentTypeId; // Ensure the key matches the returned data
+                               $(`input[name="PaymentTypeId"][value="${paymentTypeId}"]`).prop("checked", true);
+                               let enrollmentPeriodId = response.enrollmentPeriodId; // Ensure the key matches the returned data
+                               $(`input[name="EnrollmentPeriodId"][value="${enrollmentPeriodId}"]`).prop("checked", true);
+
+                               $("#guardianName").val(response.guardianName);
+                               $("#kinship").val(response.kinship);
+                               $("#guardianNationalId").val(response.guardianNationalId);
+                               $("#guardianSideWork").val(response.guardianSideWork);
+                               $("#guardianJob").val(response.guardianJob);
+                               $("#guardianMobile").val(response.guardianMobile);
+                               $("#guardianEmail").val(response.guardianEmail);
+                               $("#guardianZipCode").val(response.guardianZipCode);
+                               $("#guardianWorkMobile").val(response.guardianWorkMobile);
+                               $("#nameOfClosestPerson").val(response.nameOfClosestPerson);
+                               $("#houseLocationGuardian").val(response.houseLocationGuardian);
+                               $("#houseMobileGuardian").val(response.houseMobileGuardian);
+                               $("#guardianFaxNumber").val(response.guardianFaxNumber);
+                                 let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
+                               $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
+                               loadClassTypesByStage(response.stageId);
+                               $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
+                               $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
+                               $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
+                               $("#personalStatusGuardianPlace").val(response.personalStatusGuardianPlace);
+                               $("#personalStatusGuardianEndDate").val(response.personalStatusGuardianEndDate);
+                               $("#motherStudentName").val(response.motherStudentName);
+                               $("#kinshipMother").val(response.kinshipMother);
+                               $("#motherNationalId").val(response.motherNationalId);
+                               $("#motherWork").val(response.motherWork);
+                               $("#motherFaxNumber").val(response.motherFaxNumber);
+                               $("#motherWorkMobile").val(response.motherWorkMobile);
+                               $("#motherJob").val(response.motherJob);
+                               $("#motherMobilePhone").val(response.motherMobilePhone);
+                               $("#notes").val(response.notes);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                    displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
+
+                               $("#CLSCloth").val(response.clsCloth);
+                               $("#CLSAcpt").val(response.clsAcpt);
+                               $("#CLSBakelite").val(response.clsBakelite);
+                               $("#CLSRegs").val(response.clsRegs);
+                               $("#cLSRegs").val(response.clsRegs);
+                               $("#showDivBus").val(response.areYouWantGoWithBusSchool);
+                               $("#busCostTypeId").val(response.directionBus);
+                               $("#buscostId").val(response.busId);
+                               $("#costFirstTrem").val(response.costFirstTermBeforeDiscount);
+                               $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
+                               $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
+                               $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
+                               $("#generalDiscount").val(response.generalDiscount);
+                               $("#employeeDiscount").val(response.employeeDiscount);
+                               $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                               $("#siblingsDiscount").val(response.siblingsDiscount);
+                               $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#specialDiscount").val(response.specialDiscount);
+                               $("#fixedDiscount").val(response.totalDiscount);
+                               $("#busDiscount").val(response.busDiscount);
+                              let container = $("#container");
+                                      if ( response.clsCloth !== 0) {
+            $("#checkCLSCloth").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSCloth">
+                                <label class="form-label">ايراد الزي</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsCloth}" readonly>
+                            </div>
+                        `);
+        }
+         if ( response.clsBakelite !== 0) {
+            $("#checkCLSBakelite").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSBakelite">
+                                <label class="form-label">الباكليت </label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
+                            </div>
+                        `);
+        } if ( response.clsAcpt !== 0) {
+            $("#checkCLSAcpt").prop("checked", true);
+
+             container.append(`
+                            <div class="col added-item" data-id="CLSAcpt">
+                                <label class="form-label">ايراد الكتب</label>
+                                <input type="number" class="form-control form-control-sm" value="${ response.clsAcpt}" readonly>
+                            </div>
+                        `);
+        }
                             // تأكد من تعيين الفئة بعد تحميل القائمة
                             $("#ClassTypeId").val(parseInt(response.classTypeId));
                             } else {
-                                Swal.fire("تنبيه", "No next record found.", "info");
+                                Swal.fire("خطأ", "No records found.", "error");
                             }
                         } catch (error) {
                             // If the status code is 404, display a specific warning message.
                 if (error.status == 404) {
-                    Swal.fire("تنبيه", "لا يوجد اسم القسط بعد تلك.", "info");
+                    Swal.fire("تنبيه", "لا يوجد ملف طالب بعد تلك.", "info");
                 } else {
                     console.error("Error fetching previous Installment:", error);
                     Swal.fire("خطأ", "Error fetching data.", "error");

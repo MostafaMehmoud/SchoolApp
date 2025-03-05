@@ -10,6 +10,8 @@ namespace SchoolApp.DAL.Models
         public int ClassTypeId { get; set; }
         public int InstallmentId { get; set; }
         public decimal CostInstallment { get; set; }
-        public int StudentId {  get; set; } 
+        public int StudentId {  get; set; }
+        public string InstallmentName { get; set; }
+
     }
 }

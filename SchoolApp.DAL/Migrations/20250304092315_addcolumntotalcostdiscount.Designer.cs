@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApp.DAL;
 
@@ -11,9 +12,11 @@ using SchoolApp.DAL;
 namespace SchoolApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250304092315_addcolumntotalcostdiscount")]
+    partial class addcolumntotalcostdiscount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,10 +244,6 @@ namespace SchoolApp.DAL.Migrations
                     b.Property<int>("InstallmentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("InstallmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("StageId")
                         .HasColumnType("int");
 
@@ -274,10 +273,6 @@ namespace SchoolApp.DAL.Migrations
 
                     b.Property<int>("InstallmentId")
                         .HasColumnType("int");
-
-                    b.Property<string>("InstallmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StageId")
                         .HasColumnType("int");

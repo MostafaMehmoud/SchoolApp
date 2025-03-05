@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApp.DAL;
 
@@ -11,9 +12,11 @@ using SchoolApp.DAL;
 namespace SchoolApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250303105627_edittablestudent")]
+    partial class edittablestudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,10 +244,6 @@ namespace SchoolApp.DAL.Migrations
                     b.Property<int>("InstallmentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("InstallmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("StageId")
                         .HasColumnType("int");
 
@@ -274,10 +273,6 @@ namespace SchoolApp.DAL.Migrations
 
                     b.Property<int>("InstallmentId")
                         .HasColumnType("int");
-
-                    b.Property<string>("InstallmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StageId")
                         .HasColumnType("int");
@@ -461,8 +456,8 @@ namespace SchoolApp.DAL.Migrations
                     b.Property<string>("GuardianWorkMobile")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("GuardianWorkingWithUs")
-                        .HasColumnType("smallint");
+                    b.Property<bool>("GuardianWorkingWithUs")
+                        .HasColumnType("bit");
 
                     b.Property<string>("GuardianZipCode")
                         .HasColumnType("nvarchar(max)");
@@ -577,9 +572,6 @@ namespace SchoolApp.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalCostAfterDiscount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalDiscount")

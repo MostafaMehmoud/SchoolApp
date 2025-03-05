@@ -19,6 +19,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         IRepositorySpecial<ClassType> classTypesSpecial { get; }    
         IRepositorySpecial<Installment> installments { get; }
         IRepositorySpecial<Department> departments { get; }
+        IRepositorySpecial<Student>   students { get; } 
         int Complete();
     }
 
