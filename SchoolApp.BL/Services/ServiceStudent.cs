@@ -488,7 +488,7 @@ namespace SchoolApp.BL.Services
         }
 
         public async Task<VWStudent> GetNextStudent(int id)
-        {
+           {
             var student = await _unitOfWork.students.GetNextOrPreviousItemByCode(id, "next");
             if (student == null)
             {

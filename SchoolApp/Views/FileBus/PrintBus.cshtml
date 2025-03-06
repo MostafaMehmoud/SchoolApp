@@ -1,0 +1,66 @@
+﻿@using SchoolApp.DAL.Models
+@model FileBus
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طباعة تفاصيل الباص</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            margin: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #000;
+            border-radius: 10px;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+            .details p {
+                font-size: 18px;
+                margin: 5px 0;
+            }
+    </style>
+</head>
+<body onload="window.print(); setTimeout(() => window.close(), 500);">
+
+    <!-- Logo -->
+    <img class="logo" src="~/images/download.jpg" alt="School Logo">
+
+    <div class="container">
+        <h2>تفاصيل الباص</h2>
+
+        <div class="details">
+            <p><strong>كود الباص:</strong> @Model.BusCode</p>
+            <p><strong>رقم اللوحة:</strong> @Model.BusPlate</p>
+            <p><strong>اسم المشرف:</strong> @Model.BusSup</p>
+            <p><strong>اسم السائق:</strong> @Model.BusDrive</p>
+            <p><strong>عدد الطلابة:</strong> @Model.BusStud</p>
+            <p><strong>سعر الذهاب:</strong> @Model.BusGo</p>
+            <p><strong>سعر العودة:</strong> @Model.BusReturn</p>
+            <p><strong>سعر الذهاب والعودة:</strong> @Model.BusAll</p>
+        </div>
+    </div>
+
+</body>
+</html>

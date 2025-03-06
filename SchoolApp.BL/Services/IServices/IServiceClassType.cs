@@ -21,6 +21,8 @@ namespace SchoolApp.BL.Services.IServices
         Task<VWClassType> GetMinClassType();
         Task<VWClassType> GetMaxClassType();
         int GetMaxClassTypeId();
+        public List<ListClassType> GetAllClassTypes();   
+        public ListClassType GetClassTypesById(int id);   
         
     }
 }

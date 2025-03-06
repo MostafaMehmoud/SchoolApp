@@ -123,9 +123,83 @@ namespace SchoolApp.BL.Services
             return _unitOfWork.classTypesSpecial.GetAll();
         }
 
+        public List<ListClassType> GetAllClassTypes()
+        {
+            var classTypes=_unitOfWork.classTypesSpecial.GetAllWithInclude(i=>i.Amounts);
+            if(classTypes.Any())
+            {
+                List<ListClassType> listClassTypes = new List<ListClassType>();
+                ListClassType listClassType = null;
+                decimal totalcostclasstype = 0;
+                
+                foreach (var classType in classTypes)
+                {
+                    foreach (var costClassType in classType.Amounts)
+                    {
+                        totalcostclasstype += costClassType.AmountPrice;
+                    }
+                    listClassType = new ListClassType();
+                    listClassType.Id = classType.Id;
+                    listClassType.Code = classType.Code;
+                    listClassType.CLSRegs = classType.CLSRegs;
+                    listClassType.CLSBakelite = classType.CLSBakelite;
+                    listClassType.CLSAcpt = classType.CLSAcpt;
+                    listClassType.CLSCloth = classType.CLSCloth;
+                    listClassType.CurrentDateClassType = classType.CurrentDateClassType;
+                    listClassType.StageId=classType.StageId;
+                    listClassType.StageName= _unitOfWork.stages.GetAll().Where(i => i.Id == listClassType.StageId).FirstOrDefault().StageName??"";
+                    listClassType.TotalCostClassType= totalcostclasstype;   
+                    listClassTypes.Add(listClassType);
+                }
+                return listClassTypes;
+            }
+            return new List<ListClassType>();
+        }
+
         public ClassType GetbyId(int id)
         {
             return _unitOfWork.classTypesSpecial.GetById(id);
+        }
+
+        public ListClassType GetClassTypesById(int id)
+        {
+
+            var classTypes = _unitOfWork.classTypesSpecial.GetAllWithInclude(i => i.Amounts).Where(i=>i.Id==id).FirstOrDefault();
+            if (classTypes!=null)
+            {
+       
+                ListClassType listClassType = new ListClassType();
+                decimal totalcostclasstype = 0;
+                List<VWAmoumt> vWAmoumt = new List<VWAmoumt>();
+                VWAmoumt wAmoumt = null;
+                    foreach (var costClassType in classTypes.Amounts)
+                    {
+                    wAmoumt=new VWAmoumt();
+                        totalcostclasstype += costClassType.AmountPrice;
+                    wAmoumt.AmountPrice=costClassType.AmountPrice;  
+                    wAmoumt.AmountDate=costClassType.AmountDate;
+                    wAmoumt.ClassTypeName = _unitOfWork.classTypes.GetAll().FirstOrDefault(i => i.Id == costClassType.ClassTypeNameId).Name;
+                    wAmoumt.ClassTypeNameId=costClassType.ClassTypeNameId;
+                    wAmoumt.Id=costClassType.Id;    
+                    wAmoumt.ClassTypeId=costClassType.ClassTypeId;  
+                    vWAmoumt.Add(wAmoumt);
+                    }
+                   
+                    listClassType.Id = classTypes.Id;
+                    listClassType.Code = classTypes.Code;
+                    listClassType.CLSRegs = classTypes.CLSRegs;
+                    listClassType.CLSBakelite = classTypes.CLSBakelite;
+                    listClassType.CLSAcpt = classTypes.CLSAcpt;
+                    listClassType.CLSCloth = classTypes.CLSCloth;
+                    listClassType.CurrentDateClassType = classTypes.CurrentDateClassType;
+                    listClassType.StageId = classTypes.StageId;
+                    listClassType.StageName = _unitOfWork.stages.GetAll().Where(i => i.Id == classTypes.StageId).FirstOrDefault().StageName ?? "";
+                    listClassType.TotalCostClassType = totalcostclasstype;
+                   
+                
+                return listClassType;
+            }
+            return new ListClassType();
         }
 
         public async Task<VWClassType> GetMaxClassType()

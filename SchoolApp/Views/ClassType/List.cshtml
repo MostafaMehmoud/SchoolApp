@@ -1,0 +1,77 @@
+﻿@using SchoolApp.DAL.Models
+@using SchoolApp.DAL.ViewModels
+@model List<ListClassType>
+
+
+<div class="col-12 grid-margin">
+    <h1>قائمة المراحل الدراسية</h1>
+    <table id="busTable" class="display">
+        <thead>
+            <tr>
+                <th>كود المرحلة</th>
+                <th> اسم المرحلة </th>
+                <th> رسوم التسجيل</th>
+                <th> رسوم الكتب </th>
+                <th>رسوم الزي </th>
+                <th>الباكليت </th>
+                <th>اجمالي مصاريف المرحلة </th>
+                
+                <th>تفاصيل</th>
+                <th>طباعة</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bus in Model)
+            {
+                <tr>
+                    <td>@bus.Code</td>
+                    <td>@bus.StageName</td>
+                    <td>@bus.CLSRegs</td>
+                    <td>@bus.CLSAcpt</td>
+                    <td>@bus.CLSCloth</td>
+                    <td>@bus.CLSBakelite</td>
+                    <td>@bus.TotalCostClassType</td>
+                   
+                    <td>
+                        <a class="btn btn-success" asp-action="Index" asp-controller="ClassType" asp-route-id="@bus.Id">
+                            تفاصيل
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="PrintBus" asp-controller="ClassType" asp-route-id="@bus.Id" class="btn btn-secondary">
+                            طباعة
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+
+    <!-- Include DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#busTable').DataTable({
+                dom: 'Bfrtip', // Adds buttons
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'طباعة الجدول',
+                        title: 'تفاصيل المراحل الدراسية',
+                        customize: function (win) {
+                            $(win.document.body).css('font-size', '14px');
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

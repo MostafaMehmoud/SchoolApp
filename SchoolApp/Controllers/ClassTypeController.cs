@@ -163,6 +163,22 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
+        public IActionResult List()
+        {
+            var classTypes=_serviceClassType.GetAllClassTypes();
+            return View(classTypes);
+        }
+        public IActionResult Print(int id)
+        {
+            var bus = _serviceClassType.GetClassTypesById(id);
+
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+            return View(bus);
+        }
 
     }
 }

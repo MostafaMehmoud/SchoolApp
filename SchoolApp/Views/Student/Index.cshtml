@@ -1621,7 +1621,7 @@
             // إزالة رسائل الخطأ يدويًا
             $(".text-danger").text("");
             $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
-
+            
                                $("#studentId").val(response.id);
                                $("#studentCodeInput").val(response.studentNumber);
                                $("#departmentId").val(response.departmentId);
@@ -1708,17 +1708,19 @@
                                $("#fixedDiscount").val(response.totalDiscount);
                                $("#busDiscount").val(response.busDiscount);
                                 let container = $("#container");
+                                 container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
             $("#checkCLSCloth").prop("checked", true);
-
+            
              container.append(`
-                            <div class="col added-item" data-id="CLSCloth">
+                            <div class="col added-item" data-id="CLSCloth"">
                                 <label class="form-label">ايراد الزي</label>
                                 <input type="number" class="form-control form-control-sm" value="${ response.clsCloth}" readonly>
                             </div>
                         `);
-        }
+        } container.find(`.added-item[data-id="CLSBakelite"]`).remove();
              if ( response.clsBakelite !== 0) {
+                  
             $("#checkCLSBakelite").prop("checked", true);
 
              container.append(`
@@ -1727,9 +1729,11 @@
                                 <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
                             </div>
                         `);
-        } if ( response.clsAcpt !== 0) {
+        }
+        container.find(`.added-item[data-id="CLSAcpt"]`).remove();
+        if ( response.clsAcpt !== 0) {
             $("#checkCLSAcpt").prop("checked", true);
-
+             
              container.append(`
                             <div class="col added-item" data-id="CLSAcpt">
                                 <label class="form-label">ايراد الكتب</label>
@@ -1859,7 +1863,9 @@
                                $("#fixedDiscount").val(response.totalDiscount);
                                $("#busDiscount").val(response.busDiscount);
                             let container = $("#container");
+                             container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
+
             $("#checkCLSCloth").prop("checked", true);
 
              container.append(`
@@ -1869,6 +1875,7 @@
                             </div>
                         `);
         }
+         container.find(`.added-item[data-id="CLSBakelite"]`).remove();
              if ( response.clsBakelite !== 0) {
             $("#checkCLSBakelite").prop("checked", true);
 
@@ -1878,7 +1885,9 @@
                                 <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
                             </div>
                         `);
-        } if ( response.clsAcpt !== 0) {
+        }
+         container.find(`.added-item[data-id="CLSAcpt"]`).remove();
+        if ( response.clsAcpt !== 0) {
             $("#checkCLSAcpt").prop("checked", true);
 
              container.append(`
@@ -2014,6 +2023,7 @@
                                $("#fixedDiscount").val(response.totalDiscount);
                                $("#busDiscount").val(response.busDiscount);
                                 let container = $("#container");
+                                container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
             $("#checkCLSCloth").prop("checked", true);
 
@@ -2024,6 +2034,7 @@
                             </div>
                         `);
         }
+        container.find(`.added-item[data-id="CLSBakelite"]`).remove();
              if ( response.clsBakelite !== 0) {
             $("#checkCLSBakelite").prop("checked", true);
 
@@ -2033,7 +2044,9 @@
                                 <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
                             </div>
                         `);
-        } if ( response.clsAcpt !== 0) {
+        }
+        container.find(`.added-item[data-id="CLSAcpt"]`).remove();
+        if ( response.clsAcpt !== 0) {
             $("#checkCLSAcpt").prop("checked", true);
 
              container.append(`
@@ -2173,6 +2186,7 @@
                                $("#fixedDiscount").val(response.totalDiscount);
                                $("#busDiscount").val(response.busDiscount);
                               let container = $("#container");
+                              container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
             $("#checkCLSCloth").prop("checked", true);
 
@@ -2183,6 +2197,7 @@
                             </div>
                         `);
         }
+            container.find(`.added-item[data-id="CLSBakelite"]`).remove();
          if ( response.clsBakelite !== 0) {
             $("#checkCLSBakelite").prop("checked", true);
 
@@ -2192,7 +2207,9 @@
                                 <input type="number" class="form-control form-control-sm" value="${ response.clsBakelite}" readonly>
                             </div>
                         `);
-        } if ( response.clsAcpt !== 0) {
+        }
+         container.find(`.added-item[data-id="CLSAcpt"]`).remove();
+        if ( response.clsAcpt !== 0) {
             $("#checkCLSAcpt").prop("checked", true);
 
              container.append(`

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -15,10 +16,11 @@ namespace SchoolApp.Controllers
             _serviceFileBus = serviceFileBus;
             _serviceStage = serviceStage;
         }
-        public IActionResult Index()
+        public IActionResult Index(int id=0)
         {
+            var fileBus = _serviceFileBus.GetbyId(id);
             ViewBag.listStages = new SelectList(_serviceStage.GetAll(), "Id", "StageName");
-            return View(new FileBus());
+            return View(fileBus);
         }
         [HttpGet]
         public async Task<IActionResult> GetNextCode()
@@ -137,5 +139,22 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);
         }
+        public IActionResult List()
+        {
+            var filebus=_serviceFileBus.GetAll();
+            return View(filebus);
+        }
+        public IActionResult PrintBus(int id)
+        {
+            var bus = _serviceFileBus.GetbyId(id);
+
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+            return View(bus);
+        }
+
     }
 }
