@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using SchoolApp.BL.Services.IServices;
@@ -35,13 +36,19 @@ namespace SchoolApp.BL.Services
 
         public string Delete(int id)
         {
+
+            var classtypename = _unitOfWork.classTypes.GetAll().Where(i => i.StageId == id);
+            if (classtypename.Any())
+                {
+                    throw new Exception("يجب حذف المرحلة  الدراسية و الفصل أولا");
+                }
             if (_unitOfWork.stages.Delete(id))
             {
                 return "تم الحذف بنجاح";
             }
             else
             {
-                return "حدثت مشكلة اثناء الحذف";
+                throw new Exception("حدثت مشكلة اثناء الحذف");
             }
         }
 

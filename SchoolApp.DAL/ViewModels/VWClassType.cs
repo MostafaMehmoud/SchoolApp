@@ -16,13 +16,17 @@ namespace SchoolApp.DAL.ViewModels
         }
         public int Id { get; set; }
         public int Code { get; set; }
-
+        [Required(ErrorMessage ="رجل اختر المرحلة الدراسية")]
         public int StageId { get; set; }
         public DateTime CurrentDateClassType { get; set; }
         public string StageName { get; set; }
+        [Required(ErrorMessage = "رجا ادخل رسوم الكتب")]
         public decimal CLSAcpt { get; set; }
+        [Required(ErrorMessage = "رجا ادخل رسوم التسجيل")]
         public decimal CLSRegs { get; set; }
+        [Required(ErrorMessage = "رجا ادخل رسوم الزي")]
         public decimal CLSCloth { get; set; }
+        [Required(ErrorMessage = "رجا ادخل رسوم الباكليت")]
         public decimal CLSBakelite { get; set; }
         public List<VWAmoumt> amounts { get; set; }   
     }

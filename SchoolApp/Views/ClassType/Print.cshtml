@@ -1,5 +1,70 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using SchoolApp.DAL.Models
+@using SchoolApp.DAL.ViewModels
+@model ListClassType
 @{
+    Layout = null;
 }
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طباعة تفاصيل الفصل الدراسي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            margin: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #000;
+            border-radius: 10px;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+            .details p {
+                font-size: 18px;
+                margin: 5px 0;
+            }
+    </style>
+</head>
+<body onload="window.print(); setTimeout(() => window.close(), 500);">
+
+    <!-- Logo -->
+    <img class="logo" src="~/images/download.jpg" alt="School Logo">
+
+    <div class="container">
+        <h2>تفاصيل الباص</h2>
+
+        <div class="details">
+            <p><strong>كود الفصل الدراسي:</strong> @Model.Code</p>
+            <p><strong>اسم المرحلة :</strong> @Model.StageName</p>
+            <p><strong> رسوم التسجيل:</strong> @Model.CLSRegs</p>
+            <p><strong>رسوم الكتب :</strong> @Model.CLSAcpt</p>
+            <p><strong>رسوم الزي :</strong> @Model.CLSCloth</p>
+            <p><strong> رسوم الباكليت:</strong> @Model.CLSBakelite</p>
+            @foreach(var classtype in Model.amounts){
+                <p><strong> @classtype.ClassTypeName:</strong> @classtype.AmountPrice</p>
+            }
+           
+           
+        </div>
+    </div>
+
+</body>
+</html>

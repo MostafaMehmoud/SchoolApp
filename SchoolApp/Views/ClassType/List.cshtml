@@ -33,12 +33,12 @@
                     <td>@bus.TotalCostClassType</td>
                    
                     <td>
-                        <a class="btn btn-success" asp-action="Index" asp-controller="ClassType" asp-route-id="@bus.Id">
+                        <a class="btn btn-success" asp-action="Details" asp-controller="ClassType" asp-route-id="@bus.Id">
                             تفاصيل
                         </a>
                     </td>
                     <td>
-                        <a asp-action="PrintBus" asp-controller="ClassType" asp-route-id="@bus.Id" class="btn btn-secondary">
+                        <a asp-action="Print" asp-controller="ClassType" asp-route-id="@bus.Id" class="btn btn-secondary">
                             طباعة
                         </a>
                     </td>

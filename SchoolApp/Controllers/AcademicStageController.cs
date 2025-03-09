@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -82,12 +83,12 @@ namespace SchoolApp.Controllers
         {
             try
             {
-                string result = _serviceStage.Delete(id);
-                return Json(new { success = result });
+                _serviceStage.Delete(id);
+                return Json(new { success = true, message = "تم الحذف بنجاح" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return Json(new { success = false, error = ex.Message });
             }
         }
         [HttpGet("GetMinStage")]

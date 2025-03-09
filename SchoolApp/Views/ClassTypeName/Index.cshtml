@@ -97,41 +97,50 @@
                     console.error("Error retrieving the next code:", errorThrown);
                 }
             });
-                    $("#btnDelete").click(function () {
-            // Get the record's ID from a hidden field or another element
-            var id = $("#classTypeNameId").val();
-            
+                       $("#btnDelete").click(function () {
+                    // Get the record's ID from a hidden field or another element
+                            var id = parseInt($("#classTypeNameId").val());
 
-            // Show confirmation dialog
-            Swal.fire({
-                title: 'هل أنت متأكد؟',
-                text: "لن تتمكن من التراجع عن هذا الإجراء!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'نعم، احذفها!',
-                cancelButtonText: 'إلغاء'
-            }).then((result) => {
-                if (result.isConfirmed) { 
-                    // If confirmed, send the delete request
-                    $.ajax({
-                        url: '@Url.Action("Delete", "ClassTypeName")',
-                        type: 'POST',
-                        data: { id: id },
-                        success: function (response) {
-                            // Assuming your API returns a success message (you can modify as needed)
-                            Swal.fire("تم الحذف!", response.success, "success").then(function () {
-                                location.reload();
+                    if (!Number.isInteger(id) || id <= 0) {
+                        Swal.fire("تنبيه", "يرجى تحديد سجل صحيح أولاً.", "warning");
+                        return;
+                    }
+
+                    // Show confirmation dialog
+                    Swal.fire({
+                        title: 'هل أنت متأكد؟',
+                        text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'نعم، احذفها!',
+                        cancelButtonText: 'إلغاء'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If confirmed, send the delete request
+                            $.ajax({
+                                        url: '@Url.Action("Delete", "ClassTypeName")',
+                                type: 'POST',
+                                data: { id: id },
+                                success: function (response) {
+                                    if (response.success) {
+                                        Swal.fire("تم الحذف!", response.message, "success").then(function () {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire("خطأ", response.error || "حدث خطأ أثناء الحذف", "error");
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
+                                }
                             });
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
                         }
                     });
-                }
-            });
-        });
+                });
+
+                  
 
             // Handler for the Add button
        $("#btnAdd").click(function () {

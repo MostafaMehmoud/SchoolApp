@@ -1,0 +1,100 @@
+﻿@using SchoolApp.DAL.ViewModels
+@model ListClassType
+<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <h1 class="text-center">تفاصيل المرحلة الدراسية</h1>
+        <div class="card-body">
+            <form id="classTypeNameForm" class="forms-sample">
+                <!-- Static Fields -->
+                <div class="errorContainer">
+                </div>
+                <input type="hidden" id="classtypeId" asp-for="Id" />
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-6">كود المرحلة</label>
+                        <input type="number" id="classTypeCodeInput" asp-for="Code" class="form-control form-control-sm custom-input" >
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">المراحل الدراسية</label>
+                        <input type="text" id="classTypeCodeInput" asp-for="StageName" class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6"> تاريخ اليوم</label>
+                        <input readonly type="date" asp-for="CurrentDateClassType" id="classTypeDateInput" class="form-control form-control-sm custom-input">
+                    </div>
+                </div>
+                <!-- Additional Static Fields e.g., Books Fee, Registration Fee, Uniform Fee -->
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الكتب</label>
+                        <input type="number" asp-for="CLSAcpt" id="cLSAcpt" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الكتب">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم التسجيل</label>
+                        <input type="number" asp-for="CLSRegs" id="cLsRegs" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم التسجيل">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الزي</label>
+                        <input type="number" asp-for="CLSCloth" id="cLSCloth" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الزي">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">رسوم الباكليت</label>
+                        <input type="number" asp-for="CLSBakelite" id="cLSBakelite" class="form-control form-control-sm custom-input" placeholder="ادخل رسوم الزي">
+                    </div>
+                </div>
+
+                <!-- Dynamic Section for Semester Fees -->
+                <div id="dynamicRows">
+                   
+                    <!-- Dynamic rows will be appended here; they will have names: amounts[i].AmountPrice, amounts[i].AmountDate, amounts[i].ClassTypeNameId -->
+                   @foreach(var classtype in Model.amounts){
+                        <div class="row custom-form-group dynamic-row">
+                            <div class="col-md-6">
+
+                                <label class="fs-6">@classtype.ClassTypeName</label>
+                                <input type="number" name="" class="form-control form-control-sm custom-input" value="@classtype.AmountPrice">
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <label class="fs-6">تاريخ الاستحقاق</label>
+                                <input type="date" name="" class="form-control form-control-sm custom-input" value="@classtype.AmountDate">
+
+                            </div>
+
+                        </div>
+                   }
+
+                   
+                </div>
+
+
+                <!-- Submit Buttons -->
+                <div class="form-group">
+                    <a type="button" asp-controller="ClassType" asp-action="List" class="btn btn-success btn-sm custom-button">الرجوع الي القائمة</a>
+                    
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

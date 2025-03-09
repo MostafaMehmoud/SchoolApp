@@ -190,11 +190,12 @@
                     console.error("Error retrieving the next code:", errorThrown);
                 }
             });
-                    $("#btnDelete").click(function () {
+                           $("#btnDelete").click(function () {
             // Get the record's ID from a hidden field or another element
-            var id =parseInt( $("#classtypeId").val());
-            if (!id) {
-                Swal.fire("تنبيه", "Please select a record first.", "warning");
+            var id = parseInt($("#classtypeId").val());
+
+            if (!Number.isInteger(id) || id <= 0) {
+                Swal.fire("تنبيه", "يرجى تحديد سجل صحيح أولاً.", "warning");
                 return;
             }
 
@@ -216,10 +217,13 @@
                         type: 'POST',
                         data: { id: id },
                         success: function (response) {
-                            // Assuming your API returns a success message (you can modify as needed)
-                            Swal.fire("تم الحذف!", response.success, "success").then(function () {
-                                location.reload();
-                            });
+                            if (response.success) {
+                                Swal.fire("تم الحذف!", response.message, "success").then(function () {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("خطأ", response.error || "حدث خطأ أثناء الحذف", "error");
+                            }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
@@ -228,6 +232,7 @@
                 }
             });
         });
+
 
             // Handler for the Add button
                                   // Submit form with validation on dynamic rows
@@ -240,7 +245,19 @@
               errors += "يرجى اختيار المرحلة الدراسية.<br/>";
           }
 
-           
+            var cLSAcpt = $("#cLSAcpt").val();
+          if (cLSAcpt.trim()==="") {
+              errors += "يرجي ادخل رسوم الكتب.<br/>";
+          } var cLsRegs = $("#cLsRegs").val();
+          if (cLsRegs.trim()==="") {
+              errors += "يرجي ادخل رسوم التسجيل.<br/>";
+          } var cLSCloth = $("#cLSCloth").val();
+          if (cLSCloth.trim()==="") {
+              errors += "يرجي ادخل رسوم الزي.<br/>";
+          } var cLSBakelite = $("#cLSBakelite").val();
+          if (cLSBakelite.trim()==="") {
+              errors += "يرجي ادخل رسوم الباكليت.<br/>";
+          }
 
         $(".dynamic-row").each(function(i) { // Use `i` as a reliable index
             var fee = $(this).find("input[name='amounts[" + i + "].AmountPrice']").val();
@@ -311,7 +328,19 @@
           if (stageId == "0" || stageId == 0) {
               errors += "يرجى اختيار المرحلة الدراسية.<br/>";
           }
-
+               var cLSAcpt = $("#cLSAcpt").val();
+          if (cLSAcpt.trim()==="") {
+              errors += "يرجي ادخل رسوم الكتب.<br/>";
+          } var cLsRegs = $("#cLsRegs").val();
+          if (cLsRegs.trim()==="") {
+              errors += "يرجي ادخل رسوم التسجيل.<br/>";
+          } var cLSCloth = $("#cLSCloth").val();
+          if (cLSCloth.trim()==="") {
+              errors += "يرجي ادخل رسوم الزي.<br/>";
+          } var cLSBakelite = $("#cLSBakelite").val();
+          if (cLSBakelite.trim()==="") {
+              errors += "يرجي ادخل رسوم الباكليت.<br/>";
+          }
 
 
         $(".dynamic-row").each(function(i) { // Use `i` as a reliable index

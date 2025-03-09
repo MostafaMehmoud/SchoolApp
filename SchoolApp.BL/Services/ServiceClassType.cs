@@ -184,7 +184,7 @@ namespace SchoolApp.BL.Services
                     wAmoumt.ClassTypeId=costClassType.ClassTypeId;  
                     vWAmoumt.Add(wAmoumt);
                     }
-                   
+                    listClassType.amounts=vWAmoumt;
                     listClassType.Id = classTypes.Id;
                     listClassType.Code = classTypes.Code;
                     listClassType.CLSRegs = classTypes.CLSRegs;

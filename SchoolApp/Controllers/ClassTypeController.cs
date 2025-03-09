@@ -54,9 +54,7 @@ namespace SchoolApp.Controllers
         {
             ModelState.Remove("Id");
             ModelState.Remove("StageName");
-            ModelState.Remove("CLSAcpt");
-            ModelState.Remove("CLSRegs");
-            ModelState.Remove("CLSCloth");
+           
             ModelState.Remove("amounts.ClassTypeName");
             if (!ModelState.IsValid)
             {
@@ -82,12 +80,12 @@ namespace SchoolApp.Controllers
         {
             try
             {
-                string result = _serviceClassType.Delete(id);
-                return Json(new { success = result });
+                _serviceClassType.Delete(id);
+                return Json(new { success = true, message = "تم الحذف بنجاح" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return Json(new { success = false, error = ex.Message });
             }
         }
         
@@ -96,9 +94,7 @@ namespace SchoolApp.Controllers
         {
 
             ModelState.Remove("StageName");
-            ModelState.Remove("CLSAcpt");
-            ModelState.Remove("CLSRegs");
-            ModelState.Remove("CLSCloth");
+            
             ModelState.Remove("amounts.ClassTypeName");
             if (!ModelState.IsValid)
             {
@@ -179,6 +175,16 @@ namespace SchoolApp.Controllers
 
             return View(bus);
         }
+        public IActionResult Details(int id)
+        {
+            var bus = _serviceClassType.GetClassTypesById(id);
 
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+            return View(bus);
+        }
     }
 }

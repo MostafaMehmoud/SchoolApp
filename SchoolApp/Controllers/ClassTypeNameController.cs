@@ -85,12 +85,12 @@ namespace SchoolApp.Controllers
         {
             try
             {
-                string result = _serviceClassTypeName.Delete(id);
-                return Json(new { success = result });
+                _serviceClassTypeName.Delete(id);
+                return Json(new { success = true, message = "تم الحذف بنجاح" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return Json(new { success = false, error = ex.Message });
             }
         }
         [HttpGet("GetMinClassTypeName")]

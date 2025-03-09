@@ -38,13 +38,20 @@ namespace SchoolApp.BL.Services
 
         public string Delete(int id)
         {
+          
+                var classtypename = _unitOfWork.classTypes.GetById(id);
+            var classtypes = _unitOfWork.classTypesSpecial.GetAll().Where(e => e.StageId == classtypename.StageId);
+            if (classtypes.Any())
+            {
+                throw new Exception("يجب حذف المرحلة  الدراسية أولا");
+            }
             if (_unitOfWork.classTypes.Delete(id))
             {
                 return "تم الحذف بنجاح";
             }
             else
             {
-                return "حدثت مشكلة اثناء الحذف";
+                throw new Exception("حدثت مشكلة اثناء الحذف");
             }
         }
 
