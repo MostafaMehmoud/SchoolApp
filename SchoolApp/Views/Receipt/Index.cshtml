@@ -1,0 +1,230 @@
+﻿
+
+<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2"> سندات قبض</h1>
+            </div>
+            <div class="d-flex justify-content-end navigation-buttons">
+                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="receiptNameForm" class="forms-sample">
+                <!-- Static Fields -->
+                <div class="errorContainer">
+                </div>
+                <input type="hidden" id="receiptId"  />
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-6">رقم السند </label>
+                        <input type="number" id="receiptCodeInput" class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fs-6"> تاريخ اليوم</label>
+                        <input readonly type="date"  id="receiptDateInput" class="form-control form-control-sm custom-input">
+                    </div>
+                    
+                </div>
+                <!-- Additional Static Fields e.g., Books Fee, Registration Fee, Uniform Fee -->
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-6">رقم الطالب </label>
+                        <select asp-items="ViewBag.listStudents" class="form-control form-control-sm custom-input">
+                            <option>اختر الطالب</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="fs-6">اسم الطالب </label>
+                        <input type="number" name="CLSRegs" id="cLsRegs" class="form-control form-control-sm custom-input">
+                    </div>
+                  
+                </div>
+                <div class="row custom-form-group">
+                    <div class="col-md-3">
+                        <label class="fs-6">رسوم التسجيل  </label>
+                        <input type="number" id="cLsRegs" class="form-control form-control-sm custom-input" >
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">رسوم الكتب  </label>
+                        <input type="number" id="cLsRegs" class="form-control form-control-sm custom-input" >
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">رسوم الزي  </label>
+                        <input type="number" id="cLsRegs" class="form-control form-control-sm custom-input" >
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">رسوم الباكليت  </label>
+                        <input type="number"  id="cLsRegs" class="form-control form-control-sm custom-input">
+
+                    </div>
+                </div>
+                <!-- Dynamic Section for Semester Fees -->
+                <div id="dynamicRows">
+                    <!-- Dynamic rows will be appended here; they will have names: amounts[i].AmountPrice, amounts[i].AmountDate, amounts[i].receiptNameId -->
+                </div>
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-6">رسوم الباص الفصل الاول  </label>
+                        <input type="number"  id="cLsRegs" class="form-control form-control-sm custom-input">
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fs-6">رسوم الباص الفصل الثاني  </label>
+                        <input type="number" id="cLsRegs" class="form-control form-control-sm custom-input">
+
+                    </div>
+                </div>
+                <div class="row custom-form-group">
+                    <div class="col-md-3">
+                        <label class="fs-6">الرصيد السابق     </label>
+                        <input type="number" disabled  class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">اجمالي الرسوم     </label>
+                        <input type="number" disabled class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">   اجمالي المدفوع   </label>
+                        <input type="number" disabled class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fs-6">    متبقي من الرسوم  </label>
+                        <input type="number" disabled class="form-control form-control-sm custom-input">
+                    </div>
+                </div>
+                 <div class="row custom-form-group">
+                    <div class="col-md-3">
+                        <label class="fs-6">   المبلغ  </label>
+                        <input type="number" class="form-control form-control-sm custom-input">
+
+                    </div>
+                    <div class="col-md-9">
+                        <label class="fs-6">     </label>
+                        <input type="number" class="form-control form-control-sm custom-input">
+                    </div>
+                 </div>
+                 <br />
+                 <hr />
+                 <br />
+                <div class="row custom-form-group">
+                    <div class="col-md-3">
+                        <label class="fs-6">   نوع الدفع  </label>
+                        <select class="form-control form-control-sm custom-input" id="paymentMethod" onchange="toggleChequeDetails()">
+                            <option value="1"> شيك</option>
+                            <option value="2"> نقدي</option>
+                        </select>
+                    </div>
+                    <div class="col-md-9">
+                        <label class="fs-6">   وذلك  </label>
+                        <input type="text" class="form-control form-control-sm custom-input">
+
+                   </div>
+                 </div>
+                <div class="row custom-form-group" id="chequeDetails">
+                    <div class="col-md-4">
+                        <label class="fs-6"> رقم الشيك     </label>
+                        <input type="number" class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">   تاريخ الشيك    </label>
+                        <input type="number" class="form-control form-control-sm custom-input">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-6">اسم البنك</label>
+                        <input type="number" class="form-control form-control-sm custom-input">
+                    </div>
+                 </div>
+                <!-- Submit Buttons -->
+                <div class="form-group">
+                    <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">حفظ</button>
+                    <button type="button" id="btnEdit" class="btn btn-secondary btn-sm custom-button">تعديل</button>
+                    <button type="button" id="btnDelete" class="btn btn-danger btn-sm custom-button">حذف</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+     document.addEventListener("DOMContentLoaded", function () {
+        // الحصول على تاريخ اليوم بتنسيق YYYY-MM-DD
+        let today = new Date().toISOString().split("T")[0];
+
+        // تعيين التاريخ في حقل الإدخال
+        document.getElementById("receiptDateInput").value = today;
+    });
+</script>
+    <script>
+        function toggleChequeDetails() {
+            var paymentMethod = document.getElementById("paymentMethod").value;
+            var chequeDetails = document.getElementById("chequeDetails");
+
+            if (paymentMethod == "2") { // نقدي
+                chequeDetails.style.display = "none";
+            } else {
+                chequeDetails.style.display = "flex"; // Show div
+            }
+        }
+
+        // Run on page load to apply initial state
+        window.onload = toggleChequeDetails;
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

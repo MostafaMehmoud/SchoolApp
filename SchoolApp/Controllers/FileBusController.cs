@@ -41,6 +41,7 @@ namespace SchoolApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(VWFileBus fileBus)
         {
+            ModelState.Remove("BusId");
             if (!ModelState.IsValid)
             {
                 // Collect validation errors
@@ -65,6 +66,7 @@ namespace SchoolApp.Controllers
         [HttpPost]
         public IActionResult Edit(VWFileBus fileBus )
         {
+            ModelState.Remove("BusId");
             if (!ModelState.IsValid)
             {
                 var errors = ModelState

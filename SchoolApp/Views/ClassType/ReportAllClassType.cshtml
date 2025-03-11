@@ -1,0 +1,76 @@
+﻿@using SchoolApp.DAL.Models
+@using SchoolApp.DAL.ViewModels
+@model List<ReportClassType>
+
+
+<div class="col-12 grid-margin">
+    <h1>قائمة المراحل</h1>
+    <table id="busTable" class="display">
+        <thead>
+            <tr>
+                <th>اسم المرحلة</th>
+                <th> اسم السنة </th>
+                <th>مصاريف السنة </th>
+                <th>عدد الاقساط  </th>
+                <th>سعر القسط </th>
+                <th>سعر الباكليت </th>
+                <th> سعر الزي</th>
+                <th>سعر الكتب </th>
+                <th>رسوم التسجيل </th>
+                <th> المجموع الكلي </th>
+                <th>طباعة</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bus in Model)
+            {
+                <tr>
+                    <td>@bus.StageName</td>
+                    <td>@bus.ClassTypeName</td>
+                    <td>@bus.PriceClassType.ToString("0.00")</td>
+                    <td>@bus.NumberOfInstallments</td>
+                    <td>@bus.PriceInstallment.ToString("0.00")</td>
+                    <td>@bus.CLSBakelite.ToString("0.00")</td>
+                    <td>@bus.CLSCloth.ToString("0.00")</td>
+                    <td>@bus.CLSAcpt.ToString("0.00")</td>
+                    <td>@bus.CLSRegs.ToString("0.00")</td>
+                    <td>@bus.TotalAmountClassType.ToString("0.00")</td>
+                   
+                    <td>
+                        <a asp-action="PrintReport" asp-controller="ClassType" asp-route-id="@bus.Id" class="btn btn-secondary">
+                            طباعة
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+
+    <!-- Include DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#busTable').DataTable({
+                dom: 'Bfrtip', // Adds buttons
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'طباعة الجدول',
+                        title: 'تفاصيل الباصات',
+                        customize: function (win) {
+                            $(win.document.body).css('font-size', '14px');
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

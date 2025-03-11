@@ -207,7 +207,8 @@
             });
                     $("#btnDelete").click(function () {
             // Get the record's ID from a hidden field or another element
-            var id = $("#busId").val();
+            var id =parseInt( $("#busId").val());
+            
             if (!id) {
                 Swal.fire("تنبيه", "Please select a record first.", "warning");
                 return;
@@ -504,11 +505,14 @@
 
             // Handler for the Previous button
             $("#btnPrevious").click(async function () {
-                const busId = $("#busId").val();
-                if (!busId) {
-                    Swal.fire("تنبيه", "Please select a record first.", "warning");
-                    return;
-                }
+                const busId =parseInt( $("#busId").val());
+                console.log(busId)
+                console.log(typeof( busId))
+
+                // if (!busId) {
+                //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                //     return;
+                // }
                 try {
                     const response = await $.ajax({
                         type: "GET",
@@ -545,11 +549,13 @@
 
             // Handler for the Next button
             $("#btnNext").click(async function () {
-                const busId = $("#busId").val();
-                if (!busId) {
-                    Swal.fire("تنبيه", "Please select a record first.", "warning");
-                    return;
-                }
+                const busId = parseInt($("#busId").val());
+                 console.log(busId)
+                console.log(typeof( busId))
+                // if (!busId) {
+                //     Swal.fire("تنبيه", "Please select a record first.", "warning");
+                //     return;
+                // }
                 try {
                     const response = await $.ajax({
                         type: "GET",

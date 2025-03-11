@@ -156,6 +156,65 @@ namespace SchoolApp.BL.Services
             return new List<ListClassType>();
         }
 
+        public IEnumerable<ReportClassType> GetAllReportTypes()
+        {
+            List<ReportClassType> reportClassTypes = new List<ReportClassType>();
+            var classtype = _unitOfWork.classTypesSpecial.GetAllWithInclude(i=>i.Amounts);
+            var classtypename = _unitOfWork.classTypes.GetAll();
+            var stages = _unitOfWork.stages.GetAll();
+            var installments = _unitOfWork.installments.GetAll();
+            
+            var ViewAlltables = (from ct in classtype
+                                join ctn in classtypename
+                                on ct.StageId equals ctn.StageId
+                                join s in stages
+                                on ctn.StageId equals s.Id
+                                
+                                select new ReportClassType()
+                                {
+                                    Id=ct.Id,
+                                    StageName = s.StageName,
+                                    CLSAcpt = ct.CLSAcpt,
+                                    CLSBakelite = ct.CLSBakelite,
+                                    CLSCloth = ct.CLSCloth,
+                                    CLSRegs = ct.CLSRegs,
+                                    ClassTypeName = ctn.Name,
+                                    ClassTypeId=ct.Id,
+                                    ClassTypeNameId=ctn.Id,
+                                    stageId=s.Id
+                              
+                                    
+                                }).ToList();
+            ReportClassType reportClassType = null;
+            foreach (var item in ViewAlltables)
+            {
+                var priceamount = classtype.
+                    FirstOrDefault(i => i.StageId == item.stageId).Amounts.
+                    FirstOrDefault(i => i.ClassTypeNameId == item.ClassTypeNameId).AmountPrice;
+                var totalprice = priceamount
+                    + item.CLSBakelite + item.CLSAcpt + item.CLSCloth + item.CLSRegs;
+                 reportClassType = new ReportClassType();
+                reportClassType.StageName = item.StageName;
+                reportClassType.CLSBakelite=item.CLSBakelite;
+                reportClassType.CLSAcpt=item.CLSAcpt;
+                reportClassType.CLSCloth=item.CLSCloth;
+                reportClassType.CLSRegs = item.CLSRegs;
+                reportClassType.ClassTypeName=item.ClassTypeName;
+                reportClassType.PriceClassType= priceamount;
+                reportClassType.stageId = item.stageId;
+                reportClassType.ClassTypeNameId = item.ClassTypeNameId;
+                reportClassType.ClassTypeId = item.ClassTypeId;
+                reportClassType.NumberOfInstallments = installments.Where(i => i.ClassTypeId == item.ClassTypeNameId).Count() == 0 ? 1: installments.Where(i => i.ClassTypeId == item.ClassTypeNameId).Count();
+                reportClassType.TotalAmountClassType = totalprice;
+                reportClassType.PriceInstallment = totalprice / reportClassType.NumberOfInstallments;
+                reportClassTypes.Add(reportClassType);
+
+            }
+           
+            return reportClassTypes;
+
+        }
+
         public ClassType GetbyId(int id)
         {
             return _unitOfWork.classTypesSpecial.GetById(id);
@@ -346,6 +405,63 @@ namespace SchoolApp.BL.Services
             vWClassType.amounts = vWAmoumts;
             return vWClassType;
             
+        }
+
+        public ReportClassType GetReportClassTypeById(int id)
+        {
+            List<ReportClassType> reportClassTypes = new List<ReportClassType>();
+            var classtype = _unitOfWork.classTypesSpecial.GetAllWithInclude(i => i.Amounts);
+            var classtypename = _unitOfWork.classTypes.GetAll();
+            var stages = _unitOfWork.stages.GetAll();
+            var installments = _unitOfWork.installments.GetAll();
+
+            var ViewAlltables = (from ct in classtype
+                                 join ctn in classtypename
+                                 on ct.StageId equals ctn.StageId
+                                 join s in stages
+                                 on ctn.StageId equals s.Id
+
+                                 select new ReportClassType()
+                                 {
+                                     Id = ct.Id,
+                                     StageName = s.StageName,
+                                     CLSAcpt = ct.CLSAcpt,
+                                     CLSBakelite = ct.CLSBakelite,
+                                     CLSCloth = ct.CLSCloth,
+                                     CLSRegs = ct.CLSRegs,
+                                     ClassTypeName = ctn.Name,
+                                     ClassTypeId = ct.Id,
+                                     ClassTypeNameId = ctn.Id,
+                                     stageId = s.Id
+
+
+                                 }).ToList();
+            ReportClassType reportClassType = null;
+            foreach (var item in ViewAlltables)
+            {
+                var priceamount = classtype.
+                    FirstOrDefault(i => i.StageId == item.stageId).Amounts.
+                    FirstOrDefault(i => i.ClassTypeNameId == item.ClassTypeNameId).AmountPrice;
+                var totalprice = priceamount
+                    + item.CLSBakelite + item.CLSAcpt + item.CLSCloth + item.CLSRegs;
+                reportClassType = new ReportClassType();
+                reportClassType.StageName = item.StageName;
+                reportClassType.CLSBakelite = item.CLSBakelite;
+                reportClassType.CLSAcpt = item.CLSAcpt;
+                reportClassType.CLSCloth = item.CLSCloth;
+                reportClassType.CLSRegs = item.CLSRegs;
+                reportClassType.ClassTypeName = item.ClassTypeName;
+                reportClassType.PriceClassType = priceamount;
+                reportClassType.stageId = item.stageId;
+                reportClassType.ClassTypeNameId = item.ClassTypeNameId;
+                reportClassType.ClassTypeId = item.ClassTypeId;
+                reportClassType.NumberOfInstallments = installments.Where(i => i.ClassTypeId == item.ClassTypeNameId).Count() == 0 ? 1 : installments.Where(i => i.ClassTypeId == item.ClassTypeNameId).Count();
+                reportClassType.TotalAmountClassType = totalprice;
+                reportClassType.PriceInstallment = totalprice / reportClassType.NumberOfInstallments;
+                reportClassTypes.Add(reportClassType);
+
+            }
+            return reportClassTypes.FirstOrDefault(i => i.Id == id);
         }
     }
 }

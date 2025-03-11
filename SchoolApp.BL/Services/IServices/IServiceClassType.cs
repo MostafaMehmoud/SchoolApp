@@ -22,7 +22,9 @@ namespace SchoolApp.BL.Services.IServices
         Task<VWClassType> GetMaxClassType();
         int GetMaxClassTypeId();
         public List<ListClassType> GetAllClassTypes();   
-        public ListClassType GetClassTypesById(int id);   
+        public ListClassType GetClassTypesById(int id);
+        public IEnumerable<ReportClassType> GetAllReportTypes();
+        public ReportClassType GetReportClassTypeById(int id);  
         
     }
 }

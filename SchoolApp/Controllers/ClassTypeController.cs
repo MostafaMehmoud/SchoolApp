@@ -186,5 +186,15 @@ namespace SchoolApp.Controllers
 
             return View(bus);
         }
+        public IActionResult ReportAllClassType()
+        {
+            var data = _serviceClassType.GetAllReportTypes().ToList();
+            return View(data);
+        }
+        public IActionResult PrintReport(int id)
+        {
+            var data=_serviceClassType.GetReportClassTypeById(id);
+            return View(data);
+        }
     }
 }
