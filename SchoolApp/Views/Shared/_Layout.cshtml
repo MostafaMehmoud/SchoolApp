@@ -123,7 +123,7 @@
         <a href="#" onclick="toggleMenu('cash-menu')"><i class="fas fa-chalkboard-teacher"></i> <span> السندات</span></a>
         <ul id="cash-menu" class="submenu">
             <li><a asp-controller="Receipt" asp-action="Index">  سندات قبض </a></li>
-            <li><a>سندات صرف </a></li>
+            <li><a asp-controller="Payment" asp-action="Index">سندات صرف </a></li>
           
         </ul>
         <a href="#"><i class="fas fa-cogs"></i> <span>الإعدادات</span></a>

@@ -305,7 +305,7 @@
 
                         <label class="form-label"> الوظيفة </label>
 
-                            <input id="guardianJob" required maxlength="50" asp-for="GuardianJob" type="number" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
+                            <input id="guardianJob" required maxlength="50" asp-for="GuardianJob" type="text" class="form-control form-control-sm" placeholder="ادخل الوظيفة ">
                             <span asp-validation-for="GuardianJob" class="text-danger"></span>
                     </div>
                         <div class="col-sm-3">
@@ -632,7 +632,20 @@
                 <br />
                 <hr />
                 <br />
-             
+                <div class="row row-cols-4 g-2">
+                    <div class="col">
+                        <label class="form-label">اجمالي الرسوم</label>
+                        <input asp-for="ReceiptTotalFees" type="number" id="receiptTotalFees" readonly class="form-control form-control-sm discount-input discount-fixed">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">اجمالي المدفوع</label>
+                        <input asp-for="ReceiptTotalPayments" type="number" id="receiptTotalPayments" readonly class="form-control form-control-sm discount-input discount-fixed">
+                    </div>
+                    <div class="col">
+                        <label class="form-label"> متبقي الرسوم</label>
+                        <input asp-for="RemainingFees" type="number" id="remainingFees" readonly class="form-control form-control-sm discount-input discount-fixed">
+                    </div>
+             </div>
                 <div class="form-group">
                     <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
                     <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
@@ -1017,7 +1030,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
+                            <input  type="number" name="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1035,7 +1048,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input readonly asp-for="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                            <input readonly name="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1562,7 +1575,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}" readonly>
+                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}"${readonly?"readonly":""}>
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1571,7 +1584,7 @@
                                 <label class="form-label">${item.installmentName}</label>
                                 <input type="number" class="form-control form-control-sm installmentAmountReadonly "
                                        value="${(item.costInstallment).toFixed(2)}"
-                                       data-id="${item.id}" data-installmentId="${item.installmentId}" readonly>
+                                       data-id="${item.id}" data-installmentId="${item.installmentId}" ${readonly?"readonly":""}>
                             </div>`;
                     });
                 }
@@ -1684,7 +1697,7 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
 
                                $("#CLSCloth").val(response.clsCloth);
@@ -1700,13 +1713,24 @@
                                $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
                                $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
                                $("#generalDiscount").val(response.generalDiscount);
+                               $("#generalDiscount").prop("disabled", true);
                                $("#employeeDiscount").val(response.employeeDiscount);
+                                $("#employeeDiscount").prop("disabled", true);
                                $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                                 $("#earlyPaymentDiscount").prop("disabled", true);
                                $("#siblingsDiscount").val(response.siblingsDiscount);
+                                $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
+                                $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
+                                $("#fixedDiscount").prop("disabled", true);
                                $("#busDiscount").val(response.busDiscount);
+                                $("#busDiscount").prop("disabled", true);
+                                 $("#receiptTotalFees").val(response.receiptTotalFees);
+                                  $("#receiptTotalPayments").val(response.receiptTotalPayments);
+                                   $("#remainingFees").val(response.remainingFees);
                                 let container = $("#container");
                                  container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
@@ -1839,7 +1863,7 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
 
                                $("#CLSCloth").val(response.clsCloth);
@@ -1855,13 +1879,24 @@
                                $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
                                $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
                                $("#generalDiscount").val(response.generalDiscount);
+                               $("#generalDiscount").prop("disabled", true);
                                $("#employeeDiscount").val(response.employeeDiscount);
+                                $("#employeeDiscount").prop("disabled", true);
                                $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                                 $("#earlyPaymentDiscount").prop("disabled", true);
                                $("#siblingsDiscount").val(response.siblingsDiscount);
+                                $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
+                                $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
+                                $("#fixedDiscount").prop("disabled", true);
                                $("#busDiscount").val(response.busDiscount);
+                                $("#busDiscount").prop("disabled", true);
+                                 $("#receiptTotalFees").val(response.receiptTotalFees);
+                                  $("#receiptTotalPayments").val(response.receiptTotalPayments);
+                                   $("#remainingFees").val(response.remainingFees);
                             let container = $("#container");
                              container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
@@ -1999,7 +2034,7 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
 
                                $("#CLSCloth").val(response.clsCloth);
@@ -2014,14 +2049,25 @@
                                $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
                                $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
                                $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
-                               $("#generalDiscount").val(response.generalDiscount);
+                                 $("#generalDiscount").val(response.generalDiscount);
+                               $("#generalDiscount").prop("disabled", true);
                                $("#employeeDiscount").val(response.employeeDiscount);
+                                $("#employeeDiscount").prop("disabled", true);
                                $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                                 $("#earlyPaymentDiscount").prop("disabled", true);
                                $("#siblingsDiscount").val(response.siblingsDiscount);
+                                $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
+                                $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
+                                $("#fixedDiscount").prop("disabled", true);
                                $("#busDiscount").val(response.busDiscount);
+                                $("#busDiscount").prop("disabled", true);
+                                 $("#receiptTotalFees").val(response.receiptTotalFees);
+                                  $("#receiptTotalPayments").val(response.receiptTotalPayments);
+                                   $("#remainingFees").val(response.remainingFees);
                                 let container = $("#container");
                                 container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
@@ -2162,7 +2208,7 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
 
                                $("#CLSCloth").val(response.clsCloth);
@@ -2177,14 +2223,25 @@
                                $("#costSecondTrem").val(response.costSecondTermBeforeDiscount);
                                $("#costFirstTremAfterChooseBus").val(response.costFirstTermAfterDiscount);
                                $("#costSecondTremAfterChooseBus").val(response.costSecondTermAfterDiscount);
-                               $("#generalDiscount").val(response.generalDiscount);
+                                 $("#generalDiscount").val(response.generalDiscount);
+                               $("#generalDiscount").prop("disabled", true);
                                $("#employeeDiscount").val(response.employeeDiscount);
+                                $("#employeeDiscount").prop("disabled", true);
                                $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
+                                 $("#earlyPaymentDiscount").prop("disabled", true);
                                $("#siblingsDiscount").val(response.siblingsDiscount);
+                                $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
+                                $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
+                                $("#fixedDiscount").prop("disabled", true);
                                $("#busDiscount").val(response.busDiscount);
+                                $("#busDiscount").prop("disabled", true);
+                                 $("#receiptTotalFees").val(response.receiptTotalFees);
+                                  $("#receiptTotalPayments").val(response.receiptTotalPayments);
+                                   $("#remainingFees").val(response.remainingFees);
                               let container = $("#container");
                               container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {

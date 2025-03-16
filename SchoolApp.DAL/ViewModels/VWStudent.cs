@@ -157,8 +157,11 @@ namespace SchoolApp.DAL.ViewModels
         public decimal BusDiscount { get; set; } = 0;
         public decimal CostFirstTermAfterDiscount { get; set; } = 0;
         public decimal CostSecondTermAfterDiscount { get; set; } = 0;
-        public decimal TotalCost { get; set; }
-        public decimal TotalCostAfterDiscount { get; set; }
+        public decimal TotalCost { get; set; } = 0;
+        public decimal TotalCostAfterDiscount { get; set; } = 0;
+        public decimal ReceiptTotalFees { get; set; } = 0;
+        public decimal ReceiptTotalPayments { get; set; } = 0;
+        public decimal RemainingFees { get; set; } = 0;
         public List<VWInstallmentCostBeforeDiscount> installmentCostBeforeDiscounts { get; set; } = new List<VWInstallmentCostBeforeDiscount>();
         public List<VWInstallmentCostAfterDiscount> installmentCostAfterDiscounts { get; set; } = new List<VWInstallmentCostAfterDiscount>();
 
@@ -168,7 +171,7 @@ namespace SchoolApp.DAL.ViewModels
     {
         public int Id { get; set; }
         public int InstallmentId { get; set; }
-        public decimal CostInstallment { get; set; }
+        public decimal CostInstallment { get; set; } = 0;
         public string InstallmentName { get; set; }
     }
 
@@ -176,7 +179,7 @@ namespace SchoolApp.DAL.ViewModels
     {
         public int Id { get; set; }
         public int InstallmentId { get; set; }
-        public decimal CostInstallment { get; set; }
+        public decimal CostInstallment { get; set; } = 0;
         public string InstallmentName { get; set; }
     }
 }

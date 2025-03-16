@@ -85,6 +85,9 @@ namespace SchoolApp.DAL.Models
         public decimal CostSecondTermAfterDiscount { get; set; } = 0;
         public decimal TotalCost { get; set;  }
         public decimal TotalCostAfterDiscount { get; set;  }
+        public decimal ReceiptTotalFees { get; set; } = 0;
+        public decimal ReceiptTotalPayments { get; set; } = 0;
+        public decimal RemainingFees { get; set; } = 0;
         public List<InstallmentCostBeforeDiscount> installmentCostBeforeDiscounts { get; set; } = new List<InstallmentCostBeforeDiscount>();
         public List<InstallmentCostAfterDiscount> installmentCostAfterDiscounts { get; set; } = new List<InstallmentCostAfterDiscount>();
     }

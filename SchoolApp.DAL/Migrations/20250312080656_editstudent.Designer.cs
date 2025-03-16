@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApp.DAL;
 
@@ -11,9 +12,11 @@ using SchoolApp.DAL;
 namespace SchoolApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250312080656_editstudent")]
+    partial class editstudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,31 +295,6 @@ namespace SchoolApp.DAL.Migrations
                     b.ToTable("installmentCostBeforeDiscounts");
                 });
 
-            modelBuilder.Entity("SchoolApp.DAL.Models.InstallmentReceipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("CostInstallment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("InstallmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReceiptId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiptId");
-
-                    b.ToTable("installmentReceipts");
-                });
-
             modelBuilder.Entity("SchoolApp.DAL.Models.National", b =>
                 {
                     b.Property<int>("ID")
@@ -339,130 +317,6 @@ namespace SchoolApp.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("nationals");
-                });
-
-            modelBuilder.Entity("SchoolApp.DAL.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("AmountName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BankName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CashCheque")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("ChequeDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("ChequeNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Purpose")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("ReceiptDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("payments");
-                });
-
-            modelBuilder.Entity("SchoolApp.DAL.Models.Receipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("AmountName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BankName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CLSAcpt")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("CLSBakelite")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("CLSCloth")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("CLSRegs")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CashCheque")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("ChequeDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("ChequeNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Purpose")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ReceiptBusFirstTremCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ReceiptBusSecondTremCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateOnly>("ReceiptDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("receipts");
                 });
 
             modelBuilder.Entity("SchoolApp.DAL.Models.Stage", b =>
@@ -780,23 +634,9 @@ namespace SchoolApp.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolApp.DAL.Models.InstallmentReceipt", b =>
-                {
-                    b.HasOne("SchoolApp.DAL.Models.Receipt", null)
-                        .WithMany("installmentReceipts")
-                        .HasForeignKey("ReceiptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SchoolApp.DAL.Models.ClassType", b =>
                 {
                     b.Navigation("Amounts");
-                });
-
-            modelBuilder.Entity("SchoolApp.DAL.Models.Receipt", b =>
-                {
-                    b.Navigation("installmentReceipts");
                 });
 
             modelBuilder.Entity("SchoolApp.DAL.Models.Student", b =>

@@ -119,7 +119,14 @@ namespace SchoolApp.BL.Services
             student.TotalCost=VWStudent.TotalCost;
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
 
-
+            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.LastBalance
+                + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
+            foreach(var item in InstallmentCostAfterDiscounts)
+            {
+                student.ReceiptTotalFees += item.CostInstallment;
+            }
+            student.ReceiptTotalPayments = 0;
+            student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
             if (_unitOfWork.students.Add(student)) 
             {
@@ -248,6 +255,14 @@ namespace SchoolApp.BL.Services
             student.BusDiscount = VWStudent.BusDiscount;
             student.TotalCost = VWStudent.TotalCost;
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.LastBalance
+              + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
+            foreach (var item in InstallmentCostAfterDiscounts)
+            {
+                student.ReceiptTotalFees += item.CostInstallment;
+            }
+            student.ReceiptTotalPayments = 0;
+            student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
             if (_unitOfWork.students.Update(student))
             {
@@ -267,6 +282,41 @@ namespace SchoolApp.BL.Services
         public Student GetbyId(int id)
         {
             return _unitOfWork.students.GetById(id);
+        }
+
+        public VWStudentCostReceipt GetCostReceipt(int StudentId)
+        {
+            var student = _unitOfWork.students.GetAllWithInclude(i=>i.installmentCostAfterDiscounts).FirstOrDefault(i=>i.Id== StudentId);
+            VWStudentCostReceipt receipt = new VWStudentCostReceipt();  
+            receipt.CLSAcpt=student.CLSAcpt;
+            receipt.RemainingFees=student.RemainingFees;
+            receipt.CLSRegs=student.CLSRegs;
+            receipt.CLSCloth = student.CLSCloth;
+            receipt.CLSBakelite = student.CLSBakelite;
+            receipt.CostFirstTermAfterDiscount=student.CostFirstTermAfterDiscount;
+            receipt.CostSecondTermAfterDiscount = student.CostSecondTermAfterDiscount;
+            receipt.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
+            receipt.RemainingFees = student.ReceiptTotalFees;
+            receipt.ReceiptTotalFees = student.ReceiptTotalFees;
+            receipt.ReceiptTotalPayments = student.ReceiptTotalPayments;
+            receipt.StudentId = student.Id;
+            receipt.LastBalance = student.LastBalance;
+            receipt.TotalCost = student.TotalCostAfterDiscount;
+            List<InstallmentForStudent> installmentForStudents = new List<InstallmentForStudent>();
+            InstallmentForStudent installmentForStudent = null;
+            foreach(var install in student.installmentCostAfterDiscounts)
+            {
+                installmentForStudent = new InstallmentForStudent();
+                installmentForStudent.CostInstallment = install.CostInstallment;
+                installmentForStudent.InstallmentId=install.InstallmentId;
+                installmentForStudent.InstallmentName=install.InstallmentName;
+                installmentForStudent.Id = install.Id;
+                installmentForStudents.Add(installmentForStudent);
+            }
+            receipt.installmentForStudents = installmentForStudents;
+            return receipt;
+
+
         }
 
         public async Task<VWStudent> GetMaxStudent()
@@ -370,6 +420,9 @@ namespace SchoolApp.BL.Services
             vwStudent.BusDiscount = student.BusDiscount;
             vwStudent.TotalCost = student.TotalCost;
             vwStudent.TotalCostAfterDiscount = student.TotalCostAfterDiscount;
+            vwStudent.ReceiptTotalFees= student.ReceiptTotalFees;   
+            vwStudent.ReceiptTotalPayments=student.ReceiptTotalPayments;    
+            vwStudent.RemainingFees=student.RemainingFees;
             return vwStudent;
         }
 
@@ -479,6 +532,9 @@ namespace SchoolApp.BL.Services
             vwStudent.BusDiscount = student.BusDiscount;
             vwStudent.TotalCost = student.TotalCost;
             vwStudent.TotalCostAfterDiscount = student.TotalCostAfterDiscount;
+            vwStudent.ReceiptTotalFees = student.ReceiptTotalFees;
+            vwStudent.ReceiptTotalPayments = student.ReceiptTotalPayments;
+            vwStudent.RemainingFees = student.RemainingFees;
             return vwStudent;
         }
 
@@ -592,6 +648,9 @@ namespace SchoolApp.BL.Services
             vwStudent.BusDiscount = student.BusDiscount;
             vwStudent.TotalCost = student.TotalCost;
             vwStudent.TotalCostAfterDiscount = student.TotalCostAfterDiscount;
+            vwStudent.ReceiptTotalFees = student.ReceiptTotalFees;
+            vwStudent.ReceiptTotalPayments = student.ReceiptTotalPayments;
+            vwStudent.RemainingFees = student.RemainingFees;
             return vwStudent;
         }
 
@@ -700,6 +759,9 @@ namespace SchoolApp.BL.Services
             vwStudent.BusDiscount = student.BusDiscount;
             vwStudent.TotalCost = student.TotalCost;
             vwStudent.TotalCostAfterDiscount = student.TotalCostAfterDiscount;
+            vwStudent.ReceiptTotalFees = student.ReceiptTotalFees;
+            vwStudent.ReceiptTotalPayments = student.ReceiptTotalPayments;
+            vwStudent.RemainingFees = student.RemainingFees;
             return vwStudent;
         }
     }

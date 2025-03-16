@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.Repositories.IRepository;
 using SchoolApp.DAL.Repository;
@@ -20,6 +21,10 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         IRepositorySpecial<Installment> installments { get; }
         IRepositorySpecial<Department> departments { get; }
         IRepositorySpecial<Student>   students { get; } 
+        IRepositorySpecial<Receipt> receipts { get; }
+        IRepositorySpecial<Payment> payments { get; }   
+        IDbContextTransaction BeginTransaction();
+        void Save();
         int Complete();
     }
 
