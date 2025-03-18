@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApp.DAL;
 
@@ -11,9 +12,11 @@ using SchoolApp.DAL;
 namespace SchoolApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250318093517_editpayment")]
+    partial class editpayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,15 +360,16 @@ namespace SchoolApp.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BankName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CashCheque")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("ChequeDate")
+                    b.Property<DateOnly>("ChequeDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("ChequeNumber")
+                    b.Property<int>("ChequeNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("Code")
@@ -409,6 +413,7 @@ namespace SchoolApp.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BankName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("CLSAcpt")
@@ -426,10 +431,10 @@ namespace SchoolApp.DAL.Migrations
                     b.Property<int>("CashCheque")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("ChequeDate")
+                    b.Property<DateOnly>("ChequeDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("ChequeNumber")
+                    b.Property<int>("ChequeNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("Code")

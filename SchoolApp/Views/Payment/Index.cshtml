@@ -1,4 +1,7 @@
-﻿<style>
+﻿@using SchoolApp.DAL.ViewModels
+@model VWPayment
+
+<style>
     /* تقليل حجم المدخلات */
     .custom-input {
         font-size: 0.85rem;
@@ -40,19 +43,19 @@
         </div>
 
         <div class="card-body">
-            <form id="receiptForm" class="forms-sample">
+            <form id="paymentForm" class="forms-sample">
                 <!-- Static Fields -->
                 <div class="errorContainer">
                 </div>
-                <input type="hidden" id="receiptId"  />
+                <input type="hidden" id="paymentId"  asp-for="Id"/>
                 <div class="row custom-form-group">
                     <div class="col-md-6">
                         <label class="fs-6">رقم السند </label>
-                        <input type="number" id="receiptCodeInput" class="form-control form-control-sm ">
+                        <input type="number" id="paymentCode" asp-for="Code" class="form-control form-control-sm ">
                     </div>
                     <div class="col-md-6">
                         <label class="fs-6"> تاريخ اليوم</label>
-                        <input readonly type="date" id="receiptDateInput" class="form-control form-control-sm ">
+                        <input readonly type="date" id="paymentDate" asp-for="PaymentDate"  class="form-control form-control-sm ">
                     </div>
 
                 </div>
@@ -60,13 +63,13 @@
                 <div class="row custom-form-group">
                     <div class="col-md-4">
                         <label class="fs-6">رقم الطالب </label>
-                        <select id="studentSelect" asp-items="ViewBag.listStudents" class="form-control form-control-sm ">
+                        <select id="studentSelect" asp-items="ViewBag.listStudents" asp-for="StudentId" class="form-control form-control-sm ">
                             <option value="0">اختر الطالب</option>
                         </select>
                     </div>
                     <div class="col-md-8">
                         <label class="fs-6">اسم الطالب </label>
-                        <input type="text"  id="studentName" class="form-control form-control-sm ">
+                        <input type="text"  id="studentName" asp-for="StudentName" class="form-control form-control-sm ">
                     </div>
 
                 </div>
@@ -76,11 +79,11 @@
                 <div class="row custom-form-group">
                     <div class="col-md-3">
                         <label class="fs-6">المبلغ</label>
-                        <input type="number"  id="amount" class="form-control form-control-sm" min="0">
+                        <input type="number" asp-for="Amount"  id="amount" class="form-control form-control-sm" min="0">
                     </div>
                     <div class="col-md-9">
                         <label class="fs-6">تفنيد المبلغ</label>
-                        <input type="text"  id="breakdown" class="form-control form-control-sm" readonly>
+                        <input type="text" asp-for="AmountName"  id="breakdown" class="form-control form-control-sm" readonly>
                         <input type="hidden" name="AmountName" id="hiddenBreakdown">
 
                     </div>
@@ -91,35 +94,36 @@
                 <div class="row custom-form-group">
                     <div class="col-md-3">
                         <label class="fs-6">   نوع الدفع  </label>
-                        <select  class="form-control form-control-sm" id="paymentMethod" onchange="toggleChequeDetails()">
+                        <select  class="form-control form-control-sm" asp-for="CashCheque" id="paymentMethod" onchange="toggleChequeDetails()">
                             <option value="1"> شيك</option>
                             <option value="2"> نقدي</option>
                         </select>
                     </div>
                     <div class="col-md-9">
                         <label class="fs-6">   وذلك  </label>
-                        <input  type="text" id="purpose" class="form-control form-control-sm ">
+                        <input  type="text" id="purpose" asp-for="Purpose" class="form-control form-control-sm ">
 
                     </div>
                 </div>
                 <div class="row custom-form-group" id="chequeDetails">
                     <div class="col-md-4">
                         <label class="fs-6"> رقم الشيك     </label>
-                        <input type="number"  id="chequeNumber" class="form-control form-control-sm ">
+                        <input type="number" asp-for="ChequeNumber"  id="chequeNumber" class="form-control form-control-sm ">
                     </div>
                     <div class="col-md-4">
                         <label class="fs-6">   تاريخ الشيك    </label>
-                        <input type="date"  id="chequeDate" class="form-control form-control-sm ">
+                        <input type="date" asp-for="ChequeDate"  id="chequeDate" class="form-control form-control-sm ">
                     </div>
                     <div class="col-md-4">
                         <label class="fs-6">اسم البنك</label>
-                        <input type="text"  id="bankName" class="form-control form-control-sm ">
+                        <input type="text" asp-for="BankName" id="bankName" class="form-control form-control-sm ">
                     </div>
                 </div>
                 <!-- Submit Buttons -->
                 <div class="form-group">
                     <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">حفظ</button>
                     <button type="button" id="btnEdit" class="btn btn-secondary btn-sm custom-button">تعديل</button>
+                    <button type="button" id="btnPrint" class="btn btn-secondary btn-sm custom-button">الطباعة</button>
                     <button type="button" id="btnDelete" class="btn btn-danger btn-sm custom-button">حذف</button>
                 </div>
             </form>
@@ -137,7 +141,7 @@
     updateBreakdown();
 
     // Enable the breakdown field before form submission
-    document.getElementById("receiptForm").addEventListener("submit", function () {
+            document.getElementById("paymentForm").addEventListener("submit", function () {
         breakdownInput.removeAttribute("disabled");
     });
 });
@@ -211,7 +215,7 @@ function convertToArabicWords(num) {
             updateBreakdown();
 
             // Enable the breakdown field before form submission
-            document.getElementById("receiptForm").addEventListener("submit", function () {
+                    document.getElementById("paymentForm").addEventListener("submit", function () {
                 breakdownInput.removeAttribute("disabled");
             });
         });
@@ -286,7 +290,7 @@ function convertToArabicWords(num) {
         let today = new Date().toISOString().split("T")[0];
 
         // تعيين التاريخ في حقل الإدخال
-        document.getElementById("receiptDateInput").value = today;
+        document.getElementById("paymentDate").value = today;
     });
 </script>
     <script>
@@ -325,7 +329,27 @@ function convertToArabicWords(num) {
            calculateTotal();
 
            // Recalculate total whenever any input field changes
-         
+                 $(document).ready(function () {
+            $("#btnPrint").click(function () {
+                var voucherId = $("#paymentId").val();
+
+                $.ajax({
+                    url: "/Payment/Print",
+                    type: "GET",
+                    data: { id: voucherId },
+                    success: function (data) {
+                        var printWindow = window.open('', '', 'width=800,height=600');
+                        printWindow.document.write(data);
+                        printWindow.document.close();
+                        printWindow.print();
+                    },
+                    error: function () {
+                        alert("حدث خطأ أثناء جلب البيانات!");
+                    }
+                });
+            });
+        });
+
              $(document).ready(function () {
 
          $(document).on("input", ".custom-input", function () {
@@ -345,7 +369,7 @@ function convertToArabicWords(num) {
         }
                 if (studentId) {
                     $.ajax({
-                        url: '/Receipt/GetStudentDetailsCost', // Your controller action
+                        url: '/Payment/GetStudentDetailsCost', // Your controller action
                         type: 'GET',
                         data: { id: studentId },
                         success: function (response) {
@@ -354,49 +378,9 @@ function convertToArabicWords(num) {
 
                                 // Set student details
                                 $("#studentName").val(response.studentName);
-                                $("#CLSRegs").val(response.clsRegs);
-                                $("#CLSAcpt").val(response.clsAcpt);
-                                $("#CLSCloth").val(response.clsCloth);
-                                $("#CLSBakelite").val(response.clsBakelite);
-                                $("#cusCostFirstTrem").val(response.costFirstTermAfterDiscount);
-                                $("#cusCostSecondTrem").val(response.costSecondTermAfterDiscount);
-                                $("#lastBalance").val(response.lastBalance);
-                                $("#receiptTotalFees").val(response.receiptTotalFees);
-                                $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                                $("#remainingFees").val(response.remainingFees);
+                               
 
-                                // Handle Installments
-                                let container = $("#dynamicRows");
-                                let html = ""; // Initialize html string
-
-                                       if (response.installmentForStudents.length > 0) {
-            response.installmentForStudents.forEach(item => {
-                html += `
-                    <div class="col">
-                        <label class="form-label">${item.installmentName}</label>
-                        <input type="number" class="form-control form-control-sm custom-input"
-                               value="${item.costInstallment.toFixed(2)}"
-                               data-id="${item.id}" >
-                    </div>`;
-            });
-        } else {
-            html += `
-                <div class="col">
-                    <label class="form-label">المبلغ الاجمالي</label>
-                    <input type="number" class="form-control form-control-sm custom-input"
-                           value="${response.totalCost.toFixed(2)}" >
-                </div>`;
-        }
-
-        // Append the generated HTML to the container
-        $("#dynamicRows").html(html);
-
-        // Recalculate total amount after adding new inputs
-        calculateTotal();
-
-
-                                // Update the container with the new HTML content
-                                
+                              
                             }
                         },
                         error: function () {
@@ -408,11 +392,11 @@ function convertToArabicWords(num) {
                 }
             });
              $.ajax({
-                url: '@Url.Action("GetNextCode", "Receipt")',
+                url: '@Url.Action("GetNextCode", "Payment")',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
-                    $('#receiptCodeInput').val(response.nextCode);
+                    $('#paymentCode').val(response.nextCode);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error("Error retrieving the next code:", errorThrown);
@@ -420,37 +404,21 @@ function convertToArabicWords(num) {
             });
                      $("#btnAdd").click(function () {
             var errors = "";
-            $("#hiddenBreakdown").val($("#breakdown").val());
-            // Clear previous errors
-            $("#errorContainer").html("").hide();
-
-            // Create a FormData object
-            var formData = new FormData($("#receiptForm")[0]);
-
-            // Collect installment data dynamically and append it to FormData
-            $("#dynamicRows .col").each(function (index) {
-                var costInstallment = $(this).find("input[type=number]").val();
-                var installmentName = $(this).find("label").text().trim(); // Get label as name
-
-                // Validate installment
-                if (!costInstallment || parseFloat(costInstallment) <= 0) {
-                    errors += `القسط ${installmentName} لا يمكن أن يكون فارغًا أو صفرًا<br/>`;
-                }
-
-                // Append to FormData (indexed for MVC model binding)
-                formData.append(`InstallmentReceipts[${index}].CostInstallment`, costInstallment);
-                formData.append(`InstallmentReceipts[${index}].InstallmentName`, installmentName);
-            });
-
+             $("#hiddenBreakdown").val($("#breakdown").val());
+            var studentId = $("#studentSelect").val();
+          if (studentId == "0" || studentId == 0) {
+              errors += "يرجى اختيار  كود الطالب.<br/>";
+          }
             // Show errors if any
             if (errors !== "") {
                 Swal.fire("خطأ", errors, "error");
                 return;
             }
+              var formData = new FormData($("#paymentForm")[0]);
 
             // Send form data via AJAX
             $.ajax({
-                url: '@Url.Action("Add", "Receipt")',
+                url: '@Url.Action("Add", "Payment")',
                 type: 'POST',
                 data: formData,
                 processData: false, // Prevent jQuery from converting FormData into a query string
@@ -497,7 +465,7 @@ function convertToArabicWords(num) {
                 if (result.isConfirmed) {
                     // If confirmed, send the delete request
                     $.ajax({
-                        url: '@Url.Action("Delete", "Receipt")',
+                        url: '@Url.Action("Delete", "Payment")',
                         type: 'POST',
                         data: { id: id },
                         success: function (response) {
@@ -522,27 +490,18 @@ function convertToArabicWords(num) {
             try {
                 const response = await $.ajax({
                     type: "GET",
-                    url: '@Url.Action("GetMinReceipt", "Receipt")',
+                    url: '@Url.Action("GetMinPayment", "Payment")',
                     dataType: "json"
                 });
                 if (response) {
                     console.log(response)
                     // افترض أن الاستجابة تحتوي على الكائن بنفس أسماء الخصائص المذكورة في VWReceipt
-                    $("#receiptId").val(response.id);
-                    $("#receiptCodeInput").val(response.code);
+                    $("#paymentId").val(response.id);
+                    $("#paymentCode").val(response.code);
                     $("#studentName").val(response.studentName);
-                    $("#receiptDateInput").val(response.chequeDate);
+                    $("#paymentDate").val(response.chequeDate);
                     $("#studentSelect").val(response.studentId);
-                    $("#CLSRegs").val(response.clsRegs);
-                    $("#CLSAcpt").val(response.clsAcpt);
-                    $("#CLSCloth").val(response.clsCloth);
-                    $("#CLSBakelite").val(response.clsBakelite);
-                    $("#cusCostFirstTrem").val(response.receiptBusFirstTremCost);
-                    $("#cusCostSecondTrem").val(response.receiptBusSecondTremCost);
-                    $("#lastBalance").val(response.lastBalance);
-                    $("#receiptTotalFees").val(response.receiptTotalFees);
-                    $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                    $("#remainingFees").val(response.remainingFees);
+                  
                     $("#breakdown").val(response.amountName);
                     $("#paymentMethod").val(response.cashCheque);
                     $("#purpose").val(response.purpose);
@@ -566,26 +525,17 @@ function convertToArabicWords(num) {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetMaxReceipt", "Receipt")',
+                        url: '@Url.Action("GetMaxPayment", "Payment")',
                         dataType: "json"
                     });
                     if (response) {
                         console.log(response)
-                       $("#receiptId").val(response.id);
-                    $("#receiptCodeInput").val(response.code);
+                      $("#paymentId").val(response.id);
+                    $("#paymentCode").val(response.code);
                     $("#studentName").val(response.studentName);
-                    $("#receiptDateInput").val(response.chequeDate);
+                    $("#paymentDate").val(response.chequeDate);
                     $("#studentSelect").val(response.studentId);
-                    $("#CLSRegs").val(response.clsRegs);
-                    $("#CLSAcpt").val(response.clsAcpt);
-                    $("#CLSCloth").val(response.clsCloth);
-                    $("#CLSBakelite").val(response.clsBakelite);
-                    $("#cusCostFirstTrem").val(response.receiptBusFirstTremCost);
-                    $("#cusCostSecondTrem").val(response.receiptBusSecondTremCost);
-                    $("#lastBalance").val(response.lastBalance);
-                    $("#receiptTotalFees").val(response.receiptTotalFees);
-                    $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                    $("#remainingFees").val(response.remainingFees);
+
                     $("#breakdown").val(response.amountName);
                     $("#paymentMethod").val(response.cashCheque);
                     $("#purpose").val(response.purpose);
@@ -615,25 +565,16 @@ function convertToArabicWords(num) {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetPreviousReceipt", "Receipt", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
+                        url: '@Url.Action("GetPreviouPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
                         dataType: "json"
                     });
                     if (response) {
-                      $("#receiptId").val(response.id);
-                    $("#receiptCodeInput").val(response.code);
+                      $("#paymentId").val(response.id);
+                    $("#paymentCode").val(response.code);
                     $("#studentName").val(response.studentName);
-                    $("#receiptDateInput").val(response.chequeDate);
+                    $("#paymentDate").val(response.chequeDate);
                     $("#studentSelect").val(response.studentId);
-                    $("#CLSRegs").val(response.clsRegs);
-                    $("#CLSAcpt").val(response.clsAcpt);
-                    $("#CLSCloth").val(response.clsCloth);
-                    $("#CLSBakelite").val(response.clsBakelite);
-                    $("#cusCostFirstTrem").val(response.receiptBusFirstTremCost);
-                    $("#cusCostSecondTrem").val(response.receiptBusSecondTremCost);
-                    $("#lastBalance").val(response.lastBalance);
-                    $("#receiptTotalFees").val(response.receiptTotalFees);
-                    $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                    $("#remainingFees").val(response.remainingFees);
+
                     $("#breakdown").val(response.amountName);
                     $("#paymentMethod").val(response.cashCheque);
                     $("#purpose").val(response.purpose);
@@ -667,27 +608,18 @@ function convertToArabicWords(num) {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetNextReceipt", "Receipt", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
+                        url: '@Url.Action("GetNextPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
                         dataType: "json"
                     });
                     if (response) {
 
                            console.log(response)
-                         $("#receiptId").val(response.id);
-                    $("#receiptCodeInput").val(response.code);
+                        $("#paymentId").val(response.id);
+                    $("#paymentCode").val(response.code);
                     $("#studentName").val(response.studentName);
-                    $("#receiptDateInput").val(response.chequeDate);
+                    $("#paymentDate").val(response.chequeDate);
                     $("#studentSelect").val(response.studentId);
-                    $("#CLSRegs").val(response.clsRegs);
-                    $("#CLSAcpt").val(response.clsAcpt);
-                    $("#CLSCloth").val(response.clsCloth);
-                    $("#CLSBakelite").val(response.clsBakelite);
-                    $("#cusCostFirstTrem").val(response.receiptBusFirstTremCost);
-                    $("#cusCostSecondTrem").val(response.receiptBusSecondTremCost);
-                    $("#lastBalance").val(response.lastBalance);
-                    $("#receiptTotalFees").val(response.receiptTotalFees);
-                    $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                    $("#remainingFees").val(response.remainingFees);
+
                     $("#breakdown").val(response.amountName);
                     $("#paymentMethod").val(response.cashCheque);
                     $("#purpose").val(response.purpose);

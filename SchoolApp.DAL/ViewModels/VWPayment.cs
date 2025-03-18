@@ -10,15 +10,15 @@ namespace SchoolApp.DAL.ViewModels
     {
         public int Id { get; set; }
         public int Code { get; set; }
-        public DateOnly ReceiptDate { get; set; }
+        public DateOnly PaymentDate { get; set; }
         public int StudentId { get; set; }
         public string StudentName { get; set; }
         public decimal Amount { get; set; }
         public int CashCheque { get; set; }
-        public int ChequeNumber { get; set; }
-        public DateOnly ChequeDate { get; set; }
+        public int? ChequeNumber { get; set; }
+        public DateOnly? ChequeDate { get; set; }
         public string Purpose { get; set; }
-        public string BankName { get; set; }
+        public string? BankName { get; set; }
         public string AmountName { get; set; }
     }
 }

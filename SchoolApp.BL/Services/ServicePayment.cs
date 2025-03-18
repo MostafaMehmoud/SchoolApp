@@ -23,7 +23,7 @@ namespace SchoolApp.BL.Services
             {
                Id=Payment.Id,
                Code=Payment.Code,
-               ReceiptDate=Payment.ReceiptDate,
+               PaymentDate=Payment.PaymentDate,
                 StudentId=Payment.StudentId,
                 StudentName = Payment.StudentName,
                 Amount = Payment.Amount,
@@ -57,7 +57,7 @@ namespace SchoolApp.BL.Services
             {
                 Id = Payment.Id,
                 Code = Payment.Code,
-                ReceiptDate = Payment.ReceiptDate,
+                PaymentDate = Payment.PaymentDate,
                 StudentId = Payment.StudentId,
                 StudentName = Payment.StudentName,
                 Amount = Payment.Amount,
@@ -99,7 +99,7 @@ namespace SchoolApp.BL.Services
             {
                 Id = payment.Id,
                 Code = payment.Code,
-                ReceiptDate = payment.ReceiptDate,
+                PaymentDate = payment.PaymentDate,
                 StudentId = payment.StudentId,
                 StudentName = payment.StudentName,
                 Amount = payment.Amount,
@@ -127,7 +127,7 @@ namespace SchoolApp.BL.Services
             {
                 Id = payment.Id,
                 Code = payment.Code,
-                ReceiptDate = payment.ReceiptDate,
+                PaymentDate = payment.PaymentDate,
                 StudentId = payment.StudentId,
                 StudentName = payment.StudentName,
                 Amount = payment.Amount,
@@ -154,7 +154,7 @@ namespace SchoolApp.BL.Services
             {
                 Id = payment.Id,
                 Code = payment.Code,
-                ReceiptDate = payment.ReceiptDate,
+                PaymentDate = payment.PaymentDate,
                 StudentId = payment.StudentId,
                 StudentName = payment.StudentName,
                 Amount = payment.Amount,
@@ -176,7 +176,7 @@ namespace SchoolApp.BL.Services
             {
                 Id = payment.Id,
                 Code = payment.Code,
-                ReceiptDate = payment.ReceiptDate,
+                PaymentDate = payment.PaymentDate,
                 StudentId = payment.StudentId,
                 StudentName = payment.StudentName,
                 Amount = payment.Amount,
@@ -189,6 +189,37 @@ namespace SchoolApp.BL.Services
 
             };
             return vWPayment;
+        }
+
+        public VWStudentCostReceipt GetStudent(int StudentId)
+        {
+            var student = _unitOfWork.students.GetAll().FirstOrDefault(i => i.Id == StudentId);
+            VWStudentCostReceipt receipt = new VWStudentCostReceipt();
+           
+            receipt.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
+            return receipt;
+
+        }
+
+        public VWPayment Print(int id)
+        {
+           var payment=_unitOfWork.payments.GetById(id);
+            VWPayment vWPayment = new VWPayment();
+            vWPayment.Id = id;
+            vWPayment.Code = payment.Code;
+            vWPayment.StudentId = payment.StudentId;
+            vWPayment.PaymentDate = payment.PaymentDate;
+            vWPayment.Amount= payment.Amount;   
+            vWPayment.ChequeNumber= payment.ChequeNumber;
+            vWPayment.ChequeDate=payment.ChequeDate;
+            vWPayment.AmountName = payment.AmountName;
+            vWPayment.Amount=payment.Amount;
+            vWPayment.Purpose = payment.Purpose;
+            vWPayment.StudentId= payment.StudentId;
+            vWPayment.BankName = payment.BankName;
+            var student = _unitOfWork.students.GetAll().FirstOrDefault(i => i.Id ==payment.StudentId);
+            vWPayment.StudentName= $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
+            return vWPayment;   
         }
     }
 }

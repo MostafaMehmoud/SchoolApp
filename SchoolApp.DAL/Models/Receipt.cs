@@ -21,10 +21,10 @@ namespace SchoolApp.DAL.Models
         public decimal CLSBakelite { get; set; } = 0;
         public decimal CLSRegs { get; set; } = 0;
         public int CashCheque {  get; set; }
-        public int ChequeNumber {  get; set; }
-        public DateOnly ChequeDate { get; set; }
+        public int? ChequeNumber {  get; set; }
+        public DateOnly? ChequeDate { get; set; }
         public string Purpose {  get; set; }
-        public string BankName {  get; set; }
+        public string? BankName {  get; set; }
         public decimal ReceiptBusFirstTremCost { get; set; } = 0;
         public decimal ReceiptBusSecondTremCost { get; set; } = 0;
         public string AmountName { get; set; }

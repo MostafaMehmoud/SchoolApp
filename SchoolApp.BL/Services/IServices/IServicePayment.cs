@@ -21,5 +21,7 @@ namespace SchoolApp.BL.Services.IServices
         Task<VWPayment> GetMinPayment();
         Task<VWPayment> GetMaxPayment();
         int GetMaxPaymentId();
+        VWStudentCostReceipt GetStudent(int StudentId);
+        VWPayment Print(int id);
     }
 }

@@ -46,6 +46,9 @@ namespace SchoolApp.Controllers
         public async Task<IActionResult> Add(VWReceipt VWReceipt)
         {
             ModelState.Remove("Id");
+            ModelState.Remove("BankName");
+            ModelState.Remove("Purpose");
+            ModelState.Remove("ChequeDate");
             
             ModelState.Remove("installmentReceipts");
             if (!ModelState.IsValid)

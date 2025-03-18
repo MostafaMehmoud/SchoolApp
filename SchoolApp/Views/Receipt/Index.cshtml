@@ -479,6 +479,10 @@ function convertToArabicWords(num) {
             var errors = "";
             $("#hiddenBreakdown").val($("#breakdown").val());
             // Clear previous errors
+                var studentId = $("#studentSelect").val();
+          if (studentId == "0" || studentId == 0) {
+              errors += "يرجى اختيار  كود الطالب.<br/>";
+          }
             $("#errorContainer").html("").hide();
 
             // Create a FormData object
