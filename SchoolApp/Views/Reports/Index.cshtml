@@ -1,0 +1,221 @@
+﻿<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+  
+    @@media print {
+        body
+
+    {
+        font-size: 14px;
+        direction: rtl;
+        text-align: right;
+    }
+
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2"> تقرير شكل عام </h1>
+            </div>
+           
+        </div>
+
+        <div class="card-body">
+            <form id="Form" class="forms-sample">
+                <!-- Static Fields -->
+                
+               
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-4"> القسم </label>
+                        <select asp-items="ViewBag.ListDepartments" class="form-control form-control-sm ">
+                            <option>اختر القسم</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-4"> المرحلة </label>
+                        <select asp-items="ViewBag.ListStages" id="StageId" class="form-control form-control-sm ">
+                            <option>اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-4"> الصف </label>
+                        <select id="ClassTypeId" class="form-control form-control-sm ">
+                            <option>اختر الصف</option>
+                        </select>
+                    </div>
+
+                </div>
+                <!-- Additional Static Fields e.g., Books Fee, Registration Fee, Uniform Fee -->
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-4"> من رقم الطالب </label>
+                        <input class="form-control form-control-sm " type="number"/>
+                    </div> 
+                    <div class="col-md-6">
+                        <label class="fs-4"> الي رقم الطالب </label>
+                        <input class="form-control form-control-sm " type="number" />
+                    </div>
+                </div>
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-4">من تاريخ</label>
+                        <input id="fromDate" class="form-control form-control-sm" type="date" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fs-4">إلى تاريخ</label>
+                        <input id="toDate" class="form-control form-control-sm" type="date" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">معاينة</button>
+                       </div>
+            </form>
+            <table id="Table" class="display">
+                <thead>
+                    <tr>
+                        <th>اسم المرحلة</th>
+                        <th> اسم السنة </th>
+                        <th>مصاريف السنة </th>
+                        <th>عدد الاقساط  </th>
+                        <th>سعر القسط </th>
+                        <th>سعر الباكليت </th>
+                        <th> سعر الزي</th>
+                        <th>سعر الكتب </th>
+                        <th>رسوم التسجيل </th>
+                        <th> المجموع الكلي </th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                   @*  @foreach (var bus in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                           
+                        </tr>
+                    } *@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Include DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+                $('#Table').DataTable({
+        dom: 'Bfrtip', // Adds buttons
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // دعم اللغة العربية
+        },
+        buttons: [
+            {
+                extend: 'print',
+                text: 'طباعة الجدول',
+                title: 'تفاصيل الباصات',
+                customize: function (win) {
+                    $(win.document.body).css({
+                        'font-size': '14px',
+                        'direction': 'rtl', // توجيه النص لليمين
+                        'text-align': 'right' // تحسين المحاذاة
+                    });
+
+                    // جعل العنوان في منتصف الصفحة
+                    $(win.document.body).find('h1').css({
+                        'text-align': 'center', // توسيط العنوان
+                        'font-size': '20px', // تكبير الخط
+                        'font-weight': 'bold', // جعله عريضًا
+                        'margin-bottom': '20px' // إضافة مسافة تحت العنوان
+                    });
+                }
+            }
+        ]
+    });
+
+ $("#StageId").change(function () {
+            var stageId = $(this).val();
+            loadClassTypesByStage(stageId);
+        }); 
+        async function loadClassTypesByStage(stageId) {
+            var classTypeDropdown = $("#ClassTypeId");
+            classTypeDropdown.empty(); // تفريغ القائمة
+            classTypeDropdown.append('<option value="0">اختر الصف </option>'); // إعادة الخيار الافتراضي
+
+            if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+            try {
+                const data = await $.ajax({
+                    url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                    type: 'GET',
+                    data: { stageId: stageId },
+                    dataType: 'json'
+                });
+
+                if (data && data.length > 0) {
+                    $.each(data, function (i, item) {
+                        classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                } else {
+                    classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                }
+            } catch (error) {
+                Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+            }
+        }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date();
+            let lastYear = new Date();
+            lastYear.setFullYear(today.getFullYear() - 1);
+
+            // تحويل التاريخ إلى تنسيق YYYY-MM-DD
+            let todayStr = today.toISOString().split('T')[0];
+            let lastYearStr = lastYear.toISOString().split('T')[0];
+
+            // ضبط القيم الافتراضية
+            document.getElementById("fromDate").value = lastYearStr;
+            document.getElementById("toDate").value = todayStr;
+        });
+    </script>
+   
+}

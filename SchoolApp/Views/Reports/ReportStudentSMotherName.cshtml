@@ -1,0 +1,269 @@
+﻿<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+
+    @@media print {
+        body {
+            font-size: 14px;
+            direction: rtl;
+            text-align: right;
+        }
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2"> تقرير عن امهات الطلبة    </h1>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+            <form id="Form" class="forms-sample">
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label class="fs-4"> القسم </label>
+                        <select id="DepartmentId" asp-items="ViewBag.ListDepartments" class="form-control form-control-sm">
+                            <option value="">اختر القسم</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-4"> المرحلة </label>
+                        <select id="StageId" asp-items="ViewBag.ListStages" class="form-control form-control-sm">
+                            <option value="">اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fs-4"> الصف </label>
+                        <select id="ClassTypeId" class="form-control form-control-sm">
+                            <option value="">اختر الصف</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-4"> من رقم الطالب </label>
+                        <input id="FromStudentNumber" class="form-control form-control-sm" type="number" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fs-4"> الي رقم الطالب </label>
+                        <input id="ToStudentNumber" class="form-control form-control-sm" type="number" />
+                    </div>
+                </div>
+
+                <div class="row custom-form-group">
+                    <div class="col-md-6">
+                        <label class="fs-4">من تاريخ</label>
+                        <input id="fromDate" class="form-control form-control-sm" type="date" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fs-4">إلى تاريخ</label>
+                        <input id="toDate" class="form-control form-control-sm" type="date" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" id="btnData" class="btn btn-success btn-sm custom-button">معاينة</button>
+                </div>
+            </form>
+
+            <table id="Table" class="display">
+                <thead>
+                    <tr>
+                        <th> اسم الطالب  </th>
+                        <th>  اسم الام </th>
+                        <th> المرحلة</th>
+                        <th> الصف </th>
+                        <th> فصل </th>
+                        <th> هاتف </th>
+                        <th> جوال </th>
+                       
+                        <th> الوظيفة   </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Include DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+               $(document).ready(function () {
+                       $('#Table').DataTable({
+               dom: 'Bfrtip', // Adds buttons
+               language: {
+                   url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // دعم اللغة العربية
+               },
+               buttons: [
+                   {
+                       extend: 'print',
+                       text: 'طباعة الجدول',
+                       title: '  تقرير عن امهات الطلبة ',
+                       customize: function (win) {
+                           $(win.document.body).css({
+                               'font-size': '14px',
+                               'direction': 'rtl', // توجيه النص لليمين
+                               'text-align': 'right' // تحسين المحاذاة
+                           });
+
+                           // جعل العنوان في منتصف الصفحة
+                           $(win.document.body).find('h1').css({
+                               'text-align': 'center', // توسيط العنوان
+                               'font-size': '20px', // تكبير الخط
+                               'font-weight': 'bold', // جعله عريضًا
+                               'margin-bottom': '20px' // إضافة مسافة تحت العنوان
+                           });
+                       }
+                   }
+               ]
+           });
+
+        $("#StageId").change(function () {
+                   var stageId = $(this).val();
+                   loadClassTypesByStage(stageId);
+               });
+               async function loadClassTypesByStage(stageId) {
+                   var classTypeDropdown = $("#ClassTypeId");
+                   classTypeDropdown.empty(); // تفريغ القائمة
+                   classTypeDropdown.append('<option value="0">اختر الصف </option>'); // إعادة الخيار الافتراضي
+
+                   if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+                   try {
+                       const data = await $.ajax({
+                           url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                           type: 'GET',
+                           data: { stageId: stageId },
+                           dataType: 'json'
+                       });
+
+                       if (data && data.length > 0) {
+                           $.each(data, function (i, item) {
+                               classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                           });
+                       } else {
+                           classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                       }
+                   } catch (error) {
+                       Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                   }
+               }
+               });
+    </script>
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date();
+            let lastYear = new Date();
+            lastYear.setFullYear(today.getFullYear() - 1);
+
+            // تحويل التاريخ إلى تنسيق YYYY-MM-DD
+            let todayStr = today.toISOString().split('T')[0];
+            let lastYearStr = lastYear.toISOString().split('T')[0];
+
+            // ضبط القيم الافتراضية
+            document.getElementById("fromDate").value = lastYearStr;
+            document.getElementById("toDate").value = todayStr;
+        });
+
+              $(document).ready(function () {
+            $("#btnData").click(function () {
+                var formData = {
+                    DepartmentId: $("#DepartmentId").val(),
+                    StageId: $("#StageId").val(),
+                    ClassTypeId: $("#ClassTypeId").val(),
+                    FromStudentNumber: $("#FromStudentNumber").val(),
+                    ToStudentNumber: $("#ToStudentNumber").val(),
+                    FromDate: $("#fromDate").val(),
+                    ToDate: $("#toDate").val()
+                };
+
+                $.ajax({
+                    url: "/Reports/GetStudents",
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if ($.fn.DataTable.isDataTable("#Table")) {
+                            $("#Table").DataTable().destroy(); // 🔥 Destroy existing DataTable
+                        }
+
+                        $("#Table tbody").empty(); // 🔄 Clear old data
+
+                        // Populate table with new data
+                        $.each(response, function (index, student) {
+                                console.log(student);
+                            $("#Table tbody").append(
+                                `<tr>
+
+                                    <td>${student.studentName}</td>
+                                    <td>${student.motherStudentName}</td>
+                                    <td>${student.stageName}</td>
+                                    <td>${student.classTypeName}</td>
+                                    <td>${student.className}</td>
+                                    <td>${student.motherMobilePhone}</td>
+                                    <td>${student.motherWorkMobile}</td>
+                                    <td>${student.motherJob}</td>
+                                   
+                                </tr>`
+                            );
+                        });
+
+                        // Reinitialize DataTable
+                        $("#Table").DataTable({
+                            dom: 'Bfrtip',
+                            language: {
+                                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // Arabic support
+                            },
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    text: 'طباعة الجدول',
+                                    title: 'تفاصيل الباصات',
+                                    customize: function (win) {
+                                        $(win.document.body).css({
+                                            'font-size': '14px',
+                                            'direction': 'rtl', // Right to left
+                                            'text-align': 'right' // Align properly
+                                        });
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

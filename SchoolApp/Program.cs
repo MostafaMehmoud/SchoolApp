@@ -28,6 +28,7 @@ builder.Services.AddScoped<IServiceDepartment, ServiceDepartment>();
 builder.Services.AddScoped<IServiceStudent, ServiceStudent>();  
 builder.Services.AddScoped<IServiceReceipt, ServiceReceipt>();  
 builder.Services.AddScoped<IServicePayment, ServicePayment>();  
+builder.Services.AddScoped<IServiceReport, ServiceReport>();  
 
 var app = builder.Build();
 

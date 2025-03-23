@@ -1682,7 +1682,8 @@
                                $("#guardianFaxNumber").val(response.guardianFaxNumber);
                                  let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
                                $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
-                               loadClassTypesByStage(response.stageId);
+                               await loadClassTypesByStage(response.stageId);
+                                 $("#classTypeId").val(response.classTypeId);
                                $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
                                $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
                                $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
@@ -1848,7 +1849,8 @@
                                $("#guardianFaxNumber").val(response.guardianFaxNumber);
                                  let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
                                $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
-                               loadClassTypesByStage(response.stageId);
+                              await loadClassTypesByStage(response.stageId);
+                                $("#classTypeId").val(response.classTypeId);
                                $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
                                $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
                                $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
@@ -2019,7 +2021,8 @@
                                $("#guardianFaxNumber").val(response.guardianFaxNumber);
                                  let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
                                $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
-                               loadClassTypesByStage(response.stageId);
+                              await loadClassTypesByStage(response.stageId);
+                                $("#classTypeId").val(response.classTypeId);
                                $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
                                $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
                                $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);
@@ -2162,7 +2165,7 @@
                                       // Set the correct radio button as checked
                                       $(`input[name="GanderType"][value="${genderValue}"]`).prop("checked", true);
 
-                               $("#classTypeId").val(response.classTypeId);
+                             
                                $("#classTypeName").val(response.classTypeName);
                                $("#lastBalance").val(response.lastBalance);
                                $("#lastSchoolName").val(response.lastSchoolName);
@@ -2193,7 +2196,8 @@
                                $("#guardianFaxNumber").val(response.guardianFaxNumber);
                                  let guardianWorkingWithUs = response.guardianWorkingWithUs; // Ensure the key matches the returned data
                                $(`input[name="GuardianWorkingWithUs"][value="${guardianWorkingWithUs}"]`).prop("checked", true);
-                               loadClassTypesByStage(response.stageId);
+                              await loadClassTypesByStage(response.stageId);
+                                $("#classTypeId").val(response.classTypeId);
                                $("#personalStatusGuardianId").val(response.personalStatusGuardianId);
                                $("#personalStatusGuardianNumber").val(response.personalStatusGuardianNumber);
                                $("#personalStatusGuardianStartDate").val(response.personalStatusGuardianStartDate);

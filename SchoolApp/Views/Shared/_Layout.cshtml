@@ -115,7 +115,7 @@
         <a href="#" onclick="toggleMenu('teachers-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>المراحل الدراسية</span></a>
         <ul id="teachers-menu" class="submenu">
             <li><a asp-controller="AcademicStage" asp-action="Index"> اسم المرحلة </a></li>
-            <li><a asp-controller="ClassTypeName" asp-action="Index">اسماء الفصول</a></li>
+            <li><a asp-controller="ClassTypeName" asp-action="Index">اضافة سنوات الي المرحلة </a></li>
             <li><a asp-controller="ClassType" asp-action="Index">المرحلة الدراسية</a></li>
             <li><a asp-controller="ClassType" asp-action="Index"> اضافة قسط علي المرحلة</a></li>
             <li><a asp-controller="ClassType" asp-action="ReportAllClassType">قائمة المراحل الدراسية</a></li>
@@ -125,6 +125,36 @@
             <li><a asp-controller="Receipt" asp-action="Index">  سندات قبض </a></li>
             <li><a asp-controller="Payment" asp-action="Index">سندات صرف </a></li>
           
+        </ul> 
+        <a href="#" onclick="toggleMenu('report-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>تقارير </span></a>
+        <ul id="report-menu" class="submenu">
+            <li><a asp-controller="Reports" asp-action="ReportStudentSName"> قائمة اسماء الطلبة  </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentSFatherName"> تقرير عن اولياء الامور  </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentSMotherName"> تقرير عن امهات الطلبة  </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentFeesName"> تقرير رسوم الطلبة    </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير  حساب طالب    </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير بالمسددين كاملا    </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير بالمسددين جزء من المبلغ      </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير بالطلبة غير مسددين      </a></li>
+         
+           
+
+        </ul> 
+        <a href="#" onclick="toggleMenu('note-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>اشعارات </span></a>
+        <ul id="note-menu" class="submenu">
+            <li><a asp-controller="" asp-action="">اشعار مطالبة بالرسوم </a></li>
+            <li><a asp-controller="" asp-action=""> شهادة تعريف</a></li>
+            <li><a asp-controller="" asp-action="">  طباعة الباركود</a></li>
+            <li><a asp-controller="" asp-action=""> Student List Report </a></li>
+
+        </ul>
+        <a href="#" onclick="toggleMenu('bondes-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>تقرير السندات </span></a>
+        <ul id="bondes-menu" class="submenu">
+            <li><a asp-controller="" asp-action="">تقرير  سندات القبض </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير ملخص الرسوم</a></li>
+            <li><a asp-controller="" asp-action="">  احصائية للمبالغ المسحقة </a></li>
+            <li><a asp-controller="" asp-action=""> تقرير بالطلبة ابجديا </a></li>
+
         </ul>
         <a href="#"><i class="fas fa-cogs"></i> <span>الإعدادات</span></a>
     </div>
