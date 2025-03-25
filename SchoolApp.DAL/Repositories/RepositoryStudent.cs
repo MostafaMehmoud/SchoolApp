@@ -47,22 +47,28 @@ namespace SchoolApp.DAL.Repositories
         {
             try
             {
-                // Use DefaultIfEmpty(0) to handle an empty table.
-                int? maxCode = await _context.students
-                    .Select(c => (int?)c.StudentNumber)
+                // 🔹 1️⃣ استخراج السنتين الأخيرتين من السنة الحالية
+                string yearPrefix = DateTime.Now.Year.ToString().Substring(2, 2); // "25" للسنة 2025
+                int yearNumber = int.Parse(yearPrefix) * 100000; // 25 → 2500000
 
+                // 🔹 2️⃣ إيجاد أكبر رقم طالب للسنة الحالية
+                int? maxStudentNumber = await _context.students
+                    .Where(s => s.StudentNumber >= yearNumber && s.StudentNumber < (yearNumber + 100000)) // طلاب نفس السنة
+                    .Select(s => (int?)s.StudentNumber)
                     .MaxAsync();
 
+                // 🔹 3️⃣ تحديد الرقم الجديد
+                int newStudentNumber = (maxStudentNumber ?? yearNumber) + 1;
 
-                return (maxCode ?? 0) + 1;
+                return newStudentNumber;
             }
             catch (Exception ex)
             {
-                // Log the full exception details for debugging.
                 Console.WriteLine("Exception in Repository.GetNewCode: " + ex.ToString());
-                throw;  // Rethrow to let the upper layers catch it.
+                throw;
             }
         }
+
 
         public async Task<Student> GetNextOrPreviousItemByCode(int id, string direction)
         {

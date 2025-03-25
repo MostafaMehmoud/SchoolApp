@@ -153,7 +153,7 @@
                async function loadClassTypesByStage(stageId) {
                    var classTypeDropdown = $("#ClassTypeId");
                    classTypeDropdown.empty(); // تفريغ القائمة
-                   classTypeDropdown.append('<option value="0">اختر الصف </option>'); // إعادة الخيار الافتراضي
+                   classTypeDropdown.append('<option >اختر الصف </option>'); // إعادة الخيار الافتراضي
 
                    if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
 

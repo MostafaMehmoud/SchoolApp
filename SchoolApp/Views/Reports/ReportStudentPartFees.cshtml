@@ -30,45 +30,48 @@
     <div class="card">
         <div class="d-flex justify-content-between">
             <div class="m-0">
-                <h1 class="card-title text-dark font-weight-bold fs-2"> تقرير عن امهات الطلبة    </h1>
+                <h1 class="card-title text-dark font-weight-bold fs-2">  تقرير بالمسددين جزء من الرسوم  </h1>
             </div>
 
         </div>
 
         <div class="card-body">
             <form id="Form" class="forms-sample">
+                <!-- Static Fields -->
+
+
                 <div class="row custom-form-group">
                     <div class="col-md-4">
                         <label class="fs-4"> القسم </label>
-                        <select id="DepartmentId" asp-items="ViewBag.ListDepartments" class="form-control form-control-sm">
-                            <option value="">اختر القسم</option>
+                        <select asp-items="ViewBag.ListDepartments" id="DepartmentId" class="form-control form-control-sm ">
+                            <option>اختر القسم</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label class="fs-4"> المرحلة </label>
-                        <select id="StageId" asp-items="ViewBag.ListStages" class="form-control form-control-sm">
-                            <option value="">اختر المرحلة</option>
+                        <select asp-items="ViewBag.ListStages" id="StageId" class="form-control form-control-sm ">
+                            <option>اختر المرحلة</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label class="fs-4"> الصف </label>
-                        <select id="ClassTypeId" class="form-control form-control-sm">
-                            <option value="">اختر الصف</option>
+                        <select id="ClassTypeId" class="form-control form-control-sm ">
+                            <option>اختر الصف</option>
                         </select>
                     </div>
-                </div>
 
+                </div>
+                <!-- Additional Static Fields e.g., Books Fee, Registration Fee, Uniform Fee -->
                 <div class="row custom-form-group">
                     <div class="col-md-6">
                         <label class="fs-4"> من رقم الطالب </label>
-                        <input id="FromStudentNumber" class="form-control form-control-sm" type="number" />
+                        <input class="form-control form-control-sm " type="number" />
                     </div>
                     <div class="col-md-6">
                         <label class="fs-4"> الي رقم الطالب </label>
-                        <input id="ToStudentNumber" class="form-control form-control-sm" type="number" />
+                        <input class="form-control form-control-sm " type="number" />
                     </div>
                 </div>
-
                 <div class="row custom-form-group">
                     <div class="col-md-6">
                         <label class="fs-4">من تاريخ</label>
@@ -79,27 +82,42 @@
                         <input id="toDate" class="form-control form-control-sm" type="date" />
                     </div>
                 </div>
-
                 <div class="form-group">
                     <button type="button" id="btnData" class="btn btn-success btn-sm custom-button">معاينة</button>
                 </div>
             </form>
-
             <table id="Table" class="display">
                 <thead>
                     <tr>
-                        <th> اسم الطالب  </th>
-                        <th>  اسم الام </th>
-                        <th> المرحلة</th>
-                        <th> الصف </th>
-                        <th> فصل </th>
-                        <th> هاتف </th>
-                        <th> جوال </th>
-                       
-                        <th> الوظيفة   </th>
+                        <th>رقم الطالب </th>
+                        <th>اسم الطالب</th>
+                        <th>اسم المرحلة</th>
+                        <th> اسم السنة </th>
+                        <th> الرسوم المدفوع   </th>
+                        <th> المتبقي من الرسوم  </th>
+
+
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @*  @foreach (var bus in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+
+                        </tr>
+                    } *@
+                </tbody>
             </table>
         </div>
     </div>
@@ -126,7 +144,7 @@
                    {
                        extend: 'print',
                        text: 'طباعة الجدول',
-                       title: '  تقرير عن امهات الطلبة ',
+                       title: 'تفاصيل الباصات',
                        customize: function (win) {
                            $(win.document.body).css({
                                'font-size': '14px',
@@ -170,7 +188,7 @@
                                classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
                            });
                        } else {
-                           classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                           classTypeDropdown.append('<option >لا توجد بيانات</option>');
                        }
                    } catch (error) {
                        Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
@@ -178,10 +196,6 @@
                }
                });
     </script>
-
-
-
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let today = new Date();
@@ -196,8 +210,7 @@
             document.getElementById("fromDate").value = lastYearStr;
             document.getElementById("toDate").value = todayStr;
         });
-
-              $(document).ready(function () {
+          $(document).ready(function () {
             $("#btnData").click(function () {
                 var formData = {
                     DepartmentId: $("#DepartmentId").val(),
@@ -207,63 +220,60 @@
                     ToStudentNumber: $("#ToStudentNumber").val(),
                     FromDate: $("#fromDate").val(),
                     ToDate: $("#toDate").val()
+
                 };
 
-                $.ajax({
-                    url: "/Reports/GetStudents",
-                    type: "POST",
-                    data: formData,
-                    success: function (response) {
-                        if ($.fn.DataTable.isDataTable("#Table")) {
-                            $("#Table").DataTable().destroy(); // 🔥 Destroy existing DataTable
-                        }
+                    $.ajax({
+            url: "/Reports/GetStudentPartFees",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                updateDataTable(response); // ✅ تحديث البيانات مباشرةً دون إعادة التهيئة
+            }
+        });
 
-                        $("#Table tbody").empty(); // 🔄 Clear old data
-
-                        // Populate table with new data
-                        $.each(response, function (index, student) {
-                                console.log(student);
-                            $("#Table tbody").append(
-                                `<tr>
-
-                                    <td>${student.studentName}</td>
-                                    <td>${student.motherStudentName}</td>
-                                    <td>${student.stageName}</td>
-                                    <td>${student.classTypeName}</td>
-                                    <td>${student.className}</td>
-                                    <td>${student.motherMobilePhone}</td>
-                                    <td>${student.motherWorkMobile}</td>
-                                    <td>${student.motherJob}</td>
-                                   
-                                </tr>`
-                            );
-                        });
-
-                        // Reinitialize DataTable
-                        $("#Table").DataTable({
-                            dom: 'Bfrtip',
-                            language: {
-                                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // Arabic support
-                            },
-                            buttons: [
-                                {
-                                    extend: 'print',
-                                    text: 'طباعة الجدول',
-                                    title: 'تفاصيل الباصات',
-                                    customize: function (win) {
-                                        $(win.document.body).css({
-                                            'font-size': '14px',
-                                            'direction': 'rtl', // Right to left
-                                            'text-align': 'right' // Align properly
-                                        });
-                                    }
-                                }
-                            ]
-                        });
-                    }
-                });
             });
         });
 
+
+
+                  function updateDataTable(response) {
+            let table = $("#Table").DataTable();
+            table.clear().draw(); // 🧹 مسح البيانات القديمة فقط دون تدمير الجدول
+
+            let totalFees = 0, totalRemaining = 0;
+
+            $.each(response, function (index, student) {
+                 // 🧮 جمع القيم للحصول على الإجمالي
+                totalFees += student.fees;
+
+                totalRemaining += student.payments;
+
+                // 📝 إضافة الصف العادي
+                table.row.add([
+                    student.studentNumber,
+                    student.studentName,
+                    student.stageName,
+                    student.classTypeName,
+
+                    student.fees,
+                    student.payments,
+
+                ]).draw(false);
+            });
+
+            // 🚀 إضافة صف الإجمالي
+            $("#Table tbody").append(
+                `<tr style="font-weight:bold; background:#f8f9fa;">
+                    <td colspan="3" style="text-align:right;">الإجمالي</td>
+                    <td></td> <!-- فارغ -->
+                    <td>${totalFees.toFixed(2)}</td>
+
+
+                    <td>${totalRemaining.toFixed(2)}</td>
+                </tr>`
+            );
+        }
     </script>
+
 }

@@ -46,7 +46,7 @@
                 <div class="row custom-form-group">
                     <div class="col-md-4">
                         <label class="fs-4"> القسم </label>
-                        <select asp-items="ViewBag.ListDepartments" class="form-control form-control-sm ">
+                        <select asp-items="ViewBag.ListDepartments" id="DepartmentId" class="form-control form-control-sm ">
                             <option>اختر القسم</option>
                         </select>
                     </div>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">معاينة</button>
+                    <button type="button" id="btnData" class="btn btn-success btn-sm custom-button">معاينة</button>
                        </div>
             </form>
             <table id="Table" class="display">
@@ -177,7 +177,7 @@
         async function loadClassTypesByStage(stageId) {
             var classTypeDropdown = $("#ClassTypeId");
             classTypeDropdown.empty(); // تفريغ القائمة
-            classTypeDropdown.append('<option value="0">اختر الصف </option>'); // إعادة الخيار الافتراضي
+            classTypeDropdown.append('<option >اختر الصف </option>'); // إعادة الخيار الافتراضي
 
             if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
 
@@ -194,7 +194,7 @@
                         classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
                     });
                 } else {
-                    classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                    classTypeDropdown.append('<option >لا توجد بيانات</option>');
                 }
             } catch (error) {
                 Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");

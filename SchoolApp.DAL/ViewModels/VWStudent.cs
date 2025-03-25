@@ -162,6 +162,7 @@ namespace SchoolApp.DAL.ViewModels
         public decimal ReceiptTotalFees { get; set; } = 0;
         public decimal ReceiptTotalPayments { get; set; } = 0;
         public decimal RemainingFees { get; set; } = 0;
+        public DateOnly RegistrationDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public List<VWInstallmentCostBeforeDiscount> installmentCostBeforeDiscounts { get; set; } = new List<VWInstallmentCostBeforeDiscount>();
         public List<VWInstallmentCostAfterDiscount> installmentCostAfterDiscounts { get; set; } = new List<VWInstallmentCostAfterDiscount>();
 

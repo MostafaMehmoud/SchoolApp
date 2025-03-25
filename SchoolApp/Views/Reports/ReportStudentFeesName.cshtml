@@ -30,7 +30,7 @@
     <div class="card">
         <div class="d-flex justify-content-between">
             <div class="m-0">
-                <h1 class="card-title text-dark font-weight-bold fs-2"> تقرير رسوم الطلبة      </h1>
+                <h1 class="card-title text-dark font-weight-bold fs-2"> تقرير حساب الطلبة      </h1>
             </div>
 
         </div>
@@ -56,6 +56,12 @@
                             <option value="">اختر الصف</option>
                         </select>
                     </div>
+                   @*  <div class="col-md-3">
+                        <label class="fs-4"> الطلبة </label>
+                        <select id="studentId" asp-items=" ViewBag.ListStudents" class="form-control form-control-sm">
+                            <option value="">اختر الطالب</option>
+                        </select>
+                    </div> *@
                 </div>
 
                 <div class="row custom-form-group">
@@ -156,7 +162,7 @@
                async function loadClassTypesByStage(stageId) {
                    var classTypeDropdown = $("#ClassTypeId");
                    classTypeDropdown.empty(); // تفريغ القائمة
-                   classTypeDropdown.append('<option value="0">اختر الصف </option>'); // إعادة الخيار الافتراضي
+                   classTypeDropdown.append('<option >اختر الصف </option>'); // إعادة الخيار الافتراضي
 
                    if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
 
@@ -210,6 +216,7 @@
                     ToStudentNumber: $("#ToStudentNumber").val(),
                     FromDate: $("#fromDate").val(),
                     ToDate: $("#toDate").val()
+                    studentId: $("#studentId").val()
                 };
 
                     $.ajax({

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعار الرسوم الدراسية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 60%;
+            margin: auto;
+        }
+
+        .btn-print {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>إشعار الرسوم الدراسية</h2>
+        <hr>
+        <p><strong>رقم الطالب:</strong> <span id="studentNumber"></span></p>
+        <p><strong>اسم الطالب:</strong> <span id="studentName"></span></p>
+        <p><strong>اسم المرحلة:</strong> <span id="stageName"></span></p>
+        <p><strong>اسم السنة:</strong> <span id="classTypeName"></span></p>
+        <p><strong>الرسوم المدفوعة:</strong> <span id="feesPaid"></span></p>
+        <p><strong>المتبقي من الرسوم:</strong> <span id="feesRemaining"></span></p>
+        <hr>
+        <p>يرجى التكرم بسداد المبلغ المتبقي في أقرب وقت ممكن.</p>
+
+        <!-- زر الطباعة -->
+        <button class="btn-print" onclick="window.print()">🖨️ طباعة</button>
+    </div>
+
+    <script>
+        // 📜 جلب البيانات من `localStorage`
+        let studentData = JSON.parse(localStorage.getItem("printData"));
+
+        if (studentData) {
+            document.getElementById("studentNumber").innerText = studentData.studentNumber;
+            document.getElementById("studentName").innerText = studentData.studentName;
+            document.getElementById("stageName").innerText = studentData.stageName;
+            document.getElementById("classTypeName").innerText = studentData.classTypeName;
+            document.getElementById("feesPaid").innerText = studentData.feesPaid;
+            document.getElementById("feesRemaining").innerText = studentData.feesRemaining;
+        } else {
+            document.body.innerHTML = "<h2>⚠️ لم يتم العثور على بيانات الطباعة!</h2>";
+        }
+    </script>
+
+</body>
+</html>

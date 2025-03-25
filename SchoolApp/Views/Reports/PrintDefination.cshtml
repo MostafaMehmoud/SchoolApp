@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شهادة تعريف طالب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 60%;
+            margin: auto;
+            border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .print-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .print-btn:hover {
+                background: #0056b3;
+            }
+
+        /* إخفاء الزر عند الطباعة */
+        @@media print {
+            .print-btn
+
+        {
+            display: none;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>شهادة تعريف طالب</h2>
+        <hr>
+        <div class="content">
+            <p><strong>رقم الطالب:</strong> <span id="studentNumber"></span></p>
+            <p><strong>اسم الطالب:</strong> <span id="studentName"></span></p>
+            <p><strong>اسم المرحلة:</strong> <span id="stageName"></span></p>
+            <p><strong>اسم السنة:</strong> <span id="classTypeName"></span></p>
+            <p>وقد أعطي له هذا التعريف بناءً على طلبه لتقديمه إلى الجهة المعنية.</p>
+        </div>
+
+        <button onclick="window.print()" class="print-btn">🖨️ طباعة</button>
+    </div>
+
+    <script>
+        // 📜 جلب البيانات من `localStorage`
+        let studentData = JSON.parse(localStorage.getItem("printData"));
+
+        if (studentData) {
+            document.getElementById("studentNumber").innerText = studentData.studentNumber;
+            document.getElementById("studentName").innerText = studentData.studentName;
+            document.getElementById("stageName").innerText = studentData.stageName;
+            document.getElementById("classTypeName").innerText = studentData.classTypeName;
+        } else {
+            document.body.innerHTML = "<h2>⚠️ لم يتم العثور على بيانات الطالب!</h2>";
+        }
+    </script>
+
+</body>
+</html>

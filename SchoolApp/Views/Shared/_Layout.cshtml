@@ -132,26 +132,26 @@
             <li><a asp-controller="Reports" asp-action="ReportStudentSFatherName"> تقرير عن اولياء الامور  </a></li>
             <li><a asp-controller="Reports" asp-action="ReportStudentSMotherName"> تقرير عن امهات الطلبة  </a></li>
             <li><a asp-controller="Reports" asp-action="ReportStudentFeesName"> تقرير رسوم الطلبة    </a></li>
-            <li><a asp-controller="" asp-action=""> تقرير  حساب طالب    </a></li>
-            <li><a asp-controller="" asp-action=""> تقرير بالمسددين كاملا    </a></li>
-            <li><a asp-controller="" asp-action=""> تقرير بالمسددين جزء من المبلغ      </a></li>
-            <li><a asp-controller="" asp-action=""> تقرير بالطلبة غير مسددين      </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportAccountStatement"> تقرير  حساب طالب    </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentCompleteFees"> تقرير بالمسددين كاملا    </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentPartFees"> تقرير بالمسددين جزء من المبلغ      </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportStudentNoFees"> تقرير بالطلبة غير مسددين      </a></li>
          
            
 
         </ul> 
         <a href="#" onclick="toggleMenu('note-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>اشعارات </span></a>
         <ul id="note-menu" class="submenu">
-            <li><a asp-controller="" asp-action="">اشعار مطالبة بالرسوم </a></li>
-            <li><a asp-controller="" asp-action=""> شهادة تعريف</a></li>
-            <li><a asp-controller="" asp-action="">  طباعة الباركود</a></li>
-            <li><a asp-controller="" asp-action=""> Student List Report </a></li>
-
+            <li><a asp-controller="Reports" asp-action="ReportStudentNotificationFees">اشعار مطالبة بالرسوم </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportDefinationStudent"> شهادة تعريف</a></li>
+            <li><a asp-controller="Reports" asp-action="ReportBarcodeStudent">  طباعة الباركود</a></li>
+           @*  <li><a asp-controller="" asp-action=""> Student List Report </a></li>
+ *@
         </ul>
         <a href="#" onclick="toggleMenu('bondes-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>تقرير السندات </span></a>
         <ul id="bondes-menu" class="submenu">
-            <li><a asp-controller="" asp-action="">تقرير  سندات القبض </a></li>
-            <li><a asp-controller="" asp-action=""> تقرير ملخص الرسوم</a></li>
+            <li><a asp-controller="Reports" asp-action="ReportPayments">تقرير  سندات القبض </a></li>
+            <li><a asp-controller="Reports" asp-action="ReportFees"> تقرير ملخص الرسوم</a></li>
             <li><a asp-controller="" asp-action="">  احصائية للمبالغ المسحقة </a></li>
             <li><a asp-controller="" asp-action=""> تقرير بالطلبة ابجديا </a></li>
 
