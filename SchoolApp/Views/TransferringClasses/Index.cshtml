@@ -1,0 +1,189 @@
+﻿<style>
+    /* تقليل حجم المدخلات */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* تقليل الهوامش بين الحقول */
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تقليل الهوامش حول الأزرار */
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+
+    @@media print {
+        body {
+            font-size: 14px;
+            direction: rtl;
+            text-align: right;
+        }
+    }
+
+</style>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="d-flex justify-content-between">
+            <div class="m-0">
+                <h1 class="card-title text-dark font-weight-bold fs-2"> نقل الصفوف </h1>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+            <div class="forms-sample">
+                <div class="row custom-form-group">
+                    <div class="col">
+                        <label class="form-label">المرحلة</label>
+                        <select required  asp-items=" ViewBag.Stages" id="StageId" class="form-control form-control-sm">
+                            <option value="0">اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الصف</label>
+                        <select required id="classTypeId" class="form-control form-control-sm">
+                            <option value="0">اختر الصف</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row custom-form-group">
+                   
+                    <div class="col">
+                        <label class="form-label">المرحلة</label>
+                        <select required asp-items=" ViewBag.Stages" id="StageId2" class="form-control form-control-sm">
+                            <option value="0">اختر المرحلة</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">الصف</label>
+                        <select required id="classTypeId2" class="form-control form-control-sm">
+                            <option value="0">اختر الصف</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnShow" class="btn btn-success btn-sm custom-button">نقل</button>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#StageId").change(function () {
+                  var stageId = $(this).val();
+                  loadClassTypesByStage1(stageId);
+              });
+                async function loadClassTypesByStage1(stageId) {
+                    var classTypeDropdown = $("#classTypeId");
+                    classTypeDropdown.empty(); // تفريغ القائمة
+                    classTypeDropdown.append('<option value="0">اختر الفصل</option>'); // إعادة الخيار الافتراضي
+
+                    if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+                    try {
+                        const data = await $.ajax({
+                            url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                            type: 'GET',
+                            data: { stageId: stageId },
+                            dataType: 'json'
+                        });
+
+                        if (data && data.length > 0) {
+                            $.each(data, function (i, item) {
+                                classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        } else {
+                            classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                        }
+                    } catch (error) {
+                        Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                    }
+                }
+                  $("#StageId2").change(function () {
+                  var stageId = $(this).val();
+                  loadClassTypesByStage2(stageId);
+              });
+                async function loadClassTypesByStage2(stageId) {
+                    var classTypeDropdown = $("#classTypeId2");
+                    classTypeDropdown.empty(); // تفريغ القائمة
+                    classTypeDropdown.append('<option value="0">اختر الفصل</option>'); // إعادة الخيار الافتراضي
+
+                    if (stageId == 0) return; // لا تقم بإرسال الطلب إذا لم يكن هناك مرحلة صالحة
+
+                    try {
+                        const data = await $.ajax({
+                            url: '@Url.Action("GetClassTypeNamesByStage", "ClassType")',
+                            type: 'GET',
+                            data: { stageId: stageId },
+                            dataType: 'json'
+                        });
+
+                        if (data && data.length > 0) {
+                            $.each(data, function (i, item) {
+                                classTypeDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        } else {
+                            classTypeDropdown.append('<option value="0">لا توجد بيانات</option>');
+                        }
+                    } catch (error) {
+                        Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                    }
+                }
+                               $(document).ready(function () {
+            $("#btnShow").click(function () {
+                var fromStage = $("#StageId").val();
+                var fromClass = $("#classTypeId").val();
+                var toStage = $("#StageId2").val();
+                var toClass = $("#classTypeId2").val();
+
+                // Basic Validation
+                console.log(fromStage)
+                console.log(fromClass)
+                console.log(toStage)
+                console.log(toClass)
+                if (fromStage=="0" || fromClass=="0" || toStage=="0" || toClass=="0") {
+                    Swal.fire("تنبيه", "يرجى ملء جميع الحقول قبل النقل.", "warning");
+                    return;
+                }
+
+                if (fromStage === toStage && fromClass === toClass) {
+                    Swal.fire("تنبيه", "لا يمكن نقل الطلاب إلى نفس المرحلة والفصل.", "warning");
+                    return;
+                }
+
+                var formData = {
+                    fromStage: parseInt(fromStage),
+                    fromClass: parseInt(fromClass),
+                    toStage: parseInt(toStage),
+                    toClass: parseInt(toClass)
+                };
+
+                $.ajax({
+                    url: "/TransferringClasses/TranseferringStudents", // adjust as needed
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire("تم نقل الطلبة!", response.success, "success").then(function () {
+                            location.reload();
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        Swal.fire("خطأ", "حدث خطأ أثناء النقل: " + errorThrown, "error");
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}

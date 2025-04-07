@@ -210,16 +210,31 @@ namespace SchoolApp.Controllers
         }
         public IActionResult ReportFees()
         {
-            ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
+            
             ViewBag.ListClassTypeNames = new SelectList(_serviceReport.GetAllClassTypeNames(), "Id", "Name");
             ViewBag.ListStages = new SelectList(_serviceReport.GetAllStages(), "Id", "StageName");
-            ViewBag.ListStudents = new SelectList(_serviceReport.GetAllStudents(), "Id", "StudentNumber");
+           
             return View();
         }
         [HttpPost]
         public IActionResult ReportFees( int? StageId, int? ClassTypeId)
         {
             var data = _serviceReport.GetFeeStudent( StageId, ClassTypeId);
+            return Json(data); // Returns a list of student data as JSON
+        }
+        [HttpGet]
+        public IActionResult ReportStudentSNameOrderByStudentName()
+        {
+            ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
+            ViewBag.ListClassTypeNames = new SelectList(_serviceReport.GetAllClassTypeNames(), "Id", "Name");
+            ViewBag.ListStages = new SelectList(_serviceReport.GetAllStages(), "Id", "StageName");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult GetStudentsOrderByStudentName(int? DepartmentId, int? StageId, int? ClassTypeId, int? FromStudentNumber, int? ToStudentNumber, DateOnly? FromDate, DateOnly ToDate)
+        {
+            var data = _serviceReport.GetAllStudentsNameReport(DepartmentId, StageId, ClassTypeId, FromStudentNumber, ToStudentNumber, FromDate, ToDate)
+                .OrderBy(i => i.StudentName);
             return Json(data); // Returns a list of student data as JSON
         }
     }

@@ -51,6 +51,16 @@ namespace SchoolApp.BL.Services
 
         public string Delete(int id)
         {
+            var classtype = _unitOfWork.classTypesSpecial.GetById(id);
+            var student = _unitOfWork.students.GetAll().Where(e => e.StageId == classtype.StageId);
+            if (student.Any())
+            {
+                throw new Exception("يجب حذف   الطلبة أولا");
+            }
+
+
+
+
             if (_unitOfWork.classTypesSpecial.Delete(id))
             {
                 return "تم الحذف بنجاح";

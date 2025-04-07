@@ -357,21 +357,20 @@
                             <label class="form-label">رقم الفاكس </label>
                             <input id="guardianFaxNumber" asp-for="GuardianFaxNumber" type="text" class="form-control form-control-sm" placeholder="ادخل رقم الفاكس">
                         </div>
-                   
-                    <div class="col-sm-6">
-                        <label class="form-label d-block">من العاملين</label>
-                        <div class="d-flex row ">
+
+                        <div class="col-sm-6">
+                            <label class="form-label d-block">من العاملين</label>
+                            <div class="d-flex row">
                                 <div class="d-flex justify-content-around col-sm-6 row me-1">
-                                    <input  checked asp-for="GuardianWorkingWithUs" type="radio" class="col-sm-2" value="1">
+                                    <input checked asp-for="GuardianWorkingWithUs" type="radio" class="col-sm-2" value="1" id="workingYes">
                                     <label class="form-check-label text-muted col-sm-10">نعم</label>
                                 </div>
                                 <div class="d-flex justify-content-around col-sm-6 row me-1">
-                                    <input asp-for="GuardianWorkingWithUs" type="radio" class=" col-sm-2"  value="2">
+                                    <input asp-for="GuardianWorkingWithUs" type="radio" class=" col-sm-2" value="2" id="workingNo">
                                     <label class="form-check-label text-muted col-sm-10">لا</label>
                                 </div>
+                            </div>
                         </div>
-                       
-                    </div>
                     
                 </div>
                 <div class="row row-cols-5 g-2">
@@ -576,7 +575,7 @@
                         <label class="form-label">% خصم عام</label>
                         <input asp-for="GeneralDiscount" type="number" id="generalDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
-                    <div class="col">
+                    <div class="col" id="discountSection">
                         <label class="form-label">% خصم أبناء العاملين</label>
                         <input asp-for="EmployeeDiscount" type="number" id="employeeDiscount" class="form-control form-control-sm discount-input discount-percentage">
                     </div>
@@ -647,7 +646,7 @@
                     </div>
              </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">حفظ</button>
                     <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
                     <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
                 </div>
@@ -661,6 +660,26 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let workingYes = document.getElementById("workingYes");
+            let workingNo = document.getElementById("workingNo");
+            let discountSection = document.getElementById("discountSection");
+
+            function toggleDiscount() {
+                if (workingYes.checked) {
+                    discountSection.style.display = "block";
+                } else {
+                    discountSection.style.display = "none";
+                }
+            }
+
+            // تشغيل الدالة عند تحميل الصفحة وفي حال تغيير الاختيار
+            toggleDiscount();
+            workingYes.addEventListener("change", toggleDiscount);
+            workingNo.addEventListener("change", toggleDiscount);
+        });
+    </script>
 
 
     <script>
@@ -733,7 +752,7 @@
         //     }
         // });
 
-
+              
 
                      $(document).ready(function () {
             $("#busDiscount").on("input", function () {
@@ -1445,10 +1464,13 @@
                                 type: 'POST',
                                 data: { id: id },
                                 success: function (response) {
-                                    // Assuming your API returns a success message (you can modify as needed)
-                                    Swal.fire("تم الحذف!", response.success, "success").then(function () {
-                                        location.reload();
-                                    });
+                                      if (response.success) {
+                                Swal.fire("تم الحذف!", response.message, "success").then(function () {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("خطأ", response.error || "حدث خطأ أثناء الحذف", "error");
+                            }
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
                                     Swal.fire("خطأ", "Error deleting data: " + errorThrown, "error");
@@ -1571,11 +1593,11 @@
          function displayInstallmentsWhenSlectdata(container, data, amount, readonly) {
                 let html = "";
                 if(readonly){
-                     if (data.length === 1) {
+                     if (data.length === 0) {
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input  type="number" asp-for="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}"${readonly?"readonly":""}>
+                            <input  type="number" name="TotalCostAfterDiscount" id="discountedTotalAmount" class="form-control form-control-sm" value="${amount.toFixed(2)}"${readonly?"readonly":""}>
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1589,11 +1611,11 @@
                     });
                 }
                 }else{
-                     if (data.length === 1) {
+                     if (data.length === 0) {
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input readonly asp-for="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                            <input readonly name="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1698,8 +1720,9 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
+                    document.getElementById("discountedTotalAmount").readonly = true;
 
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
@@ -1865,9 +1888,9 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-
+                    document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);
@@ -2037,9 +2060,9 @@
                                $("#motherJob").val(response.motherJob);
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-
+                    document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);
@@ -2210,11 +2233,12 @@
                                $("#motherFaxNumber").val(response.motherFaxNumber);
                                $("#motherWorkMobile").val(response.motherWorkMobile);
                                $("#motherJob").val(response.motherJob);
+
                                $("#motherMobilePhone").val(response.motherMobilePhone);
                                $("#notes").val(response.notes);
-                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, true);
+                                displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false)
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-
+                    document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);

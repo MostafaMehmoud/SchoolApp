@@ -444,7 +444,7 @@ function convertToArabicWords(num) {
 
           $("#btnDelete").click(function () {
             // Get the record's ID from a hidden field or another element
-            var id = parseInt($("#receiptId").val());
+            var id = parseInt($("#paymentId").val());
 
             if (!Number.isInteger(id) || id <= 0) {
                 Swal.fire("تنبيه", "يرجى تحديد سجل صحيح أولاً.", "warning");
@@ -554,9 +554,9 @@ function convertToArabicWords(num) {
 
             // Handler for the Previous button
             $("#btnPrevious").click(async function () {
-                const receiptId =parseInt( $("#receiptId").val());
-                console.log(receiptId)
-                console.log(typeof( receiptId))
+                const paymentId =parseInt( $("#paymentId").val());
+                console.log(paymentId)
+                console.log(typeof( paymentId))
 
                 // if (!busId) {
                 //     Swal.fire("تنبيه", "Please select a record first.", "warning");
@@ -565,7 +565,7 @@ function convertToArabicWords(num) {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetPreviouPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
+                        url: '@Url.Action("GetPreviousPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", paymentId),
                         dataType: "json"
                     });
                     if (response) {
@@ -598,9 +598,9 @@ function convertToArabicWords(num) {
 
             // Handler for the Next button
             $("#btnNext").click(async function () {
-                const receiptId = parseInt($("#receiptId").val());
-                 console.log(receiptId)
-                console.log(typeof( receiptId))
+                const paymentId = parseInt($("#paymentId").val());
+                 console.log(paymentId)
+                console.log(typeof( paymentId))
                 // if (!busId) {
                 //     Swal.fire("تنبيه", "Please select a record first.", "warning");
                 //     return;
@@ -608,7 +608,7 @@ function convertToArabicWords(num) {
                 try {
                     const response = await $.ajax({
                         type: "GET",
-                        url: '@Url.Action("GetNextPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", receiptId),
+                        url: '@Url.Action("GetNextPayment", "Payment", new { id = "ID_PLACEHOLDER" })'.replace("ID_PLACEHOLDER", paymentId),
                         dataType: "json"
                     });
                     if (response) {

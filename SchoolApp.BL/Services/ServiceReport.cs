@@ -19,7 +19,7 @@ namespace SchoolApp.BL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<AccountStatementDetails> GetAccountStatement(int? DepartmentId, int? StageId, int? ClassTypeId, int? FromStudentNumber, int? ToStudentNumber, DateOnly? FromDate, DateOnly? ToDate,int? studentId)
+        public List<AccountStatement>  GetAccountStatement(int? DepartmentId, int? StageId, int? ClassTypeId, int? FromStudentNumber, int? ToStudentNumber, DateOnly? FromDate, DateOnly? ToDate,int? studentId)
         {
             var students = _unitOfWork.students.GetAll().ToList();
             var studentsfliter = students
@@ -34,27 +34,26 @@ namespace SchoolApp.BL.Services
                                && (!ToDate.HasValue || s.BrithDate <= ToDate.Value)).ToList();
 
             decimal totalamount = 0;
-            List<AccountStatementDetails> accountStatements = new List<AccountStatementDetails>();
-            AccountStatementDetails accountStatementDetails = null;
+            List<AccountStatement> accountStatements = new List<AccountStatement>();
+            List<AccountStatementDetails> accountStatementDetails = null;
+            AccountStatement accountStatement = null;
             foreach (var student in studentsfliter)
             {
-                accountStatementDetails = new AccountStatementDetails();
-                accountStatementDetails.StudentId = student.StudentNumber;
-                accountStatementDetails.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
-
-
-                accountStatementDetails.AcountName = "رسوم الدراسية";
-                accountStatementDetails.AccountDate = student.RegistrationDate;
-                accountStatementDetails.Fees = student.ReceiptTotalFees;
-                accountStatementDetails.RamaingPayment = student.ReceiptTotalFees;
+                accountStatement = new AccountStatement();
+                accountStatement.StudentId = student.StudentNumber;
+                accountStatement.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
+                accountStatementDetails = new List<AccountStatementDetails>();
+                AccountStatementDetails accountStatementDetails1 = new AccountStatementDetails();
+                accountStatementDetails1.AcountName = "رسوم الدراسية";
+                accountStatementDetails1.AccountDate = student.RegistrationDate;
+                accountStatementDetails1.Fees = student.ReceiptTotalFees;
+                accountStatementDetails1.RamaingPayment = student.ReceiptTotalFees;
                 totalamount = student.ReceiptTotalFees;
-                accountStatements.Add(accountStatementDetails);
+                accountStatementDetails.Add(accountStatementDetails1);
                 if (student.LastBalance != 0)
                 {
                     AccountStatementDetails accountStatementDetail2 = new AccountStatementDetails();
-                    accountStatementDetail2.StudentId = student.StudentNumber;
-                    accountStatementDetail2.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
-
+                   
                     accountStatementDetail2.AcountName = "الرصيد السابق ";
                     accountStatementDetail2.ReceiptIdOrName = "ايصال";
                     accountStatementDetail2.AccountDate = student.RegistrationDate;
@@ -63,14 +62,12 @@ namespace SchoolApp.BL.Services
                     totalamount -= student.LastBalance;
                     accountStatementDetail2.RamaingPayment = totalamount;
 
-                    accountStatements.Add(accountStatementDetail2);
+                    accountStatementDetails.Add(accountStatementDetail2);
                 }
                if(student.AdvanceRepayment != 0)
                 {
                     AccountStatementDetails accountStatementDetails3 = new AccountStatementDetails();
-                    accountStatementDetails3.StudentId = student.StudentNumber;
-                    accountStatementDetails3.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
-
+                    
                     accountStatementDetails3.AcountName = "دفعة مقدمة  ";
                     accountStatementDetails3.ReceiptIdOrName = student.StudentNumber.ToString();
                     accountStatementDetails3.LastBalance = student.LastBalance;
@@ -78,7 +75,7 @@ namespace SchoolApp.BL.Services
                     accountStatementDetails3.Payment = student.AdvanceRepayment;
                     totalamount -= student.AdvanceRepayment;
                     accountStatementDetails3.RamaingPayment = totalamount;
-                    accountStatements.Add(accountStatementDetails3);
+                    accountStatementDetails.Add(accountStatementDetails3);
                 }
                
                 var receipts=_unitOfWork.receipts.GetAll().Where(i=>i.StudentId==student.Id);
@@ -88,9 +85,7 @@ namespace SchoolApp.BL.Services
                     foreach (var receipt in receipts)
                     {
                         accountStatementDetail = new AccountStatementDetails();
-                        accountStatementDetail.StudentId = student.StudentNumber;
-                        accountStatementDetail.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
-
+                       
                        
                         accountStatementDetail.AcountName = "  سند صرف";
                         accountStatementDetail.ReceiptIdOrName = receipt.Id.ToString();
@@ -99,7 +94,7 @@ namespace SchoolApp.BL.Services
                         totalamount -= receipt.Amount;
                         accountStatementDetail.RamaingPayment=totalamount;
                         accountStatementDetail.AccountDate = receipt.ReceiptDate;
-                        accountStatements.Add(accountStatementDetail);
+                        accountStatementDetails.Add(accountStatementDetail);
                     }
                 }
                 var payments = _unitOfWork.payments.GetAll().Where(i => i.StudentId == student.Id);
@@ -109,9 +104,7 @@ namespace SchoolApp.BL.Services
                     foreach (var pay in payments)
                     {
                         accountStatementpayment = new AccountStatementDetails();
-                        accountStatementpayment.StudentId = student.StudentNumber;
-                        accountStatementpayment.StudentName = $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
-
+                       
 
                         accountStatementpayment.AcountName = "  سند قبض";
                         accountStatementpayment.ReceiptIdOrName = pay.Id.ToString();
@@ -120,10 +113,12 @@ namespace SchoolApp.BL.Services
                         totalamount += pay.Amount;
                         accountStatementpayment.RamaingPayment = totalamount  ;
                         accountStatementpayment.AccountDate = pay.PaymentDate;
-                        accountStatements.Add(accountStatementpayment);
+                        accountStatementDetails.Add(accountStatementpayment);
 
                     }
                 }
+                accountStatement.Details = accountStatementDetails;
+                accountStatements.Add(accountStatement);
             }
             return accountStatements;
         }
@@ -279,7 +274,7 @@ namespace SchoolApp.BL.Services
 
                                  }).Where(s =>
                                (!StageId.HasValue || s.stageId == StageId)
-                               && (!ClassTypeId.HasValue || s.ClassTypeId == ClassTypeId))
+                               && (!ClassTypeId.HasValue || s.ClassTypeNameId == ClassTypeId))
 
 
                                  .ToList();
@@ -450,6 +445,100 @@ namespace SchoolApp.BL.Services
                                        Payments = s.student.ReceiptTotalPayments
                                    }).Where(i => i.Payments >= 0).ToList();
             return studentsfliter;
+        }
+
+        public async Task<string> TraneferringClasses(int fromStage, int fromClass, int toStage, int toClass)
+        {
+            try
+            {
+                List<InstallmentCostAfterDiscount> InstallmentCostAfterDiscounts = new List<InstallmentCostAfterDiscount>();
+                List<InstallmentCostBeforeDiscount> InstallmentCostBeforeDiscounts = new List<InstallmentCostBeforeDiscount>();
+                int installmentCount = 1;
+                var installments = _unitOfWork.installments
+                .GetAll()
+                
+                .ToList();
+                var installment = new List<Installment>();
+                var students = _unitOfWork.students
+   .GetAllWithInclude(
+       e => e.installmentCostBeforeDiscounts,
+       e => e.installmentCostAfterDiscounts
+   )
+   .Where(e => e.StageId == fromStage && e.ClassTypeId == fromClass)
+   .ToList();
+                var classType=_unitOfWork.classTypesSpecial.GetAllWithInclude(e=>e.Amounts).ToList();
+                var classTypeStudent =new ClassType();
+                var Amount = new Amount();
+                decimal totalCostAmountStudent = 0;
+                foreach (var student in students)
+                {
+                    student.StageId = toStage;
+                    student.ClassTypeId = toClass;
+                     classTypeStudent = classType.FirstOrDefault(e => e.StageId == student.StageId);
+                    Amount=classTypeStudent.Amounts.FirstOrDefault(e=>e.ClassTypeNameId==student.ClassTypeId);
+                    totalCostAmountStudent = Amount.AmountPrice + classTypeStudent.CLSCloth + classTypeStudent.CLSAcpt + classTypeStudent.CLSBakelite + classTypeStudent.CLSRegs;
+                    installment = installments.Where(e => e.StageId == student.StageId && e.ClassTypeId == student.ClassTypeId).ToList();
+                    installmentCount = installment.Count();
+                    if (installmentCount > 0)
+                    {
+                        foreach (var instcostaftDis in installment)
+                        {
+                            InstallmentCostAfterDiscount InstallmentCostAfterDiscount = new InstallmentCostAfterDiscount();
+                            InstallmentCostAfterDiscount.CostInstallment = totalCostAmountStudent/installmentCount;
+                            InstallmentCostAfterDiscount.InstallmentId = instcostaftDis.Id;
+                            InstallmentCostAfterDiscount.StageId = student.StageId;
+                            InstallmentCostAfterDiscount.ClassTypeId = student.ClassTypeId;
+                            InstallmentCostAfterDiscount.InstallmentName = instcostaftDis.InstallName;
+                            InstallmentCostAfterDiscounts.Add(InstallmentCostAfterDiscount);
+                        }
+
+                        foreach (var instcostaftDis in installment)
+                        {
+                            InstallmentCostBeforeDiscount InstallmentCostBeforeDiscount = new InstallmentCostBeforeDiscount();
+                            InstallmentCostBeforeDiscount.CostInstallment = totalCostAmountStudent / installmentCount;
+                            InstallmentCostBeforeDiscount.InstallmentId = instcostaftDis.Id;
+                            InstallmentCostBeforeDiscount.StageId = student.StageId;
+                            InstallmentCostBeforeDiscount.ClassTypeId = student.ClassTypeId;
+                            InstallmentCostBeforeDiscount.InstallmentName = instcostaftDis.InstallName;
+                            InstallmentCostBeforeDiscounts.Add(InstallmentCostBeforeDiscount);
+                        }
+                        student.TotalCost = totalCostAmountStudent;
+                        student.CommunityFundDiscount = 0;
+                        student.EarlyPaymentDiscount = 0;
+                        student.EmployeeDiscount = 0;
+                        student.GeneralDiscount = 0;
+                        student.SiblingsDiscount= 0;
+                        student.SpecialDiscount = 0;
+                        student.TotalCostAfterDiscount = totalCostAmountStudent;
+                        student.LastBalance = (student.ReceiptTotalPayments - student.ReceiptTotalFees) >= 0 ? (student.ReceiptTotalPayments - student.ReceiptTotalFees) : 0;
+                        student.ReceiptTotalPayments = student.ReceiptTotalPayments;
+                        student.ReceiptTotalFees += totalCostAmountStudent;
+                        student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
+                        _unitOfWork.students.Update(student);
+                        
+                    }
+                    else
+                    {
+                        student.TotalCost = totalCostAmountStudent;
+                        student.CommunityFundDiscount = 0;
+                        student.EarlyPaymentDiscount = 0;
+                        student.EmployeeDiscount = 0;
+                        student.GeneralDiscount = 0;
+                        student.SiblingsDiscount = 0;
+                        student.SpecialDiscount = 0;
+                        student.TotalCostAfterDiscount = totalCostAmountStudent;
+                        student.ReceiptTotalFees += totalCostAmountStudent;
+                    }
+                    
+                }
+                return "تم نقل الصف";
+            }
+            catch
+            {
+                return "حدثت مشكلة اثنا نقل الصف";  
+            }
+           
+
         }
     }
 }

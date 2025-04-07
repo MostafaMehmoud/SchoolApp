@@ -1,4 +1,53 @@
 ﻿<style>
+    /* 🚀 تحسين مظهر الجداول */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 2px solid #007bff; /* ✅ إضافة حدود واضحة للجدول */
+    }
+
+        .styled-table th, .styled-table td {
+            border: 1px solid #007bff; /* ✅ إضافة حدود للخلايا */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .styled-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+    /* 🚀 تحسين الطباعة */
+    @@media print {
+        body *
+
+    {
+        visibility: hidden;
+    }
+
+    .printable, .printable * {
+        visibility: visible;
+    }
+
+    .printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .print-btn {
+        display: none;
+    }
+
+    }
+
     /* تقليل حجم المدخلات */
     .custom-input {
         font-size: 0.85rem;
@@ -94,86 +143,47 @@
                     <button type="button" id="btnData" class="btn btn-success btn-sm custom-button">معاينة</button>
                        </div>
             </form>
-            <table id="Table" class="display">
-                <thead>
-                    <tr>
-                        <th> كود الطالب  </th>
-                        <th> اسم الطالب</th>
-                        <th>الشرح  </th>
-                        <th> التاريخ  </th>
-                        <th>ايصال  </th>
-                        <th>الرصيد السابق  </th>
-                        <th> الرسوم </th>
-                        <th>مبلغ المدفوع  </th>
-                        <th> استعادة </th>
-                        <th> المبلغ المتبقي  </th>
+            <div id="tableContainer">
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @*  @foreach (var bus in Model)
-                    {
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-
-
-                        </tr>
-                    } *@
-                </tbody>
-            </table>
+           </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-        <!-- Include DataTables -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-
+       
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
+      
         <script>
             $(document).ready(function () {
-                    $('#Table').DataTable({
-            dom: 'Bfrtip', // Adds buttons
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // دعم اللغة العربية
-            },
-            buttons: [
-                {
-                    extend: 'print',
-                    text: 'طباعة الجدول',
-                    title: 'تفاصيل الباصات',
-                    customize: function (win) {
-                        $(win.document.body).css({
-                            'font-size': '14px',
-                            'direction': 'rtl', // توجيه النص لليمين
-                            'text-align': 'right' // تحسين المحاذاة
-                        });
+        //             $('#Table').DataTable({
+        //     dom: 'Bfrtip', // Adds buttons
+        //     language: {
+        //         url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // دعم اللغة العربية
+        //     },
+        //     buttons: [
+        //         {
+        //             extend: 'print',
+        //             text: 'طباعة الجدول',
+        //             title: 'تفاصيل الباصات',
+        //             customize: function (win) {
+        //                 $(win.document.body).css({
+        //                     'font-size': '14px',
+        //                     'direction': 'rtl', // توجيه النص لليمين
+        //                     'text-align': 'right' // تحسين المحاذاة
+        //                 });
 
-                        // جعل العنوان في منتصف الصفحة
-                        $(win.document.body).find('h1').css({
-                            'text-align': 'center', // توسيط العنوان
-                            'font-size': '20px', // تكبير الخط
-                            'font-weight': 'bold', // جعله عريضًا
-                            'margin-bottom': '20px' // إضافة مسافة تحت العنوان
-                        });
-                    }
-                }
-            ]
-        });
+        //                 // جعل العنوان في منتصف الصفحة
+        //                 $(win.document.body).find('h1').css({
+        //                     'text-align': 'center', // توسيط العنوان
+        //                     'font-size': '20px', // تكبير الخط
+        //                     'font-weight': 'bold', // جعله عريضًا
+        //                     'margin-bottom': '20px' // إضافة مسافة تحت العنوان
+        //                 });
+        //             }
+        //         }
+        //     ]
+        // });
 
      $("#StageId").change(function () {
                 var stageId = $(this).val();
@@ -221,20 +231,7 @@
                 document.getElementById("fromDate").value = lastYearStr;
                 document.getElementById("toDate").value = todayStr;
             });
-                    $(document).ready(function () {
-            let dataTable = $("#Table").DataTable({
-                dom: 'Bfrtip',
-                language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json"
-                },
-                buttons: [
-                    {
-                        extend: 'print',
-                        text: 'طباعة التقرير',
-                        title: 'تقرير حساب الطلاب'
-                    }
-                ]
-            });
+                    
 
             $("#btnData").click(function () {
                 let formData = {
@@ -269,50 +266,91 @@
                 });
             });
 
-            function updateDataTable(response) {
-                dataTable.clear(); // ✅ Clear old data
+                                                      function updateDataTable(response) {
+            console.log("🔍 البيانات المستلمة:", response); // ✅ تحقق من صحة البيانات
 
-                let totalFees = 0, totalReturnFees = 0, totalPayments = 0, totalRemaining = 0;
+            $("#tableContainer").empty(); // 🧹 مسح البيانات السابقة
 
-                $.each(response, function (index, student) {
-                    totalFees += student.fees || 0;
-                    totalPayments += student.payment || 0;
-                    totalReturnFees += student.amountReturn || 0;
-                    totalRemaining += student.ramaingPayment || 0;
+            // ✅ زر طباعة جميع الجداول
+            $("#tableContainer").append(`
+                <button onclick="printAllTables()" class="print-btn all-tables-btn">🖨️ طباعة جميع الجداول</button>
+            `);
 
-                    let formattedDate = student.accountDate
-                        ? new Date(student.accountDate).toLocaleDateString('ar-EG')
+            $.each(response, function (index, student) {
+                console.log("🔍 طالب:", student); // ✅ تحقق من بيانات كل طالب
+
+                if (!student || !student.studentId || !student.studentName) {
+                    console.warn("🚨 بيانات الطالب غير صحيحة:", student);
+                    return; // ❌ تخطي الطالب إذا لم تكن البيانات صحيحة
+                }
+
+                // ✅ إنشاء قسم جديد لكل طالب يتضمن اسمه وجدوله وزر الطباعة
+                let studentSection = `
+                    <div class="student-section" id="student-${student.studentId}">
+                        <h5 class="student-header">🔹 كود الطالب: ${student.studentId} - اسم الطالب: ${student.studentName}</h5>
+                        <button onclick="printTable('${student.studentId}')" class="print-btn single-table-btn">🖨️ طباعة هذا الجدول</button>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>الشرح</th>
+                                    <th>التاريخ</th>
+                                    <th>رقم الإيصال</th>
+                                    <th>الرصيد السابق</th>
+                                    <th>الرسوم</th>
+                                    <th>المبلغ المدفوع</th>
+                                    <th>المبلغ المسترد</th>
+                                    <th>المبلغ المتبقي</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                // 🔄 التكرار على تفاصيل الحساب لكل طالب وإضافتها للجدول
+                $.each(student.details, function (i, detail) {
+                    let formattedDate = detail.accountDate
+                        ? new Date(detail.accountDate).toLocaleDateString('ar-EG')
                         : "—";
 
-                    dataTable.row.add([
-                        student.studentId,
-                        student.studentName,
-                        student.acountName,
-                        formattedDate,
-                        student.receiptIdOrName || "—",
-                        student.lastBalance.toFixed(2),
-                        student.fees.toFixed(2),
-                        student.payment.toFixed(2),
-                        student.amountReturn.toFixed(2),
-                        student.ramaingPayment.toFixed(2)
-                    ]);
+                    studentSection += `
+                        <tr>
+                            <td>${detail.acountName || "—"}</td>
+                            <td>${formattedDate}</td>
+                            <td>${detail.receiptIdOrName || "—"}</td>
+                            <td>${detail.lastBalance ? detail.lastBalance.toFixed(2) : "0.00"}</td>
+                            <td>${detail.fees ? detail.fees.toFixed(2) : "0.00"}</td>
+                            <td>${detail.payment ? detail.payment.toFixed(2) : "0.00"}</td>
+                            <td>${detail.amountReturn ? detail.amountReturn.toFixed(2) : "0.00"}</td>
+                                   <td>${detail.ramaingPayment? detail.ramaingPayment.toFixed(2) : "0.00"}</td>
+                        </tr>
+                    `;
                 });
 
-                // ✅ Add Total Row
-                dataTable.row.add([
-                    "<b>الإجمالي</b>",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    `<b>${totalFees.toFixed(2)}</b>`,
-                    `<b>${totalPayments.toFixed(2)}</b>`,
-                    `<b>${totalReturnFees.toFixed(2)}</b>`,
-                    `<b>${totalRemaining.toFixed(2)}</b>`
-                ]).draw(); // ✅ Update Table
-            }
-        });
+                studentSection += `</tbody></table></div>`; // ✅ إنهاء الجدول والقسم
+                $("#tableContainer").append(studentSection); // 📌 إضافة البيانات إلى الصفحة
+            });
+        }
+
+        // ✅ وظيفة الطباعة لكل طالب
+        function printTable(studentId) {
+            let printContent = document.getElementById(`student-${studentId}`).innerHTML;
+            let originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = `<div class="printable">${printContent}</div>`;
+            window.print();
+            location.reload(); // إعادة تحميل الصفحة بعد الطباعة للحفاظ على المحتوى الأصلي
+        }
+
+        // ✅ وظيفة طباعة جميع الجداول دفعة واحدة
+        function printAllTables() {
+            let printContent = document.getElementById("tableContainer").innerHTML;
+            document.body.innerHTML = `<div class="printable">${printContent}</div>`;
+            window.print();
+            location.reload(); // إعادة تحميل الصفحة بعد الطباعة للحفاظ على المحتوى الأصلي
+        }
+
+
+
+
 
         </script>
 

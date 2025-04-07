@@ -208,19 +208,7 @@
                });
     </script>
     <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    let today = new Date();
-                    let lastYear = new Date();
-                    lastYear.setFullYear(today.getFullYear() - 1);
-
-                    // تحويل التاريخ إلى تنسيق YYYY-MM-DD
-                    let todayStr = today.toISOString().split('T')[0];
-                    let lastYearStr = lastYear.toISOString().split('T')[0];
-
-                    // ضبط القيم الافتراضية
-                    document.getElementById("fromDate").value = lastYearStr;
-                    document.getElementById("toDate").value = todayStr;
-                });
+              
                                    $(document).ready(function () {
             let table = $("#Table").DataTable();
                $("#btnData").click(function () {
@@ -263,9 +251,9 @@
                     student.numberOfInstallments || "—",
                     student.priceInstallment || "—",
                     student.clsBakelite || "—",
-                    student.clsCloth || "—"
-                    student.clsAcpt || "—"
-                    student.clsRegs || "—"
+                    student.clsCloth || "—",
+                    student.clsAcpt || "—",
+                    student.clsRegs || "—",
                     student.totalAmountClassType || "—"
                 ]);
             });

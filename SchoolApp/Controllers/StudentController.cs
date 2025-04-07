@@ -104,14 +104,15 @@ namespace SchoolApp.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+           
             try
             {
-                string result = _servicestudent.Delete(id);
-                return Json(new { success = result });
+                _servicestudent.Delete(id);
+                return Json(new { success = true, message = "تم الحذف بنجاح" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return Json(new { success = false, error = ex.Message });
             }
         }
 

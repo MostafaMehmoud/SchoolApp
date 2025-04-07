@@ -68,14 +68,49 @@ namespace SchoolApp.BL.Services
         }
         public string Delete(int id)
         {
+            using (var transaction = _unitOfWork.BeginTransaction()) // ✅ بدء المعاملة
+            {
+                try
+                {
+                    var receipt = _unitOfWork.receipts.GetById(id);
+                    if (receipt == null)
+                    {
+                        return "الإيصال غير موجود!";
+                    }
 
-            if (_unitOfWork.receipts.Delete(id))
-            {
-                return "تم الحذف بنجاح";
-            }
-            else
-            {
-                return "حدثت مشكلة اثناء الحذف";
+                    var student = _unitOfWork.students.GetById(receipt.StudentId);
+                    if (student == null)
+                    {
+                        return "الطالب غير موجود!";
+                    }
+
+                    // تحديث بيانات الطالب
+                    
+                    student.ReceiptTotalPayments -= receipt.Amount;
+                    student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
+
+                    bool isDeleted = _unitOfWork.receipts.Delete(id);
+                    bool isUpdated = _unitOfWork.students.Update(student);
+
+                    if (isDeleted && isUpdated)
+                    {
+                        _unitOfWork.Save(); // ✅ حفظ البيانات
+                        transaction.Commit(); // ✅ تأكيد المعاملة
+                        return "تم الحذف بنجاح";
+                    }
+                    else
+                    {
+                        transaction.Rollback(); // ❌ إلغاء العملية
+                        return "حدثت مشكلة أثناء الحذف";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // ❌ التراجع عن جميع العمليات في حالة حدوث خطأ
+                                            // يمكن استخدام Logger هنا لتسجيل الخطأ
+                    Console.WriteLine($"خطأ أثناء الحذف: {ex.Message}");
+                    return "فشل الحذف: " + ex.Message;
+                }
             }
         }
 

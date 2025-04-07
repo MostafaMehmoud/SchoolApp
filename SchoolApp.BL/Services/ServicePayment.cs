@@ -19,7 +19,11 @@ namespace SchoolApp.BL.Services
         }
         public string Add(VWPayment Payment)
         {
-            var payment = new Payment
+            using (var transaction = _unitOfWork.BeginTransaction()) // ✅ بدء المعاملة
+            {
+                try
+                {
+                    var payment = new Payment
             {
                Id=Payment.Id,
                Code=Payment.Code,
@@ -34,21 +38,77 @@ namespace SchoolApp.BL.Services
                 BankName = Payment.BankName,
                 AmountName= Payment.AmountName
 
-            };
-            if (_unitOfWork.payments.Add(payment))
-            {
-                return "تم الحفظ بنجاح";
-            }
-            else
-            {
-                return "حدثت مشكلة اثناء الحفظ";
-            }
+            }; var student = _unitOfWork.students.GetById(Payment.StudentId);
+                    student.ReceiptTotalFees = student.ReceiptTotalFees + Payment.Amount;
+                   
+                    student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
+                    if (_unitOfWork.payments.Add(payment) && _unitOfWork.students.Update(student))
+                    {
+                        _unitOfWork.Save(); // ✅ حفظ البيانات
+                        transaction.Commit(); // ✅ تأكيد المعاملة
+                        return "تم الحفظ بنجاح";
+                    }
+                    else
+                    {
+                        transaction.Rollback(); // ❌ إلغاء العملية في حالة الفشل
+                        return "حدثت مشكلة أثناء الحفظ";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // ❌ التراجع عن جميع العمليات في حالة حدوث خطأ
+                    return "فشل الحفظ: " + ex.Message;
+                }
+            }
         }
 
         public string Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var transaction = _unitOfWork.BeginTransaction()) // ✅ بدء المعاملة
+            {
+                try
+                {
+                    var receipt = _unitOfWork.payments.GetById(id);
+                    if (receipt == null)
+                    {
+                        return "الإيصال غير موجود!";
+                    }
+
+                    var student = _unitOfWork.students.GetById(receipt.StudentId);
+                    if (student == null)
+                    {
+                        return "الطالب غير موجود!";
+                    }
+
+                    // تحديث بيانات الطالب
+                    student.ReceiptTotalFees-= receipt.Amount;
+                    
+                    student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
+
+                    bool isDeleted = _unitOfWork.payments.Delete(id);
+                    bool isUpdated = _unitOfWork.students.Update(student);
+
+                    if (isDeleted && isUpdated)
+                    {
+                        _unitOfWork.Save(); // ✅ حفظ البيانات
+                        transaction.Commit(); // ✅ تأكيد المعاملة
+                        return "تم الحذف بنجاح";
+                    }
+                    else
+                    {
+                        transaction.Rollback(); // ❌ إلغاء العملية
+                        return "حدثت مشكلة أثناء الحذف";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // ❌ التراجع عن جميع العمليات في حالة حدوث خطأ
+                                            // يمكن استخدام Logger هنا لتسجيل الخطأ
+                    Console.WriteLine($"خطأ أثناء الحذف: {ex.Message}");
+                    return "فشل الحذف: " + ex.Message;
+                }
+            }
         }
 
         public string Edit(VWPayment Payment)
@@ -150,6 +210,10 @@ namespace SchoolApp.BL.Services
         public async Task<VWPayment> GetNextPayment(int id)
         {
             var payment =await _unitOfWork.payments.GetNextOrPreviousItemByCode(id, "next");
+            if (payment == null)
+            {
+                return null;
+            }
             var vWPayment = new VWPayment
             {
                 Id = payment.Id,
@@ -172,6 +236,10 @@ namespace SchoolApp.BL.Services
         public async Task<VWPayment> GetPreviousPayment(int id)
         {
             var payment =await _unitOfWork.payments.GetNextOrPreviousItemByCode(id, "previous");
+            if (payment == null)
+            {
+                return null;
+            }
             var vWPayment = new VWPayment
             {
                 Id = payment.Id,

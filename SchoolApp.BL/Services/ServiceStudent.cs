@@ -119,13 +119,13 @@ namespace SchoolApp.BL.Services
             student.TotalCost=VWStudent.TotalCost;
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
 
-            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.LastBalance
+            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount 
                 + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
             foreach(var item in InstallmentCostAfterDiscounts)
             {
                 student.ReceiptTotalFees += item.CostInstallment;
             }
-            student.ReceiptTotalPayments = 0;
+            student.ReceiptTotalPayments = student.LastBalance;
             student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
             if (_unitOfWork.students.Add(student)) 
@@ -140,6 +140,18 @@ namespace SchoolApp.BL.Services
 
         public string Delete(int id)
         {
+            var student = _unitOfWork.students.GetById(id);
+            var receipt = _unitOfWork.receipts.GetAll().Where(i => i.StudentId == student.Id);
+            if (receipt.Any())
+            {
+                throw new Exception("يجب حذف سندات الصرف أولا");
+            }
+
+            var payments = _unitOfWork.payments.GetAll().Where(i => i.StudentId == student.Id);
+            if (payments.Any())
+            {
+                throw new Exception("يجب حذف سندات قبض أولا");
+            }
             if (_unitOfWork.students.Delete(id))
             {
                 return "تم الحذف بنجاح";
@@ -255,13 +267,13 @@ namespace SchoolApp.BL.Services
             student.BusDiscount = VWStudent.BusDiscount;
             student.TotalCost = VWStudent.TotalCost;
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
-            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.LastBalance
+            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount 
               + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
             foreach (var item in InstallmentCostAfterDiscounts)
             {
                 student.ReceiptTotalFees += item.CostInstallment;
             }
-            student.ReceiptTotalPayments = 0;
+            student.ReceiptTotalPayments = student.LastBalance;
             student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
             if (_unitOfWork.students.Update(student))

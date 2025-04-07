@@ -149,7 +149,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row m-0">
-                            <label class="col-sm-3 col-form-label fs-7">رسوم الذهب فقط</label>
+                            <label class="col-sm-3 col-form-label fs-7">رسوم الذهاب فقط</label>
                             <div class="col-sm-9 p-0">
                                 <input asp-for="BusGo" id="BusGo" type="number" class="form-control form-control-sm" placeholder="ادخل رسوم الذهب">
                             </div>
@@ -168,7 +168,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group row m-0">
-                            <label class="col-sm-3 col-form-label fs-7">رسوم العودة و الذهب</label>
+                            <label class="col-sm-3 col-form-label fs-7">رسوم العودة و الذهاب</label>
                             <div class="col-sm-9 p-0">
                                 <input asp-for="BusAll" id="BusAll" type="number" class="form-control form-control-sm" placeholder="ادخل الرسوم">
                             </div>
@@ -177,7 +177,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">إضافة</button>
+                    <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">حفظ</button>
                     <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
                     <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
                 </div>
@@ -192,6 +192,25 @@
     <!-- SweetAlert2 for alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let busGo = document.getElementById("BusGo");
+            let busReturn = document.getElementById("BusReturn");
+            let busAll = document.getElementById("BusAll");
+
+            function updateTotal() {
+                let goValue = parseFloat(busGo.value) || 0;
+                let returnValue = parseFloat(busReturn.value) || 0;
+                busAll.value = goValue + returnValue; // تحديث الحقل بالجمع
+            }
+
+            // إضافة مستمع للأحداث عند تغيير القيم
+            busGo.addEventListener("input", updateTotal);
+            busReturn.addEventListener("input", updateTotal);
+        });
+    </script>
+
+    <script>
+
         $(document).ready(function () {
             // On page load, get the next available code from the server
             $.ajax({

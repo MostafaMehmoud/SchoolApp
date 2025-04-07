@@ -157,5 +157,20 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);
         }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+
+            try
+            {
+                _servicePayment.Delete(id);
+                return Json(new { success = true, message = "تم الحذف بنجاح" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
     }
 }

@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace SchoolApp.DAL.ViewModels
 {
-  
-    public class AccountStatementDetails
+  public class AccountStatement
     {
         public string StudentName { get; set; }
         public int StudentId { get; set; }
+        public List<AccountStatementDetails> Details { get; set; }=new List<AccountStatementDetails>();
+    }
+    public class AccountStatementDetails
+    {
+
         public string AcountName { get; set; }
         public DateOnly AccountDate { get; set; }
         public string ReceiptIdOrName {  get; set; }
