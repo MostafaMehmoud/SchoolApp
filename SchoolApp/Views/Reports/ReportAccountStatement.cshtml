@@ -4,11 +4,11 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 10px;
-        border: 2px solid #007bff; /* ✅ إضافة حدود واضحة للجدول */
+        border: 2px solid #007bff;
     }
 
         .styled-table th, .styled-table td {
-            border: 1px solid #007bff; /* ✅ إضافة حدود للخلايا */
+            border: 1px solid #007bff;
             padding: 10px;
             text-align: center;
         }
@@ -23,7 +23,22 @@
             background-color: #f2f2f2;
         }
 
-    /* 🚀 تحسين الطباعة */
+    /* 🎨 تحسين واجهة المستخدم */
+    .custom-input {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .custom-form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-button {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    /* 🖨️ تنسيق الطباعة */
     @@media print {
         body *
 
@@ -40,44 +55,68 @@
         left: 0;
         top: 0;
         width: 100%;
+        padding: 20px;
     }
 
     .print-btn {
-        display: none;
+        display: none !important;
     }
 
-    }
-
-    /* تقليل حجم المدخلات */
-    .custom-input {
-        font-size: 0.85rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    /* تقليل الهوامش بين الحقول */
-    .custom-form-group {
-        margin-bottom: 0.5rem;
-    }
-
-    /* تقليل الهوامش حول الأزرار */
-    .custom-button {
-        margin: 0.2rem;
-        padding: 0.3rem 0.5rem;
-    }
-
-
-    @@media print {
-        body
-
-    {
+    body {
         font-size: 14px;
         direction: rtl;
         text-align: right;
     }
 
+    .student-header {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        margin-top: 30px;
     }
 
+    .student-section {
+        page-break-before: always;
+    }
+
+        .student-section:first-child {
+            page-break-before: avoid;
+        }
+
+    .report-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+
+    .report-subtitle {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    hr {
+        border: 1px solid #000;
+        margin: 10px 0 20px 0;
+    }
+    @@media print {
+            .student-section
+
+    {
+        page-break-before: always;
+    }
+
+    .student-section:first-child {
+        page-break-before: avoid;
+    }
+
+    }
+    }
 </style>
+
+
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="d-flex justify-content-between">
@@ -153,38 +192,11 @@
 @section Scripts {
        
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
         <script>
             $(document).ready(function () {
-        //             $('#Table').DataTable({
-        //     dom: 'Bfrtip', // Adds buttons
-        //     language: {
-        //         url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json" // دعم اللغة العربية
-        //     },
-        //     buttons: [
-        //         {
-        //             extend: 'print',
-        //             text: 'طباعة الجدول',
-        //             title: 'تفاصيل الباصات',
-        //             customize: function (win) {
-        //                 $(win.document.body).css({
-        //                     'font-size': '14px',
-        //                     'direction': 'rtl', // توجيه النص لليمين
-        //                     'text-align': 'right' // تحسين المحاذاة
-        //                 });
-
-        //                 // جعل العنوان في منتصف الصفحة
-        //                 $(win.document.body).find('h1').css({
-        //                     'text-align': 'center', // توسيط العنوان
-        //                     'font-size': '20px', // تكبير الخط
-        //                     'font-weight': 'bold', // جعله عريضًا
-        //                     'margin-bottom': '20px' // إضافة مسافة تحت العنوان
-        //                 });
-        //             }
-        //         }
-        //     ]
-        // });
-
+     
      $("#StageId").change(function () {
                 var stageId = $(this).val();
                 loadClassTypesByStage(stageId);
@@ -217,78 +229,78 @@
             }
             });
         </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let today = new Date();
-                let lastYear = new Date();
-                lastYear.setFullYear(today.getFullYear() - 1);
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date();
+            let lastYear = new Date();
+            lastYear.setFullYear(today.getFullYear() - 1);
 
-                // تحويل التاريخ إلى تنسيق YYYY-MM-DD
-                let todayStr = today.toISOString().split('T')[0];
-                let lastYearStr = lastYear.toISOString().split('T')[0];
+            // تحويل التاريخ إلى تنسيق YYYY-MM-DD
+            let todayStr = today.toISOString().split('T')[0];
+            let lastYearStr = lastYear.toISOString().split('T')[0];
 
-                // ضبط القيم الافتراضية
-                document.getElementById("fromDate").value = lastYearStr;
-                document.getElementById("toDate").value = todayStr;
-            });
-                    
+            // ضبط القيم الافتراضية
+            document.getElementById("fromDate").value = lastYearStr;
+            document.getElementById("toDate").value = todayStr;
+        });
 
-            $("#btnData").click(function () {
-                let formData = {
-                    DepartmentId: $("#DepartmentId").val(),
-                    StageId: $("#StageId").val(),
-                    ClassTypeId: $("#ClassTypeId").val(),
-                    FromStudentNumber: $("#FromStudentNumber").val(),
-                    ToStudentNumber: $("#ToStudentNumber").val(),
-                    FromDate: $("#fromDate").val(),
-                    ToDate: $("#toDate").val(),
-                      studentId: $("#studentId").val()
-                };
+        // ⏳ عند الضغط على زر تحميل البيانات
+        $("#btnData").click(function () {
+            let formData = {
+                DepartmentId: $("#DepartmentId").val(),
+                StageId: $("#StageId").val(),
+                ClassTypeId: $("#ClassTypeId").val(),
+                FromStudentNumber: $("#FromStudentNumber").val(),
+                ToStudentNumber: $("#ToStudentNumber").val(),
+                FromDate: $("#fromDate").val(),
+                ToDate: $("#toDate").val(),
+                studentId: $("#studentId").val()
+            };
 
-                // ⏳ Show Loading Indicator
-                Swal.fire({
-                    title: 'جاري تحميل البيانات...',
-                    allowOutsideClick: false,
-                    didOpen: () => Swal.showLoading()
-                });
-
-                $.ajax({
-                    url: "/Reports/GetAccountStatement",
-                    type: "POST",
-                    data: formData,
-                    success: function (response) {
-                        Swal.close(); // ✅ Close loading popup
-                        updateDataTable(response);
-                    },
-                    error: function () {
-                        Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
-                    }
-                });
+            // ⏳ عرض مؤشر التحميل
+            Swal.fire({
+                title: 'جاري تحميل البيانات...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
             });
 
-                                                      function updateDataTable(response) {
-            console.log("🔍 البيانات المستلمة:", response); // ✅ تحقق من صحة البيانات
+            $.ajax({
+                url: "/Reports/GetAccountStatement",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    Swal.close(); // ✅ غلق نافذة التحميل
+                    updateDataTable(response);
+                },
+                error: function () {
+                    Swal.fire("خطأ", "حدث خطأ أثناء جلب البيانات", "error");
+                }
+            });
+        });
 
-            $("#tableContainer").empty(); // 🧹 مسح البيانات السابقة
+        function updateDataTable(response) {
+            console.log("🔍 البيانات المستلمة:", response);
+            $("#tableContainer").empty();
 
-            // ✅ زر طباعة جميع الجداول
+            // زر طباعة جميع الجداول
             $("#tableContainer").append(`
                 <button onclick="printAllTables()" class="print-btn all-tables-btn">🖨️ طباعة جميع الجداول</button>
             `);
 
             $.each(response, function (index, student) {
-                console.log("🔍 طالب:", student); // ✅ تحقق من بيانات كل طالب
+                if (!student || !student.studentId || !student.studentName) return;
 
-                if (!student || !student.studentId || !student.studentName) {
-                    console.warn("🚨 بيانات الطالب غير صحيحة:", student);
-                    return; // ❌ تخطي الطالب إذا لم تكن البيانات صحيحة
-                }
-
-                // ✅ إنشاء قسم جديد لكل طالب يتضمن اسمه وجدوله وزر الطباعة
                 let studentSection = `
-                    <div class="student-section" id="student-${student.studentId}">
+                    <div class="student-section printable" id="student-${student.studentId}">
+                        <div class="report-header">
+                            <h2 class="report-title">📘 تقرير كشف حساب الطالب</h2>
+                            <p class="report-subtitle">السنة الدراسية: 2024 / 2025</p>
+                            <hr />
+                        </div>
+
                         <h5 class="student-header">🔹 كود الطالب: ${student.studentId} - اسم الطالب: ${student.studentName}</h5>
                         <button onclick="printTable('${student.studentId}')" class="print-btn single-table-btn">🖨️ طباعة هذا الجدول</button>
+
                         <table class="styled-table">
                             <thead>
                                 <tr>
@@ -305,7 +317,6 @@
                             <tbody>
                 `;
 
-                // 🔄 التكرار على تفاصيل الحساب لكل طالب وإضافتها للجدول
                 $.each(student.details, function (i, detail) {
                     let formattedDate = detail.accountDate
                         ? new Date(detail.accountDate).toLocaleDateString('ar-EG')
@@ -320,13 +331,13 @@
                             <td>${detail.fees ? detail.fees.toFixed(2) : "0.00"}</td>
                             <td>${detail.payment ? detail.payment.toFixed(2) : "0.00"}</td>
                             <td>${detail.amountReturn ? detail.amountReturn.toFixed(2) : "0.00"}</td>
-                                   <td>${detail.ramaingPayment? detail.ramaingPayment.toFixed(2) : "0.00"}</td>
+                            <td>${detail.ramaingPayment ? detail.ramaingPayment.toFixed(2) : "0.00"}</td>
                         </tr>
                     `;
                 });
 
-                studentSection += `</tbody></table></div>`; // ✅ إنهاء الجدول والقسم
-                $("#tableContainer").append(studentSection); // 📌 إضافة البيانات إلى الصفحة
+                studentSection += `</tbody></table></div>`;
+                $("#tableContainer").append(studentSection);
             });
         }
 
@@ -335,7 +346,56 @@
             let printContent = document.getElementById(`student-${studentId}`).innerHTML;
             let originalContent = document.body.innerHTML;
 
-            document.body.innerHTML = `<div class="printable">${printContent}</div>`;
+            // إزالة الأزرار غير الضرورية
+            printContent = printContent.replace(/<button[^>]*>.*?<\/button>/g, "");
+             let printStyles = `
+                <style>
+                    .styled-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 10px;
+                        border: 2px solid #007bff;
+                    }
+                    .styled-table th, .styled-table td {
+                        border: 1px solid #007bff;
+                        padding: 10px;
+                        text-align: center;
+                    }
+                    .styled-table th {
+                        background-color: #007bff;
+                        color: white;
+                        font-weight: bold;
+                    }
+                    .styled-table tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+                    .report-title {
+                        text-align: center;
+                        font-size: 22px;
+                        font-weight: bold;
+                        margin-bottom: 25px;
+                        margin-top: 10px;
+                    }
+                    .student-header {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        margin-top: 30px;
+                    }
+                    .student-section {
+                        page-break-before: always;
+                    }
+                    .student-section:first-child {
+                        page-break-before: avoid;
+                    }
+                    hr {
+                        border: 1px solid #000;
+                        margin: 10px 0 20px 0;
+                    }
+                </style>
+            `;
+            // تغيير محتوى الصفحة للطباعة
+            document.body.innerHTML = `<div class="printable">${printStyles}${printContent}</div>`;
             window.print();
             location.reload(); // إعادة تحميل الصفحة بعد الطباعة للحفاظ على المحتوى الأصلي
         }
@@ -343,15 +403,70 @@
         // ✅ وظيفة طباعة جميع الجداول دفعة واحدة
         function printAllTables() {
             let printContent = document.getElementById("tableContainer").innerHTML;
-            document.body.innerHTML = `<div class="printable">${printContent}</div>`;
+
+            // إزالة الأزرار غير الضرورية
+            printContent = printContent.replace(/<button[^>]*>.*?<\/button>/g, "");
+
+            // تضمين التنسيقات داخل الطباعة
+            let printStyles = `
+                <style>
+                    .styled-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 10px;
+                        border: 2px solid #007bff;
+                    }
+                    .styled-table th, .styled-table td {
+                        border: 1px solid #007bff;
+                        padding: 10px;
+                        text-align: center;
+                    }
+                    .styled-table th {
+                        background-color: #007bff;
+                        color: white;
+                        font-weight: bold;
+                    }
+                    .styled-table tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+                    .report-title {
+                        text-align: center;
+                        font-size: 22px;
+                        font-weight: bold;
+                        margin-bottom: 25px;
+                        margin-top: 10px;
+                    }
+                    .student-header {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        margin-top: 30px;
+                    }
+                    .student-section {
+                        page-break-before: always;
+                    }
+                    .student-section:first-child {
+                        page-break-before: avoid;
+                    }
+                    hr {
+                        border: 1px solid #000;
+                        margin: 10px 0 20px 0;
+                    }
+                </style>
+            `;
+
+            // تعديل محتوى الطباعة ليشمل التنسيق
+            let contentToPrint = `<div class="printable">${printStyles}${printContent}</div>`;
+
+            // تغيير محتوى الصفحة للطباعة
+            document.body.innerHTML = contentToPrint;
+
+            // تنفيذ الطباعة
             window.print();
-            location.reload(); // إعادة تحميل الصفحة بعد الطباعة للحفاظ على المحتوى الأصلي
+
+            // إعادة تحميل الصفحة للحفاظ على المحتوى الأصلي بعد الطباعة
+            location.reload();
         }
-
-
-
-
-
-        </script>
+    </script>
 
 }

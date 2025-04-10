@@ -31,6 +31,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         public IRepositorySpecial<Receipt> receipts { get; }
 
         public IRepositorySpecial<Payment> payments { get; }
+        public IRepositoryBase<StudentsClassType> studentClassType { get ;  }
 
         public UnitOfWork(ApplicationDBContext context)
         {
@@ -46,6 +47,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             students=new RepositoryStudent(_context);   
             receipts=new RepositoryReceipt(_context);
             payments=new RepositoryPayment(_context);
+            studentClassType=new RepositoryStudentClassType(_context);
         }
         public IDbContextTransaction BeginTransaction()
         {

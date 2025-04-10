@@ -26,7 +26,8 @@ namespace SchoolApp.DAL
         public DbSet<InstallmentCostAfterDiscount> installmentCostAfterDiscounts { get; set; }
         public DbSet<Receipt> receipts { get; set; }    
         public DbSet<InstallmentReceipt> installmentReceipts { get; set; }
-        public DbSet<Payment> payments { get; set; }    
+        public DbSet<Payment> payments { get; set; }   
+        public DbSet<StudentsClassType> studentsClassTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<National>()

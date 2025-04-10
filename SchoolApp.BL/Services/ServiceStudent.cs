@@ -20,124 +20,188 @@ namespace SchoolApp.BL.Services
         }
         public string Add(VWStudent VWStudent)
         {
-            List<InstallmentCostAfterDiscount> InstallmentCostAfterDiscounts = new List<InstallmentCostAfterDiscount>();
-            foreach (var instcostaftDis in VWStudent.installmentCostAfterDiscounts)
+            using (var transaction = _unitOfWork.BeginTransaction()) // ✅ بدء المعاملة
             {
-                InstallmentCostAfterDiscount InstallmentCostAfterDiscount = new InstallmentCostAfterDiscount();
-                InstallmentCostAfterDiscount.CostInstallment = instcostaftDis.CostInstallment;
-                InstallmentCostAfterDiscount.InstallmentId = instcostaftDis.InstallmentId;
-                InstallmentCostAfterDiscount.StageId = VWStudent.StageId;
-                InstallmentCostAfterDiscount.ClassTypeId=VWStudent.ClassTypeId;
-                InstallmentCostAfterDiscount.InstallmentName = instcostaftDis.InstallmentName;
-                InstallmentCostAfterDiscounts.Add(InstallmentCostAfterDiscount);
-            }
-            List<InstallmentCostBeforeDiscount> InstallmentCostBeforeDiscounts = new List<InstallmentCostBeforeDiscount>();
-            foreach (var instcostaftDis in VWStudent.installmentCostBeforeDiscounts)
-            {
-                InstallmentCostBeforeDiscount InstallmentCostBeforeDiscount = new InstallmentCostBeforeDiscount();
-                InstallmentCostBeforeDiscount.CostInstallment = instcostaftDis.CostInstallment;
-                InstallmentCostBeforeDiscount.InstallmentId = instcostaftDis.InstallmentId;
-                InstallmentCostBeforeDiscount.StageId=VWStudent.StageId;
-                InstallmentCostBeforeDiscount.ClassTypeId = VWStudent.ClassTypeId;
-                InstallmentCostBeforeDiscount.InstallmentName=instcostaftDis.InstallmentName;
-                InstallmentCostBeforeDiscounts.Add(InstallmentCostBeforeDiscount);
-            }
-            Student student = new Student();
-            student.installmentCostAfterDiscounts = InstallmentCostAfterDiscounts;
-            student.installmentCostBeforeDiscounts=InstallmentCostBeforeDiscounts;
-            student.StudentName = VWStudent.StudentName;
-            student.StudentNumber=VWStudent.StudentNumber;
-            student.FatherName = VWStudent.FatherName;
-            student.GrandFatherName=VWStudent.GrandFatherName;  
-            student.FamilyName = VWStudent.FamilyName;
-            student.DepartmentId = VWStudent.DepartmentId;  
-            student.StageId = VWStudent.StageId;
-            student.BrithDate = (DateOnly)VWStudent.BrithDate;
-            student.BrithPlace= VWStudent.BrithPlace;   
-            student.NationalId=VWStudent.NationalId;
-            student.GanderType=VWStudent.GanderType;
-            student.ClassTypeId = VWStudent.ClassTypeId;
-            student.ClassTypeName = VWStudent.ClassTypeName;
-            student.LastBalance=VWStudent.LastBalance;
-            student.LastSchoolName=VWStudent.LastSchoolName;
-            student.AdvanceRepayment=VWStudent.AdvanceRepayment;    
-            student.MonthlyInstallment=VWStudent.MonthlyInstallment;    
-            student.PersonalStatusStudentId=VWStudent.PersonalStatusStudentId;
-            student.PersonalStatusStudentNumber=VWStudent.PersonalStatusStudentNumber;  
-            student.PersonalStatusStudentStartDate=(DateOnly)VWStudent.PersonalStatusStudentStartDate;    
-            student.PersonalStatusStudentEndDate= (DateOnly)VWStudent.PersonalStatusStudentEndDate;    
-            student.PersonalStatusStudentPlace=VWStudent.PersonalStatusStudentPlace;
-            student.PaymentTypeId=VWStudent.PaymentTypeId;
-            student.EnrollmentPeriodId=VWStudent.EnrollmentPeriodId;
-            student.GuardianName=VWStudent.GuardianName;
-            student.Kinship=VWStudent.Kinship;
-            student.GuardianNationalId=VWStudent.GuardianNationalId;    
-            student.GuardianWork=VWStudent.GuardianSideWork;
-            student.GuardianJob=VWStudent.GuardianJob;
-            student.GuardianMobile=VWStudent.GuardianMobile;
-            student.GuardianEmail=VWStudent.GuardianEmail;
-            student.GuardianZipCode=VWStudent.GuardianZipCode;
-            student.GuardianWorkMobile=VWStudent.GuardianWorkMobile;
-            student.NameOfClosestPerson=VWStudent.NameOfClosestPerson;
-            student.HouseLocationGuardian=VWStudent.HouseLocationGuardian;
-            student.HouseMobileGuardian=VWStudent.HouseMobileGuardian;
-            student.GuardianFaxNumber=VWStudent.GuardianFaxNumber;
-            student.GuardianWorkingWithUs=VWStudent.GuardianWorkingWithUs;  
-            student.PersonalStatusGuardianId=VWStudent.PersonalStatusGuardianId;
-            student.PersonalStatusGuardianNumber=VWStudent.PersonalStatusGuardianNumber;    
-            student.PersonalStatusGuardianStartDate= (DateOnly)VWStudent.PersonalStatusGuardianStartDate;  
-            student.PersonalStatusGuardianEndDate= (DateOnly)VWStudent.PersonalStatusGuardianEndDate;  
-            student.PersonalStatusGuardianPlace=VWStudent.PersonalStatusGuardianPlace;  
-            student.MotherStudentName=VWStudent.MotherStudentName;
-            student.KinshipMother=VWStudent.KinshipMother;
-            student.MotherNationalId=VWStudent.MotherNationalId;
-            student.MotherWork=VWStudent.MotherWork;
-            student.MotherFaxNumber= VWStudent.MotherFaxNumber;
-            student.MotherWorkMobile=VWStudent.MotherWorkMobile;
-            student.MotherJob=VWStudent.MotherJob;
-            student.MotherMobilePhone=VWStudent.MotherMobilePhone;  
-            student.Notes=VWStudent.Notes;
-            student.CLSCloth=VWStudent.CLSCloth;
-            student.CLSAcpt=VWStudent.CLSAcpt;
-            student.CLSBakelite=VWStudent.CLSBakelite;
-            student.CLSRegs=VWStudent.CLSRegs;
-            student.AreYouWantGoWithBusSchool = VWStudent.AreYouWantGoWithBusSchool;
-            student.DirectionBus=VWStudent.DirectionBus;
-            student.BusId=VWStudent.BusId;
-            student.CostFirstTermBeforeDiscount = VWStudent.CostFirstTermBeforeDiscount;
-            student.CostSecondTermBeforeDiscount = VWStudent.CostSecondTermBeforeDiscount;
-            student.CostSecondTermAfterDiscount=VWStudent.CostSecondTermAfterDiscount;
-            student.CostFirstTermAfterDiscount=VWStudent.CostFirstTermAfterDiscount;
-            student.GeneralDiscount=VWStudent.GeneralDiscount;
-            student.EmployeeDiscount=VWStudent.EmployeeDiscount;
-            student.EarlyPaymentDiscount=VWStudent.EarlyPaymentDiscount;
-            student.SiblingsDiscount=VWStudent.SiblingsDiscount;
-            student.CommunityFundDiscount=VWStudent.CommunityFundDiscount;
-            student.SpecialDiscount=VWStudent.SpecialDiscount;
-            student.TotalDiscount = VWStudent.TotalDiscount;
-            student.BusDiscount=VWStudent.BusDiscount;
-            student.TotalCost=VWStudent.TotalCost;
-            student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+                try
+                {
+                    List<InstallmentCostAfterDiscount> InstallmentCostAfterDiscounts = new List<InstallmentCostAfterDiscount>();
+                    foreach (var instcostaftDis in VWStudent.installmentCostAfterDiscounts)
+                    {
+                        InstallmentCostAfterDiscount InstallmentCostAfterDiscount = new InstallmentCostAfterDiscount();
+                        InstallmentCostAfterDiscount.CostInstallment = instcostaftDis.CostInstallment;
+                        InstallmentCostAfterDiscount.InstallmentId = instcostaftDis.InstallmentId;
+                        InstallmentCostAfterDiscount.StageId = VWStudent.StageId;
+                        InstallmentCostAfterDiscount.ClassTypeId = VWStudent.ClassTypeId;
+                        InstallmentCostAfterDiscount.InstallmentName = instcostaftDis.InstallmentName;
+                        InstallmentCostAfterDiscounts.Add(InstallmentCostAfterDiscount);
+                    }
+                    List<InstallmentCostBeforeDiscount> InstallmentCostBeforeDiscounts = new List<InstallmentCostBeforeDiscount>();
+                    foreach (var instcostaftDis in VWStudent.installmentCostBeforeDiscounts)
+                    {
+                        InstallmentCostBeforeDiscount InstallmentCostBeforeDiscount = new InstallmentCostBeforeDiscount();
+                        InstallmentCostBeforeDiscount.CostInstallment = instcostaftDis.CostInstallment;
+                        InstallmentCostBeforeDiscount.InstallmentId = instcostaftDis.InstallmentId;
+                        InstallmentCostBeforeDiscount.StageId = VWStudent.StageId;
+                        InstallmentCostBeforeDiscount.ClassTypeId = VWStudent.ClassTypeId;
+                        InstallmentCostBeforeDiscount.InstallmentName = instcostaftDis.InstallmentName;
+                        InstallmentCostBeforeDiscounts.Add(InstallmentCostBeforeDiscount);
+                    }
 
-            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount 
-                + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
-            foreach(var item in InstallmentCostAfterDiscounts)
-            {
-                student.ReceiptTotalFees += item.CostInstallment;
-            }
-            student.ReceiptTotalPayments = student.LastBalance;
-            student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
-            if (_unitOfWork.students.Add(student)) 
-            {
-                return "تم الحفظ بنجاح";
-            }
-            else
-            {
-                return "حدثت مشكلة اثناء الحفظ";
+                    Student student = new Student();
+                    student.installmentCostAfterDiscounts = InstallmentCostAfterDiscounts;
+                    student.installmentCostBeforeDiscounts = InstallmentCostBeforeDiscounts;
+                    student.StudentName = VWStudent.StudentName;
+                    student.StudentNumber = VWStudent.StudentNumber;
+                    student.FatherName = VWStudent.FatherName;
+                    student.GrandFatherName = VWStudent.GrandFatherName;
+                    student.FamilyName = VWStudent.FamilyName;
+                    student.DepartmentId = VWStudent.DepartmentId;
+                    student.StageId = VWStudent.StageId;
+                    student.BrithDate = (DateOnly)VWStudent.BrithDate;
+                    student.BrithPlace = VWStudent.BrithPlace;
+                    student.NationalId = VWStudent.NationalId;
+                    student.GanderType = VWStudent.GanderType;
+                    student.ClassTypeId = VWStudent.ClassTypeId;
+                    student.ClassTypeName = VWStudent.ClassTypeName;
+                    student.LastBalance = VWStudent.LastBalance;
+                    student.LastSchoolName = VWStudent.LastSchoolName;
+                    student.AdvanceRepayment = VWStudent.AdvanceRepayment;
+                    student.MonthlyInstallment = VWStudent.MonthlyInstallment;
+                    student.PersonalStatusStudentId = VWStudent.PersonalStatusStudentId;
+                    student.PersonalStatusStudentNumber = VWStudent.PersonalStatusStudentNumber;
+                    student.PersonalStatusStudentStartDate = (DateOnly)VWStudent.PersonalStatusStudentStartDate;
+                    student.PersonalStatusStudentEndDate = (DateOnly)VWStudent.PersonalStatusStudentEndDate;
+                    student.PersonalStatusStudentPlace = VWStudent.PersonalStatusStudentPlace;
+                    student.PaymentTypeId = VWStudent.PaymentTypeId;
+                    student.EnrollmentPeriodId = VWStudent.EnrollmentPeriodId;
+                    student.GuardianName = VWStudent.GuardianName;
+                    student.Kinship = VWStudent.Kinship;
+                    student.GuardianNationalId = VWStudent.GuardianNationalId;
+                    student.GuardianWork = VWStudent.GuardianSideWork;
+                    student.GuardianJob = VWStudent.GuardianJob;
+                    student.GuardianMobile = VWStudent.GuardianMobile;
+                    student.GuardianEmail = VWStudent.GuardianEmail;
+                    student.GuardianZipCode = VWStudent.GuardianZipCode;
+                    student.GuardianWorkMobile = VWStudent.GuardianWorkMobile;
+                    student.NameOfClosestPerson = VWStudent.NameOfClosestPerson;
+                    student.HouseLocationGuardian = VWStudent.HouseLocationGuardian;
+                    student.HouseMobileGuardian = VWStudent.HouseMobileGuardian;
+                    student.GuardianFaxNumber = VWStudent.GuardianFaxNumber;
+                    student.GuardianWorkingWithUs = VWStudent.GuardianWorkingWithUs;
+                    student.PersonalStatusGuardianId = VWStudent.PersonalStatusGuardianId;
+                    student.PersonalStatusGuardianNumber = VWStudent.PersonalStatusGuardianNumber;
+                    student.PersonalStatusGuardianStartDate = (DateOnly)VWStudent.PersonalStatusGuardianStartDate;
+                    student.PersonalStatusGuardianEndDate = (DateOnly)VWStudent.PersonalStatusGuardianEndDate;
+                    student.PersonalStatusGuardianPlace = VWStudent.PersonalStatusGuardianPlace;
+                    student.MotherStudentName = VWStudent.MotherStudentName;
+                    student.KinshipMother = VWStudent.KinshipMother;
+                    student.MotherNationalId = VWStudent.MotherNationalId;
+                    student.MotherWork = VWStudent.MotherWork;
+                    student.MotherFaxNumber = VWStudent.MotherFaxNumber;
+                    student.MotherWorkMobile = VWStudent.MotherWorkMobile;
+                    student.MotherJob = VWStudent.MotherJob;
+                    student.MotherMobilePhone = VWStudent.MotherMobilePhone;
+                    student.Notes = VWStudent.Notes;
+                    student.CLSCloth = VWStudent.CLSCloth;
+                    student.CLSAcpt = VWStudent.CLSAcpt;
+                    student.CLSBakelite = VWStudent.CLSBakelite;
+                    student.CLSRegs = VWStudent.CLSRegs;
+                    student.AreYouWantGoWithBusSchool = VWStudent.AreYouWantGoWithBusSchool;
+                    student.DirectionBus = VWStudent.DirectionBus;
+                    student.BusId = VWStudent.BusId;
+                    student.CostFirstTermBeforeDiscount = VWStudent.CostFirstTermBeforeDiscount;
+                    student.CostSecondTermBeforeDiscount = VWStudent.CostSecondTermBeforeDiscount;
+                    student.CostSecondTermAfterDiscount = VWStudent.CostSecondTermAfterDiscount;
+                    student.CostFirstTermAfterDiscount = VWStudent.CostFirstTermAfterDiscount;
+                    student.GeneralDiscount = VWStudent.GeneralDiscount;
+                    student.EmployeeDiscount = VWStudent.EmployeeDiscount;
+                    student.EarlyPaymentDiscount = VWStudent.EarlyPaymentDiscount;
+                    student.SiblingsDiscount = VWStudent.SiblingsDiscount;
+                    student.CommunityFundDiscount = VWStudent.CommunityFundDiscount;
+                    student.SpecialDiscount = VWStudent.SpecialDiscount;
+                    student.TotalDiscount = VWStudent.TotalDiscount;
+                    student.BusDiscount = VWStudent.BusDiscount;
+                    student.TotalCost = VWStudent.TotalCost;
+                    student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+
+                    student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount
+                        ;
+                    foreach (var item in InstallmentCostAfterDiscounts)
+                    {
+                        student.ReceiptTotalFees += item.CostInstallment;
+                    }
+                    student.ReceiptTotalPayments = student.LastBalance+student.AdvanceRepayment;
+                    student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
+                    if (_unitOfWork.students.Add(student))
+                    {
+                        var studentAdd = _unitOfWork.students.GetAll().FirstOrDefault(i => i.StudentNumber == student.StudentNumber);
+                        StudentsClassType studentsClassType = new StudentsClassType();
+                        studentsClassType.StudentNumber = studentAdd.StudentNumber;
+                        studentsClassType.StudentId = studentAdd.Id;
+                        studentsClassType.StudentName = $"{studentAdd.StudentName} {studentAdd.FatherName} {studentAdd.GrandFatherName} {studentAdd.FamilyName}";
+                        studentsClassType.DepartmentId = studentAdd.DepartmentId;
+                        studentsClassType.StageId = studentAdd.StageId;
+                        studentsClassType.BrithDate = studentAdd.BrithDate;
+                        studentsClassType.BrithPlace = studentAdd.BrithPlace;
+                        studentsClassType.ClassTypeId = studentAdd.ClassTypeId;
+                        studentsClassType.LastBalance = studentAdd.LastBalance;
+                        studentsClassType.AdvanceRepayment = studentAdd.AdvanceRepayment;
+                        studentsClassType.MonthlyInstallment = studentAdd.MonthlyInstallment;
+                        studentsClassType.CLSCloth = studentAdd.CLSCloth;
+                        studentsClassType.CLSAcpt = studentAdd.CLSAcpt;
+                        studentsClassType.CLSBakelite = studentAdd.CLSBakelite;
+                        studentsClassType.CLSRegs = studentAdd.CLSRegs;
+                        studentsClassType.AreYouWantGoWithBusSchool = studentAdd.AreYouWantGoWithBusSchool;
+                        studentsClassType.DirectionBus = studentAdd.DirectionBus;
+                        studentsClassType.BusId = studentAdd.BusId;
+                        studentsClassType.CostFirstTermBeforeDiscount = studentAdd.CostFirstTermBeforeDiscount;
+                        studentsClassType.CostSecondTermBeforeDiscount = studentAdd.CostSecondTermBeforeDiscount;
+                        studentsClassType.GeneralDiscount = studentAdd.GeneralDiscount;
+                        studentsClassType.EmployeeDiscount = studentAdd.EmployeeDiscount;
+                        studentsClassType.EarlyPaymentDiscount = studentAdd.EarlyPaymentDiscount;
+                        studentsClassType.SiblingsDiscount = studentAdd.SiblingsDiscount;
+                        studentsClassType.CommunityFundDiscount = studentAdd.CommunityFundDiscount;
+                        studentsClassType.SpecialDiscount = studentAdd.SpecialDiscount;
+                        studentsClassType.TotalDiscount = studentAdd.TotalDiscount;
+                        studentsClassType.BusDiscount = studentAdd.BusDiscount;
+                        studentsClassType.CostFirstTermAfterDiscount = studentAdd.CostFirstTermAfterDiscount;
+                        studentsClassType.CostSecondTermAfterDiscount = studentAdd.CostSecondTermAfterDiscount;
+                        studentsClassType.TotalCost = studentAdd.TotalCost;
+                        studentsClassType.TotalCostAfterDiscount = studentAdd.TotalCostAfterDiscount;
+                        studentsClassType.ReceiptTotalFees = studentAdd.ReceiptTotalFees;
+                        studentsClassType.ReceiptTotalPayments = studentAdd.ReceiptTotalPayments;
+                        studentsClassType.RemainingFees = studentAdd.RemainingFees;
+                        studentsClassType.RegistrationDate = studentAdd.RegistrationDate;
+                        studentsClassType.TransferringDate = DateOnly.FromDateTime(DateTime.Now);
+                        if (_unitOfWork.studentClassType.Add(studentsClassType))
+                        {
+                            _unitOfWork.Save(); // ✅ حفظ البيانات
+                            transaction.Commit(); // ✅ تأكيد المعاملة
+                            return "تم الحفظ بنجاح";
+                        }
+                        return "حدثت مشكلة أثناء الحذف";
+                    }
+                    else
+                    {
+                        transaction.Rollback(); // ❌ إلغاء العملية
+                        return "حدثت مشكلة أثناء الحذف";
+
+                    }
+
+
+                }
+
+
+                catch (Exception ex)
+                {
+                    transaction.Rollback(); // ❌ التراجع عن جميع العمليات في حالة حدوث خطأ
+                                            // يمكن استخدام Logger هنا لتسجيل الخطأ
+
+                    return "فشل الحذف: ";
+                }
             }
         }
-
         public string Delete(int id)
         {
             var student = _unitOfWork.students.GetById(id);
@@ -267,13 +331,12 @@ namespace SchoolApp.BL.Services
             student.BusDiscount = VWStudent.BusDiscount;
             student.TotalCost = VWStudent.TotalCost;
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
-            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount 
-              + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + student.CLSRegs;
+            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount;
             foreach (var item in InstallmentCostAfterDiscounts)
             {
                 student.ReceiptTotalFees += item.CostInstallment;
             }
-            student.ReceiptTotalPayments = student.LastBalance;
+            student.ReceiptTotalPayments = student.LastBalance + student.AdvanceRepayment;
             student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
             if (_unitOfWork.students.Update(student))
@@ -313,7 +376,7 @@ namespace SchoolApp.BL.Services
             receipt.ReceiptTotalPayments = student.ReceiptTotalPayments;
             receipt.StudentId = student.Id;
             receipt.LastBalance = student.LastBalance;
-            receipt.TotalCost = student.TotalCostAfterDiscount;
+            receipt.TotalCost = student.TotalCostAfterDiscount-student.CLSAcpt-student.CLSBakelite-student.CLSCloth-student.CLSRegs;
             List<InstallmentForStudent> installmentForStudents = new List<InstallmentForStudent>();
             InstallmentForStudent installmentForStudent = null;
             foreach(var install in student.installmentCostAfterDiscounts)

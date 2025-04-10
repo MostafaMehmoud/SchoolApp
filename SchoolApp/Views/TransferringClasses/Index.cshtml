@@ -29,23 +29,25 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="d-flex justify-content-between">
-            <div class="m-0">
+            <div class="m-3">
                 <h1 class="card-title text-dark font-weight-bold fs-2"> نقل الصفوف </h1>
             </div>
-
+            <div class="m-3">
+                <h1 class="card-title text-danger font-weight-bold fs-2"> لن يمكنك الرجوع في هذا الامر </h1>
+            </div>
         </div>
 
         <div class="card-body">
             <div class="forms-sample">
                 <div class="row custom-form-group">
                     <div class="col">
-                        <label class="form-label">المرحلة</label>
+                        <label class="form-label">من المرحلة</label>
                         <select required  asp-items=" ViewBag.Stages" id="StageId" class="form-control form-control-sm">
                             <option value="0">اختر المرحلة</option>
                         </select>
                     </div>
                     <div class="col">
-                        <label class="form-label">الصف</label>
+                        <label class="form-label"> من الصف</label>
                         <select required id="classTypeId" class="form-control form-control-sm">
                             <option value="0">اختر الصف</option>
 
@@ -55,13 +57,13 @@
                 <div class="row custom-form-group">
                    
                     <div class="col">
-                        <label class="form-label">المرحلة</label>
+                        <label class="form-label">الي المرحلة</label>
                         <select required asp-items=" ViewBag.Stages" id="StageId2" class="form-control form-control-sm">
                             <option value="0">اختر المرحلة</option>
                         </select>
                     </div>
                     <div class="col">
-                        <label class="form-label">الصف</label>
+                        <label class="form-label">الي الصف</label>
                         <select required id="classTypeId2" class="form-control form-control-sm">
                             <option value="0">اختر الصف</option>
 

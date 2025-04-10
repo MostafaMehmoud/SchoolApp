@@ -42,8 +42,11 @@ namespace SchoolApp.BL.Services
                     student.ReceiptTotalFees = student.ReceiptTotalFees + Payment.Amount;
                    
                     student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
-
-                    if (_unitOfWork.payments.Add(payment) && _unitOfWork.students.Update(student))
+                    var studentclasstype = _unitOfWork.studentClassType.GetAll().Where(i=>i.StudentId==payment.StudentId).LastOrDefault();
+                    studentclasstype.ReceiptTotalFees=studentclasstype.ReceiptTotalFees+Payment.Amount; 
+                    studentclasstype.RemainingFees=studentclasstype.ReceiptTotalFees -studentclasstype.ReceiptTotalPayments;
+                    if (_unitOfWork.payments.Add(payment) && _unitOfWork.students.Update(student)&&
+                        _unitOfWork.studentClassType.Update(studentclasstype))
                     {
                         _unitOfWork.Save(); // ✅ حفظ البيانات
                         transaction.Commit(); // ✅ تأكيد المعاملة
@@ -85,11 +88,14 @@ namespace SchoolApp.BL.Services
                     student.ReceiptTotalFees-= receipt.Amount;
                     
                     student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
-
+                    var studentclasstype = _unitOfWork.studentClassType.GetAll().Where(i => i.StudentId == receipt.StudentId).LastOrDefault();
+                    studentclasstype.ReceiptTotalFees -= receipt.Amount;
+                    studentclasstype.RemainingFees = studentclasstype.ReceiptTotalFees - studentclasstype.ReceiptTotalPayments;
+                    bool isUpdateStudentClassType=_unitOfWork.studentClassType.Update(studentclasstype);
                     bool isDeleted = _unitOfWork.payments.Delete(id);
                     bool isUpdated = _unitOfWork.students.Update(student);
 
-                    if (isDeleted && isUpdated)
+                    if (isDeleted && isUpdated&& isUpdateStudentClassType)
                     {
                         _unitOfWork.Save(); // ✅ حفظ البيانات
                         transaction.Commit(); // ✅ تأكيد المعاملة

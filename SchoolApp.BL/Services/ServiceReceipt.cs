@@ -43,11 +43,15 @@ namespace SchoolApp.BL.Services
                     receipt.BankName= Receipt.BankName;
                     receipt.AmountName=Receipt.AmountName;
                     var student = _unitOfWork.students.GetById(receipt.StudentId);
-                    student.ReceiptTotalFees =student.ReceiptTotalFees- Receipt.ReceiptTotalFees;
+                    //student.ReceiptTotalFees =student.ReceiptTotalFees- Receipt.ReceiptTotalFees;
                     student.ReceiptTotalPayments =student.ReceiptTotalPayments+ Receipt.Amount;
                     student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;    
-                    
-                    if (_unitOfWork.receipts.Add(receipt)&&_unitOfWork.students.Update(student))
+                    var studentclasstype=_unitOfWork.studentClassType.GetAll().Where(i=>i.StudentId==receipt.StudentId).LastOrDefault();
+                    //studentclasstype.ReceiptTotalFees = studentclasstype.ReceiptTotalFees - Receipt.ReceiptTotalFees;
+                    studentclasstype.ReceiptTotalPayments=studentclasstype.ReceiptTotalPayments-Receipt.Amount;
+                    studentclasstype.RemainingFees = studentclasstype.ReceiptTotalFees - studentclasstype.ReceiptTotalPayments;
+
+                    if (_unitOfWork.receipts.Add(receipt)&&_unitOfWork.students.Update(student)&&_unitOfWork.studentClassType.Update(studentclasstype))
                     {
                         _unitOfWork.Save(); // ✅ حفظ البيانات
                         transaction.Commit(); // ✅ تأكيد المعاملة
@@ -88,11 +92,17 @@ namespace SchoolApp.BL.Services
                     
                     student.ReceiptTotalPayments -= receipt.Amount;
                     student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
-
+                    var studentclasstype = _unitOfWork.studentClassType.GetAll().Where(i=>i.StudentId== receipt.StudentId).LastOrDefault();
+                    if (studentclasstype == null)
+                    {
+                        return "الطالب غير موجود!";
+                    }
+                    studentclasstype.ReceiptTotalPayments-=receipt.Amount;
+                    studentclasstype.RemainingFees=studentclasstype.ReceiptTotalFees -studentclasstype.ReceiptTotalPayments;
                     bool isDeleted = _unitOfWork.receipts.Delete(id);
                     bool isUpdated = _unitOfWork.students.Update(student);
-
-                    if (isDeleted && isUpdated)
+                    bool isUpdateStudentClasstype = _unitOfWork.studentClassType.Update(studentclasstype);
+                    if (isDeleted && isUpdated&& isUpdateStudentClasstype)
                     {
                         _unitOfWork.Save(); // ✅ حفظ البيانات
                         transaction.Commit(); // ✅ تأكيد المعاملة

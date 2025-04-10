@@ -23,6 +23,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         IRepositorySpecial<Student>   students { get; } 
         IRepositorySpecial<Receipt> receipts { get; }
         IRepositorySpecial<Payment> payments { get; }   
+        IRepositoryBase<StudentsClassType> studentClassType { get;  }
         IDbContextTransaction BeginTransaction();
         void Save();
         int Complete();
