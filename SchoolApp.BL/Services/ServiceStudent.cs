@@ -49,6 +49,7 @@ namespace SchoolApp.BL.Services
 
 
                     Student student = new Student();
+                    student.RegistrationDate = DateOnly.FromDateTime(DateTime.Now);
                     student.installmentCostAfterDiscounts = InstallmentCostAfterDiscounts;
                     student.installmentCostBeforeDiscounts = InstallmentCostBeforeDiscounts;
                     student.StudentName = VWStudent.StudentName;
@@ -125,8 +126,9 @@ namespace SchoolApp.BL.Services
                     student.TotalCost = VWStudent.TotalCost;
                     student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
 
-                    student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount
+                    student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount
                         ;
+                        
                     foreach (var item in InstallmentCostAfterDiscounts)
                     {
                         student.ReceiptTotalFees += item.CostInstallment;
@@ -255,6 +257,7 @@ namespace SchoolApp.BL.Services
                 InstallmentCostBeforeDiscounts.Add(InstallmentCostBeforeDiscount);
             }
             Student student = new Student();
+            student.RegistrationDate = DateOnly.FromDateTime(DateTime.Now);
             student.Id = VWStudent.Id;
             student.installmentCostAfterDiscounts = InstallmentCostAfterDiscounts;
             student.installmentCostBeforeDiscounts = InstallmentCostBeforeDiscounts;
@@ -327,19 +330,72 @@ namespace SchoolApp.BL.Services
             student.SiblingsDiscount = VWStudent.SiblingsDiscount;
             student.CommunityFundDiscount = VWStudent.CommunityFundDiscount;
             student.SpecialDiscount = VWStudent.SpecialDiscount;
-            student.TotalDiscount = VWStudent.TotalDiscount;
+            student.TotalDiscount = (VWStudent.CommunityFundDiscount + VWStudent.EarlyPaymentDiscount +
+                            VWStudent.SiblingsDiscount + VWStudent.SpecialDiscount + VWStudent.SpecialDiscount + (VWStudent.GeneralDiscount / 100) * VWStudent.TotalCost + (VWStudent.EmployeeDiscount / 100) * VWStudent.TotalCost);
+            ;
             student.BusDiscount = VWStudent.BusDiscount;
             student.TotalCost = VWStudent.TotalCost;
+            
             student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
-            student.ReceiptTotalFees += student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount;
+            ///////////////////////////////////////////////////////////
+            var allClasses = _unitOfWork.studentClassType
+    .GetAll()
+    .Where(i => i.StudentId == VWStudent.Id)
+    .ToList();
+
+            StudentsClassType result = null;
+            StudentsClassType LastStudentclassType = _unitOfWork.studentClassType.GetAll().LastOrDefault(i => i.StudentId == VWStudent.Id);
+            if (allClasses.Count == 1)
+            {
+                result = new StudentsClassType(); // العنصر الوحيد
+                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount ;
+            }
+            else if (allClasses.Count >= 2)
+            {
+                result = allClasses[allClasses.Count - 2]; // العنصر قبل الأخير
+                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + (-LastStudentclassType.LastBalance);
+            }
+
+            // الآن result تحتوي على العنصر المطلوب
+
+            
+            
+                 
+            LastStudentclassType.CLSCloth = VWStudent.CLSCloth;
+            LastStudentclassType.CLSAcpt = VWStudent.CLSAcpt;
+            LastStudentclassType.CLSBakelite=VWStudent.CLSBakelite;
+            LastStudentclassType.CLSRegs=VWStudent.CLSRegs;
+            LastStudentclassType.AreYouWantGoWithBusSchool = VWStudent.AreYouWantGoWithBusSchool;
+            LastStudentclassType.DirectionBus = VWStudent.DirectionBus;
+            LastStudentclassType.BusId = VWStudent.BusId;
+            LastStudentclassType.CostFirstTermBeforeDiscount = VWStudent.CostFirstTermBeforeDiscount;
+            LastStudentclassType.CostSecondTermBeforeDiscount = VWStudent.CostSecondTermBeforeDiscount;
+            LastStudentclassType.CostSecondTermAfterDiscount = VWStudent.CostSecondTermAfterDiscount;
+            LastStudentclassType.CostFirstTermAfterDiscount = VWStudent.CostFirstTermAfterDiscount;
+            LastStudentclassType.GeneralDiscount = VWStudent.GeneralDiscount;
+            LastStudentclassType.EmployeeDiscount = VWStudent.EmployeeDiscount;
+            LastStudentclassType.EarlyPaymentDiscount = VWStudent.EarlyPaymentDiscount;
+            LastStudentclassType.SiblingsDiscount = VWStudent.SiblingsDiscount;
+            LastStudentclassType.CommunityFundDiscount = VWStudent.CommunityFundDiscount;
+            LastStudentclassType.SpecialDiscount = VWStudent.SpecialDiscount;
+            LastStudentclassType.TotalDiscount = (VWStudent.CommunityFundDiscount + VWStudent.EarlyPaymentDiscount +
+                            VWStudent.SiblingsDiscount + VWStudent.SpecialDiscount + VWStudent.SpecialDiscount + (VWStudent.GeneralDiscount / 100) * VWStudent.TotalCost + (VWStudent.EmployeeDiscount / 100) * VWStudent.TotalCost);
+            ;
+            LastStudentclassType.BusDiscount = VWStudent.BusDiscount;
+            LastStudentclassType.TotalCost = VWStudent.TotalCost;
+            LastStudentclassType.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+            LastStudentclassType.ReceiptTotalFees = VWStudent.TotalCostAfterDiscount + VWStudent.CostSecondTermAfterDiscount + VWStudent.CostFirstTermAfterDiscount 
+               ;
+           
+            LastStudentclassType.RemainingFees = LastStudentclassType.ReceiptTotalFees - LastStudentclassType.ReceiptTotalPayments;
             foreach (var item in InstallmentCostAfterDiscounts)
             {
                 student.ReceiptTotalFees += item.CostInstallment;
             }
-            student.ReceiptTotalPayments = student.LastBalance + student.AdvanceRepayment;
+            student.ReceiptTotalPayments = LastStudentclassType.ReceiptTotalPayments;
             student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
 
-            if (_unitOfWork.students.Update(student))
+            if (_unitOfWork.students.Update(student)&&_unitOfWork.studentClassType.Update(LastStudentclassType))
             {
                 return "تم التعديل بنجاح";
             }

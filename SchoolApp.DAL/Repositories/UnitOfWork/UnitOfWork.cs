@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.Repositories.IRepository;
@@ -33,7 +34,13 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         public IRepositorySpecial<Payment> payments { get; }
         public IRepositoryBase<StudentsClassType> studentClassType { get ;  }
 
-        public UnitOfWork(ApplicationDBContext context)
+        public IRepositoryAuth auth { get; }
+
+        public UnitOfWork(
+        ApplicationDBContext context,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager
+    )
         {
             _context = context;
             Nationals = new Repository<National>(_context);
@@ -48,6 +55,8 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             receipts=new RepositoryReceipt(_context);
             payments=new RepositoryPayment(_context);
             studentClassType=new RepositoryStudentClassType(_context);
+            auth = new RepositoryAuth(userManager, signInManager);
+
         }
         public IDbContextTransaction BeginTransaction()
         {

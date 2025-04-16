@@ -38,6 +38,8 @@ namespace SchoolApp.BL.Services
             AccountStatement accountStatement = null;
             List<StudentsClassType> studentsClassTypes = _unitOfWork.studentClassType.GetAll().ToList();
             StudentsClassType studentsClassType = null;
+            var classType=_unitOfWork.classTypes.GetAll().ToList(); 
+            string ClassTypeName = "";
             foreach (var student in studentsfliter)
             {
                 decimal lastbalance = 0;
@@ -52,17 +54,17 @@ namespace SchoolApp.BL.Services
                     
                     accountStatement.StudentId = studentclasstype.StudentNumber;
                     accountStatement.StudentName = studentclasstype.StudentName;
-                      
+                    ClassTypeName = classType.FirstOrDefault(i => i.Id == studentclasstype.ClassTypeId).Name;
                      accountStatementDetails1 = new AccountStatementDetails();
-                    accountStatementDetails1.AcountName = "رسوم الدراسية";
+                    accountStatementDetails1.AcountName = "رسوم الدراسية:"+ ClassTypeName;
                     accountStatementDetails1.AccountDate = (DateOnly)studentclasstype.TransferringDate;
                     accountStatementDetails1.Fees = studentclasstype.ReceiptTotalFees ;
                     totalamount += studentclasstype.ReceiptTotalFees;
                     accountStatementDetails1.RamaingPayment = totalamount;
                     accountStatementDetails1.LastBalance =0;
-                   
+                    accountStatementDetails1.ReceiptIdOrName = studentclasstype.StudentNumber.ToString();
                     accountStatementDetails.Add(accountStatementDetails1);
-                    if (studentclasstype.LastBalance >= 0)
+                    if (studentclasstype.LastBalance > 0)
                     {
                         AccountStatementDetails accountStatementLastBalance = new AccountStatementDetails();
                         accountStatementLastBalance.AcountName= "الرصيد السابق ";
@@ -102,6 +104,7 @@ namespace SchoolApp.BL.Services
                     accountStatementDetails3.AcountName = "دفعة مقدمة  ";
                     accountStatementDetails3.ReceiptIdOrName = student.StudentNumber.ToString();
                     accountStatementDetails3.LastBalance = 0;
+                    accountStatementDetails3.ReceiptIdOrName= student.StudentNumber.ToString();
                     accountStatementDetails3.AccountDate = student.RegistrationDate;
                     accountStatementDetails3.Payment = student.AdvanceRepayment;
                     totalamount -= student.AdvanceRepayment;
@@ -561,9 +564,13 @@ namespace SchoolApp.BL.Services
                         student.LastBalance = (student.ReceiptTotalPayments - student.ReceiptTotalFees) ;
                         student.ReceiptTotalPayments = student.ReceiptTotalPayments;
                         student.ReceiptTotalFees += totalCostAmountStudent;
-                        
-                        student.ReceiptTotalFees += (student.CLSRegs + student.CLSBakelite + student.CLSCloth + student.CLSAcpt);
+                        var classtypeAfterTransferring = classType.Where(i => i.StageId == student.StageId).FirstOrDefault();
+                        student.ReceiptTotalFees += (classtypeAfterTransferring.CLSRegs + classtypeAfterTransferring.CLSBakelite + classtypeAfterTransferring.CLSCloth + classtypeAfterTransferring.CLSAcpt);
                         student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
+                        student.CLSAcpt = classtypeAfterTransferring.CLSAcpt;
+                        student.CLSBakelite = classtypeAfterTransferring.CLSBakelite;
+                        student.CLSCloth = classtypeAfterTransferring.CLSCloth;
+                        student.CLSRegs = classtypeAfterTransferring.CLSRegs;
                         _unitOfWork.students.Update(student);
                         studentsClassType = new StudentsClassType();
                         studentsClassType.StudentId = student.Id;
@@ -575,10 +582,10 @@ namespace SchoolApp.BL.Services
                         studentsClassType.ClassTypeId = student.ClassTypeId;
                         studentsClassType.StudentNumber= student.StudentNumber;
                       
-                        studentsClassType.CLSCloth = student.CLSCloth;
-                        studentsClassType.CLSAcpt = student.CLSAcpt;
-                        studentsClassType.CLSBakelite = student.CLSBakelite;
-                        studentsClassType.CLSRegs = student.CLSRegs;
+                        studentsClassType.CLSCloth = classtypeAfterTransferring.CLSCloth;
+                        studentsClassType.CLSAcpt = classtypeAfterTransferring.CLSAcpt;
+                        studentsClassType.CLSBakelite = classtypeAfterTransferring.CLSBakelite;
+                        studentsClassType.CLSRegs = classtypeAfterTransferring.CLSRegs;
                         studentsClassType.TotalCost = TotalCostClassTypeTransferring;
                         studentsClassType.CommunityFundDiscount = student.CommunityFundDiscount;
                         studentsClassType.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
@@ -609,23 +616,35 @@ namespace SchoolApp.BL.Services
                     else
                     {
                         student.TotalCost = totalCostAmountStudent;
-                        student.CommunityFundDiscount = 0;
-                        student.EarlyPaymentDiscount = 0;
-                        student.EmployeeDiscount = 0;
-                        student.GeneralDiscount = 0;
-                        student.SiblingsDiscount = 0;
-                        student.SpecialDiscount = 0;
-                        student.BusDiscount = 0;
+                        student.CommunityFundDiscount = student.CommunityFundDiscount;
+                        student.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
+                        student.EmployeeDiscount = student.EmployeeDiscount;
+                        student.GeneralDiscount = student.GeneralDiscount;
+                        student.SiblingsDiscount = student.SiblingsDiscount;
+                        student.SpecialDiscount = student.SpecialDiscount;
+                        student.BusDiscount = student.BusDiscount;
+                        student.TotalDiscount= (student.CommunityFundDiscount + student.EarlyPaymentDiscount +
+                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
+
+                        totalCostAmountStudent = totalCostAmountStudent - (student.CommunityFundDiscount + student.EarlyPaymentDiscount +
+                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
                         if (student.AreYouWantGoWithBusSchool)
                         {
-                            totalCostAmountStudent = totalCostAmountStudent + student.CostFirstTermAfterDiscount + student.CostSecondTermAfterDiscount;
+                            decimal BusCostDiscount = (student.BusDiscount / 100) * (student.CostFirstTermAfterDiscount + student.CostSecondTermAfterDiscount);
+                            totalCostAmountStudent = totalCostAmountStudent + BusCostDiscount;
+
+
                         }
                         student.TotalCostAfterDiscount = totalCostAmountStudent;
-                       
-                        student.LastBalance = (student.ReceiptTotalPayments - student.ReceiptTotalFees) >= 0 ? (student.ReceiptTotalPayments - student.ReceiptTotalFees) : 0;
+                        var classtypeAfterTransferring = classType.Where(i => i.StageId == student.StageId).FirstOrDefault();
+                        student.LastBalance = (student.ReceiptTotalPayments - student.ReceiptTotalFees);
                         student.ReceiptTotalPayments = student.ReceiptTotalPayments;
                         student.ReceiptTotalFees += totalCostAmountStudent;
-                        student.ReceiptTotalFees +=( student.CLSRegs + student.CLSBakelite + student.CLSCloth + student.CLSAcpt);
+                        student.CLSAcpt = classtypeAfterTransferring.CLSAcpt;
+                        student.CLSBakelite = classtypeAfterTransferring.CLSBakelite;
+                        student.CLSCloth = classtypeAfterTransferring.CLSCloth;
+                        student.CLSRegs = classtypeAfterTransferring.CLSRegs;
+                        student.ReceiptTotalFees += (classtypeAfterTransferring.CLSRegs + classtypeAfterTransferring.CLSBakelite + classtypeAfterTransferring.CLSCloth + classtypeAfterTransferring.CLSAcpt);
                         student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
                         _unitOfWork.students.Update(student);
                         studentsClassType = new StudentsClassType();
@@ -643,17 +662,29 @@ namespace SchoolApp.BL.Services
                         studentsClassType.CLSBakelite = student.CLSBakelite;
                         studentsClassType.CLSRegs = student.CLSRegs;
                         studentsClassType.TotalCost = TotalCostClassTypeTransferring;
-                        studentsClassType.CommunityFundDiscount = 0;
-                        studentsClassType.EarlyPaymentDiscount = 0;
-                        studentsClassType.EmployeeDiscount = 0;
-                        studentsClassType.GeneralDiscount = 0;
-                        studentsClassType.SiblingsDiscount = 0;
-                        studentsClassType.SpecialDiscount = 0;
-                        studentsClassType.BusDiscount = 0;
+                        studentsClassType.CommunityFundDiscount = student.CommunityFundDiscount;
+                        studentsClassType.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
+                        studentsClassType.EmployeeDiscount = student.EmployeeDiscount;
+                        studentsClassType.GeneralDiscount = student.GeneralDiscount;
+                        studentsClassType.SiblingsDiscount = student.SiblingsDiscount;
+                        studentsClassType.SpecialDiscount = student.SpecialDiscount;
+                        studentsClassType.BusDiscount = student.BusDiscount;
+                        studentsClassType.TotalDiscount= (studentsClassType.CommunityFundDiscount + studentsClassType.EarlyPaymentDiscount +
+                          studentsClassType.SiblingsDiscount + studentsClassType.SpecialDiscount + studentsClassType.SpecialDiscount + (studentsClassType.GeneralDiscount / 100) * student.TotalCost + (studentsClassType.EmployeeDiscount / 100) * studentsClassType.TotalCost);
+
+                        TotalCostClassTypeTransferring = TotalCostClassTypeTransferring - (studentsClassType.CommunityFundDiscount + studentsClassType.EarlyPaymentDiscount +
+                          studentsClassType.SiblingsDiscount + studentsClassType.SpecialDiscount + studentsClassType.SpecialDiscount + (studentsClassType.GeneralDiscount / 100) * student.TotalCost + (studentsClassType.EmployeeDiscount / 100) * studentsClassType.TotalCost);
+
                         if (studentsClassType.AreYouWantGoWithBusSchool)
                         {
-                            TotalCostClassTypeTransferring = TotalCostClassTypeTransferring + studentsClassType.CostFirstTermAfterDiscount + studentsClassType.CostSecondTermAfterDiscount;
+                            decimal BusCostDiscount = (studentsClassType.BusDiscount / 100) * (studentsClassType.CostFirstTermAfterDiscount + studentsClassType.CostSecondTermAfterDiscount);
+                            TotalCostClassTypeTransferring = TotalCostClassTypeTransferring + BusCostDiscount;
                         }
+                        studentsClassType.CLSCloth = classtypeAfterTransferring.CLSCloth;
+                        studentsClassType.CLSAcpt = classtypeAfterTransferring.CLSAcpt;
+                        studentsClassType.CLSBakelite = classtypeAfterTransferring.CLSBakelite;
+                        studentsClassType.CLSRegs = classtypeAfterTransferring.CLSRegs;
+
                         studentsClassType.TotalCostAfterDiscount = TotalCostClassTypeTransferring;
                         studentsClassType.LastBalance = student.LastBalance;
                         studentsClassType.ReceiptTotalPayments = student.ReceiptTotalPayments;
@@ -663,6 +694,7 @@ namespace SchoolApp.BL.Services
                         studentsClassType.RemainingFees = studentsClassType.ReceiptTotalFees - studentsClassType.ReceiptTotalPayments;
                         studentsClassType.TransferringDate = DateOnly.FromDateTime(DateTime.Now);
                         studentsClassType.RegistrationDate = student.RegistrationDate;
+                        
                         _unitOfWork.studentClassType.Add(studentsClassType);
 
                     }

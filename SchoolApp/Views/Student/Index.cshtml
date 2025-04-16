@@ -860,9 +860,11 @@
                         adjustInstallments($(this));
                     });
 
-                    $(".additional-checkbox").change(function () {
-                        updateTotalWithExtras();
-                    });
+                    // $(".additional-checkbox").change(function () {
+                    //     alert("eeeee")
+                    //     updateTotalWithExtras();
+
+                    // });
 
                 } catch (error) {
                     console.error("Error fetching installments:", error);
@@ -945,7 +947,11 @@
             let totalDiscount = generalDiscountAmount + employeeDiscountAmount + earlyPaymentDiscount +
                 siblingsDiscount + communityFundDiscount + specialDiscount + busDiscount;
                
-
+                if($("#studentId").val()!=0){
+                    
+                                   baseTotalAmount = $('input[name="TotalCost"]').val();
+                                          console.log(baseTotalAmount)
+                }
             if (totalDiscount > baseTotalAmount) {
                 Swal.fire("تنبيه", "إجمالي الخصومات أكبر من المبلغ الإجمالي!", "warning");
                 return;
@@ -1034,14 +1040,16 @@
 
 
 
-            $(".discount-input").on("input", function () {
-                let value = parseFloat($(this).val()) || 0;
-                if (value < 0) {
-                    $(this).val(0);
-                    Swal.fire("خطأ", "لا يمكن إدخال خصم سلبي!", "error");
-                }
-                applyDiscounts();
-            });
+                $(".discount-input").on("input", function () {
+            let value = parseFloat($(this).val()) || 0;
+
+            if (value < 0) {
+                $(this).val(0);
+                Swal.fire("خطأ", "لا يمكن إدخال خصم سلبي!", "error");
+            }
+            applyDiscounts();
+        });
+
 
             function displayInstallments(container, data, amount, readonly) {
                 let html = "";
@@ -1068,7 +1076,7 @@
                     html = `
                         <div class="col">
                             <label class="form-label">المبلغ الإجمالي</label>
-                            <input readonly name="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
+                            <input  name="TotalCost" type="number" class="form-control form-control-sm" value="${amount.toFixed(2)}" >
                         </div>`;
                 } else {
                     data.forEach(item => {
@@ -1138,22 +1146,29 @@
 
 
 
-            function updateTotalWithExtras() {
-                let extraAmount = 0;
+            // function updateTotalWithExtras() {
+            //     let extraAmount = 0;
 
-                $(".additional-input").each(function () {
-                    let inputValue = parseFloat($(this).attr("data-value")) || 0;
-                    let isChecked = $(this).closest(".d-flex").find(".additional-checkbox").prop("checked");
+            //     $(".additional-input").each(function () {
+            //         let inputValue = parseFloat($(this).attr("data-value")) || 0;
+            //         let isChecked = $(this).closest(".d-flex").find(".additional-checkbox").prop("checked");
+            //         console.log("enter")
+            //         if (isChecked) {
+            //             extraAmount += inputValue;
+            //                } else{
+            //                    extraAmount -= inputValue;
+            //                }
+            //                if($("#studentId").val()!=0){
 
-                    if (isChecked) {
-                        extraAmount += inputValue;
-                    }
-                });
+            //                               baseTotalAmount = $('input[name="TotalCost"]').val();
+            //                                      console.log(baseTotalAmount)
+            //            }
+            //     });
 
-                let finalAmount = baseTotalAmount + extraAmount;
-                $("#installmentsContainerAfterDiscount").attr("data-total", finalAmount);
-                $("#discountedTotalAmount").val(finalAmount.toFixed(2));
-            }
+            //     let finalAmount = baseTotalAmount + extraAmount;
+            //     $("#installmentsContainerAfterDiscount").attr("data-total", finalAmount);
+            //     $("#discountedTotalAmount").val(finalAmount.toFixed(2));
+            // }
         });
 
     </script>
@@ -1165,10 +1180,17 @@
                 let container = $("#container");
                 let parentDiv = $(this).closest(".d-flex");
                 let labelText = parentDiv.find("label").text().trim();
-                let inputValue = parentDiv.find(".additional-input").val() || "0";
+                let inputValue =parseFloat( parentDiv.find(".additional-input").val() || 0);
                 let inputId = parentDiv.find(".additional-input").attr("id");
-
+                 var currentValue = parseFloat($('#discountedTotalAmount').val());
                 if ($(this).prop("checked")) {
+                    var valueToAdd =inputValue; // غيّر هذه القيمة لما تريد
+
+        // تنفيذ عملية الطرح
+        var newValue = currentValue + valueToAdd;
+
+        // تحديث القيمة في العنصر
+        $('#discountedTotalAmount').val(newValue);
                     // ✅ إضافة العنصر إلى #container فقط إذا لم يكن مضافًا بالفعل
                     if (container.find(`.added-item[data-id="${inputId}"]`).length === 0) {
                         container.append(`
@@ -1181,6 +1203,18 @@
                 } else {
                     // ❌ حذف العنصر إذا تم إلغاء تحديد الـ checkbox
                     container.find(`.added-item[data-id="${inputId}"]`).remove();
+                            // جلب القيمة من العنصر وتحويلها إلى رقم
+       
+
+        // القيمة التي تريد طرحها
+        var valueToSubtract =inputValue; // غيّر هذه القيمة لما تريد
+
+        // تنفيذ عملية الطرح
+        var newValue = currentValue - valueToSubtract;
+
+        // تحديث القيمة في العنصر
+        $('#discountedTotalAmount').val(newValue);
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
             });
 
@@ -1723,7 +1757,7 @@
                                $("#notes").val(response.notes);
                                 displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-                    document.getElementById("discountedTotalAmount").readonly = true;
+                    // document.getElementById("discountedTotalAmount").readonly = true;
 
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
@@ -1891,7 +1925,7 @@
                                $("#notes").val(response.notes);
                                 displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-                    document.getElementById("discountedTotalAmount").readonly = true;
+                    // document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);
@@ -2063,7 +2097,7 @@
                                $("#notes").val(response.notes);
                                 displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false);
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-                    document.getElementById("discountedTotalAmount").readonly = true;
+                    // document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);
@@ -2239,7 +2273,7 @@
                                $("#notes").val(response.notes);
                                 displayInstallmentsWhenSlectdata("#installmentsContainer", response.installmentCostBeforeDiscounts, response.totalCost, false)
                     displayInstallmentsWhenSlectdata("#installmentsContainerAfterDiscount",  response.installmentCostAfterDiscounts, response.totalCostAfterDiscount, true);
-                    document.getElementById("discountedTotalAmount").readonly = true;
+                    // document.getElementById("discountedTotalAmount").readonly = true;
                                $("#CLSCloth").val(response.clsCloth);
                                $("#CLSAcpt").val(response.clsAcpt);
                                $("#CLSBakelite").val(response.clsBakelite);
