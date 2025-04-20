@@ -13,6 +13,7 @@ namespace SchoolApp.Controllers
         { 
             _national = national;
         }
+        [Permission("CanAccessBusesFile")]
         public IActionResult Index()
         {
             return View(new National());

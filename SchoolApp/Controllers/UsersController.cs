@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
+using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
 
 namespace SchoolApp.Controllers
@@ -17,13 +20,14 @@ namespace SchoolApp.Controllers
         {
             List<SelectListItemLevel> Levels=new List<SelectListItemLevel>()
             {
-                new SelectListItemLevel { Text = "مشرف", Value = "Admin" },
-            new SelectListItemLevel { Text = "إضافة", Value = "Add" },
-            new SelectListItemLevel { Text = "تعديل وإضافة", Value = "EditAdd" },
-            new SelectListItemLevel { Text = "إظهار", Value = "View" }
+                new SelectListItemLevel { Text = "مشرف", Value = UserLevels.Admin },
+            new SelectListItemLevel { Text = "إضافة", Value = UserLevels.Add },
+            new SelectListItemLevel { Text = "تعديل وإضافة", Value = UserLevels.EditAdd },
+            new SelectListItemLevel { Text = "إظهار", Value = UserLevels.View }
             };
             return Levels;
         }
+        [Permission("CanAccessUsersFile")]
         public IActionResult Create()
         {
             var Model = new VWUser();
@@ -162,6 +166,42 @@ namespace SchoolApp.Controllers
             if (national == null)
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
+        }
+       public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (ModelState.IsValid)
+            {
+                var result = await _iserviceAuth.LoginAsync(model.Username, model.Password);
+                if (result.Success)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Errors[0]);
+                }
+            }
+
+            return View(model); // This will send the ModelState back to the view
+        }
+        [HttpPost]
+        
+        public async Task<IActionResult> Logout()
+        {
+            _iserviceAuth.Logout();
+            return Json(new { success = true });  // إرسال استجابة تفيد بأن عملية تسجيل الخروج تمت بنجاح
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

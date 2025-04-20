@@ -18,6 +18,7 @@ namespace SchoolApp.Controllers
             _serviceInstallment = serviceInstallment;
             _serviceClassTypeName = serviceClassTypeName;
         }
+        [Permission("CanAccessGrades")]
         public IActionResult Index()
         {
             ViewBag.listStages = new SelectList(_serviceStage.GetAll(), "Id", "StageName");

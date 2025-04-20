@@ -128,5 +128,10 @@ namespace SchoolApp.BL.Services
         {
             return await _unitOfWork.auth.GetAllUsers();
         }
+
+        public async Task Logout()
+        {
+           await _unitOfWork.auth.Logout();
+        }
     }
 }

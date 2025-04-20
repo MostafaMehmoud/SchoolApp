@@ -145,5 +145,9 @@ namespace SchoolApp.DAL.Repositories
             return response;
         }
 
+        public async Task Logout()
+        {
+            await _signInManger.SignOutAsync();
+        }
     }
 }

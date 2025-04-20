@@ -16,6 +16,7 @@ namespace SchoolApp.Controllers
             _serviceStudent = serviceStudent;
             _servicerreceipt = servicerreceipt;
         }
+        [Permission("CanAccessReceipts")]
         public IActionResult Index()
         {
             ViewBag.listStudents = new SelectList(_serviceStudent.GetAll(), "Id", "StudentNumber");

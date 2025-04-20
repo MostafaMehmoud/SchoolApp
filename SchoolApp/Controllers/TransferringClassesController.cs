@@ -15,6 +15,7 @@ namespace SchoolApp.Controllers
             _serviceStage = serviceStage;
             _serviceReport = serviceReport;
         }
+        [Permission("CanAccessUsersFile")]
         public IActionResult Index()
         {
             ViewBag.Stages = new SelectList(_serviceStage.GetAll(), "Id", "StageName");

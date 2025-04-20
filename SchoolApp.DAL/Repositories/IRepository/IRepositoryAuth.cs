@@ -21,5 +21,6 @@ namespace SchoolApp.DAL.Repositories.IRepository
         int GetMaxIdOfItem();
         Task<int> GetNewCode();
         public Task<OperationResult> Login(string username, string password);
+        Task Logout();
     }
 }

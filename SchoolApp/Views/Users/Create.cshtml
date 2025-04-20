@@ -1,5 +1,13 @@
 ﻿@using SchoolApp.DAL.ViewModels
 @model VWUser
+@using Microsoft.AspNetCore.Identity
+@using SchoolApp.DAL.Models
+@using SchoolApp.DAL.ViewModels
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
 <style>
     /* تقليل حجم المدخلات */
     .custom-input {
@@ -25,20 +33,29 @@
             <div class="m-0">
                 <h1 class="card-title text-dark font-weight-bold fs-2">ملف المستخدمين </h1>
             </div>
-            <div class="d-flex justify-content-end navigation-buttons">
-                <div class="btn btn-primary btn-sm custom-button" id="btnMin">
-                    <i class="fa fa-angle-double-right"></i>
+            @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.View || currentUser.Level == UserLevels.EditAdd)
+            {
+                <div class="d-flex justify-content-end navigation-buttons">
+                    <div class="btn btn-primary btn-sm custom-button" id="btnMin">
+                        <i class="fa fa-angle-double-right"></i>
+                    </div>
+                    <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                    <div class="btn btn-primary btn-sm custom-button" id="btnNext">
+                        <i class="fa fa-angle-left"></i>
+                    </div>
+                    <div class="btn btn-primary btn-sm custom-button" id="btnMax">
+                        <i class="fa fa-angle-double-left"></i>
+                    </div>
                 </div>
-                <div class="btn btn-primary btn-sm custom-button" id="btnPrevious">
-                    <i class="fa fa-angle-right"></i>
+            }
+            else
+            {
+                <div class="d-flex justify-content-end navigation-buttons">
                 </div>
-                <div class="btn btn-primary btn-sm custom-button" id="btnNext">
-                    <i class="fa fa-angle-left"></i>
-                </div>
-                <div class="btn btn-primary btn-sm custom-button" id="btnMax">
-                    <i class="fa fa-angle-double-left"></i>
-                </div>
-            </div>
+            }
+
         </div>
 
         <div class="card-body">
@@ -115,9 +132,19 @@
     </fieldset>
 
                 <div class="form-group">
-                    <button type="button" id="btnAdd" class="btn btn-success btn-sm custom-button">حفظ</button>
-                    <button type="button" id="btnEdit" class="btn btn-secondary btn-sm custom-button">تعديل</button>
-                    <button type="button" id="btnDelete" class="btn btn-danger btn-sm custom-button">حذف</button>
+
+                    @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.Add || currentUser.Level == UserLevels.EditAdd)
+                    {
+                        <button type="button" class="btn btn-success btn-sm custom-button" id="btnAdd">حفظ</button>
+                    }
+                    @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.EditAdd)
+                    {
+                        <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
+                    }
+                    @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.View)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                    }
                 </div>
 </form>
 </div>

@@ -12,6 +12,7 @@ namespace SchoolApp.Controllers
         {
             _serviceDepartment = serviceDepartment;
         }
+        [Permission("CanAccessBusesFile")]
         public IActionResult Index()
         {
             return View();

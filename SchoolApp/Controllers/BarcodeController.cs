@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+
+using SkiaSharp;
 using ZXing;
 using ZXing.Common;
-using ZXing.Rendering;
-using SkiaSharp;
 
 public class BarcodeController : Controller
 {

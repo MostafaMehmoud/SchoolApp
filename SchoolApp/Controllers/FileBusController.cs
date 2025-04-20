@@ -16,6 +16,7 @@ namespace SchoolApp.Controllers
             _serviceFileBus = serviceFileBus;
             _serviceStage = serviceStage;
         }
+        [Permission("CanAccessBusesFile")]
         public IActionResult Index(int id=0)
         {
             var fileBus = _serviceFileBus.GetbyId(id);

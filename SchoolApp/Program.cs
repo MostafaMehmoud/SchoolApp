@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL;
@@ -15,23 +17,39 @@ builder.Services.AddControllersWithViews();
 // ✅ Register ApplicationDBContext in DI
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // السماح بأي كلمة سر
     options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 1; // أقل طول ممكن
+    options.Password.RequiredLength = 6;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredUniqueChars = 0;
 
-    // للسماح بأي اسم مستخدم كمان (اختياري)
     options.User.AllowedUserNameCharacters = null;
     options.User.RequireUniqueEmail = false;
 })
 .AddEntityFrameworkStores<ApplicationDBContext>()
 .AddDefaultTokenProviders();
 
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+//{
+//    // السماح بأي كلمة سر
+//    options.Password.RequireDigit = false;
+//    options.Password.RequiredLength = 1; // أقل طول ممكن
+//    options.Password.RequireLowercase = false;
+//    options.Password.RequireUppercase = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequiredUniqueChars = 0;
+
+//    // للسماح بأي اسم مستخدم كمان (اختياري)
+//    options.User.AllowedUserNameCharacters = null;
+//    options.User.RequireUniqueEmail = false;
+//})
+//.AddEntityFrameworkStores<ApplicationDBContext>()
+
+//    .AddDefaultTokenProviders();
 
 // ✅ Register Repository and Unit of Work (if used)
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(Repository<>));
@@ -49,6 +67,8 @@ builder.Services.AddScoped<IServiceReceipt, ServiceReceipt>();
 builder.Services.AddScoped<IServicePayment, ServicePayment>();  
 builder.Services.AddScoped<IServiceReport, ServiceReport>();  
 builder.Services.AddScoped<IserviceAuth, ServiseAuth>();
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -64,7 +84,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages(); // ضروري
+
 
 app.MapControllerRoute(
     name: "default",

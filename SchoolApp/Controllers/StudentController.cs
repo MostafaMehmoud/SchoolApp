@@ -7,6 +7,7 @@ using SchoolApp.DAL.ViewModels;
 
 namespace SchoolApp.Controllers
 {
+    
     public class StudentController : Controller
     {
         private readonly IServiceDepartment _serviceDepartment;
@@ -27,7 +28,7 @@ namespace SchoolApp.Controllers
             _servicefileBus = servicefileBus;
             _servicestudent = servicestudent;
         }
-
+        [Permission("CanAccessStudentsFile")]
         public IActionResult Index()
         {
             ViewBag.departments=new SelectList( _serviceDepartment.GetAll(),"Id","Name");

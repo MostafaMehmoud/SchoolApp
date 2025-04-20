@@ -16,6 +16,7 @@ namespace SchoolApp.Controllers
             
             _servicePayment = servicePayment;
         }
+        [Permission("CanAccessPayments")]
         public IActionResult Index()
         {
             ViewBag.listStudents = new SelectList(_serviceStudent.GetAll(), "Id", "StudentNumber");

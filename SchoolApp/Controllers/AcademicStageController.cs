@@ -13,6 +13,7 @@ namespace SchoolApp.Controllers
         {
             _serviceStage = serviceStage;
         }
+        [Permission("CanAccessGrades")]
         public IActionResult Index()
         {
             return View();

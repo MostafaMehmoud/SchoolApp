@@ -22,5 +22,6 @@ namespace SchoolApp.BL.Services.IServices
         Task<int> GetMaxIdOfItem();
         Task<int> GetNewCode();
         Task<IEnumerable<ApplicationUser>> GetAllUsers();
+        Task Logout();
     }
 }

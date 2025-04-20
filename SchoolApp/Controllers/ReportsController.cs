@@ -20,8 +20,9 @@ namespace SchoolApp.Controllers
         public ReportsController(IServiceReport serviceReport, IServiceClassTypeName serviceClassTypeName)
         { 
             _serviceReport = serviceReport; 
-            _serviceClassTypeName = serviceClassTypeName;   
+            _serviceClassTypeName = serviceClassTypeName;
         }
+        [Permission("CanAccessPrintReports")]
         public IActionResult Index()
         {
             ViewBag.ListDepartments=new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -30,12 +31,14 @@ namespace SchoolApp.Controllers
             return View();
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult GetClassTypeNamesByStage(int stageId)
         {
             var list = _serviceClassTypeName.GetAllClassTypesByStageId(stageId) ?? new List<ClassTypeName>();
             return Json(list);
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentSName()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -50,6 +53,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentSFatherName()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -58,6 +62,7 @@ namespace SchoolApp.Controllers
             return View();
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentSMotherName()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -66,6 +71,7 @@ namespace SchoolApp.Controllers
             return View();
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentFeesName()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -73,13 +79,14 @@ namespace SchoolApp.Controllers
             ViewBag.ListStages = new SelectList(_serviceReport.GetAllStages(), "Id", "StageName");
             return View();
         }
-        [HttpPost]
+        [HttpPost][Permission("CanAccessPrintReports")]
         public IActionResult GetAllStudentFeesReport(int? DepartmentId, int? StageId, int? ClassTypeId, int? FromStudentNumber, int? ToStudentNumber, DateOnly? FromDate, DateOnly ToDate)
         {
             var data = _serviceReport.GetAllStudentFeesReport(DepartmentId, StageId, ClassTypeId, FromStudentNumber, ToStudentNumber, FromDate, ToDate);
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportAccountStatement()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -95,6 +102,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentCompleteFees()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -110,6 +118,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentPartFees()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -125,6 +134,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentNoFees()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -140,6 +150,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentNotificationFees()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -159,6 +170,7 @@ namespace SchoolApp.Controllers
             return View();
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportDefinationStudent()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -179,6 +191,7 @@ namespace SchoolApp.Controllers
             return View();
         }// 🆕 توليد الباركود من رقم الطالب وإرجاعه كصورة
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportBarcodeStudent()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -194,6 +207,7 @@ namespace SchoolApp.Controllers
             .Where(i => !studentId.HasValue || i.Id == studentId);
             return Json(data); // Returns a list of student data as JSON
         }
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportPayments()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
@@ -208,6 +222,7 @@ namespace SchoolApp.Controllers
             var data = _serviceReport.GetPaymentStudent(DepartmentId, StageId, ClassTypeId, FromStudentNumber, ToStudentNumber, FromDate, ToDate, studentId);
             return Json(data); // Returns a list of student data as JSON
         }
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportFees()
         {
             
@@ -223,6 +238,7 @@ namespace SchoolApp.Controllers
             return Json(data); // Returns a list of student data as JSON
         }
         [HttpGet]
+        [Permission("CanAccessPrintReports")]
         public IActionResult ReportStudentSNameOrderByStudentName()
         {
             ViewBag.ListDepartments = new SelectList(_serviceReport.GetAllDepartments(), "Id", "Name");
