@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
 
@@ -23,5 +26,7 @@ namespace SchoolApp.BL.Services.IServices
         Task<int> GetNewCode();
         Task<IEnumerable<ApplicationUser>> GetAllUsers();
         Task Logout();
+        Task<string> GenerateResetPasswordLinkAsync(string username, HttpRequest request, IUrlHelper urlHelper);
+        Task<IdentityResult> ResetPasswordAsync(string username, string token, string newPassword);
     }
 }

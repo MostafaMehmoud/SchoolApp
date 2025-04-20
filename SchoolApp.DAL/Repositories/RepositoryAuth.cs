@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.Repositories.IRepository;
 using SchoolApp.DAL.ViewModels;
@@ -19,7 +20,10 @@ namespace SchoolApp.DAL.Repositories
             _userManager = userManager;
             _signInManger = signInManager;
         }
-
+        public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
+        {
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        }
         public async Task<OperationResult> DeleteUser(ApplicationUser user)
         {
             var result = await _userManager.DeleteAsync(user);

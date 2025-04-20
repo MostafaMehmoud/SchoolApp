@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.Repositories.UnitOfWork;
@@ -13,9 +16,34 @@ namespace SchoolApp.BL.Services
     public class ServiseAuth:IserviceAuth
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ServiseAuth(IUnitOfWork unitOfWork)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ServiseAuth(IUnitOfWork unitOfWork,UserManager<ApplicationUser> userManager)
         {
-            _unitOfWork = unitOfWork;   
+            _unitOfWork = unitOfWork; 
+            _userManager = userManager;
+        }
+        public async Task<string> GenerateResetPasswordLinkAsync(string username, HttpRequest request, IUrlHelper urlHelper)
+        {
+            var user = await _unitOfWork.auth.GetUserByUsernameAsync(username);
+            if (user == null)
+                return null;
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            return urlHelper.Action("ResetPassword", "Users", new
+            {
+                token,
+                username
+            }, request.Scheme);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(string username, string token, string newPassword)
+        {
+            var user = await _unitOfWork.auth.GetUserByUsernameAsync(username);
+            if (user == null)
+                return IdentityResult.Failed(new IdentityError { Description = "المستخدم غير موجود." });
+
+            return await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
         public async Task<OperationResult> RegisterAsync(VWUser vWUser)
         {

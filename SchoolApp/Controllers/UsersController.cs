@@ -203,5 +203,54 @@ namespace SchoolApp.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordByUsernameViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var resetLink = await _iserviceAuth.GenerateResetPasswordLinkAsync(model.Username, Request, Url);
+
+            if (resetLink == null)
+            {
+                TempData["ErrorMessage"] = "اسم المستخدم غير موجود.";
+                return View(model);
+            }
+
+            // ✅ التحويل مباشرة إلى صفحة إعادة التعيين
+            return Redirect(resetLink);
+        }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string username)
+        {
+            return View(new ResetPasswordViewModel { Token = token, Username = username });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _iserviceAuth.ResetPasswordAsync(model.Username, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "تمت إعادة تعيين كلمة السر بنجاح.";
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(model);
+        }
     }
 }
