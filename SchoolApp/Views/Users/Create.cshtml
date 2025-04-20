@@ -449,7 +449,7 @@
                 } catch (error) {
                      // If the status code is 404, display a specific warning message.
         if (error.status == 404) {
-            Swal.fire("تنبيه", "لا يوجد جنسية قبل تلك", "info");
+            Swal.fire("تنبيه", "لا يوجد المستخدم قبل تلك", "info");
         } else {
             console.error("Error fetching previous national:", error);
             Swal.fire("خطأ", "Error fetching data.", "error");
@@ -492,7 +492,7 @@
                 } catch (error) {
                     // If the status code is 404, display a specific warning message.
         if (error.status == 404) {
-            Swal.fire("تنبيه", "لا يوجد جنسية بعد تلك.", "info");
+            Swal.fire("تنبيه", "لا يوجد المستخدم بعد تلك.", "info");
         } else {
             console.error("Error fetching previous national:", error);
             Swal.fire("خطأ", "Error fetching data.", "error");
