@@ -112,6 +112,9 @@
 <body>
     <div class="navbar">
         <ul class="nav">
+            <li class="nav-item">
+                <img src="~/images/download.jpg" alt="شعار مدرستي" style="height: 50px; border-radius: 50%; width: 50px;" />
+            </li>
             @if (User.Identity.IsAuthenticated)
             {
                 <li class="nav-item">
@@ -135,7 +138,9 @@
 
     <div class="d-flex">
         <div class="sidebar">
-            <div class="logo">مدرستي</div>
+            
+
+
             <a href="#"><i class="fas fa-home"></i> <span>الرئيسية</span></a>
            
             <a href="#" onclick="toggleMenu('students-menu')"><i class="fas fa-user-graduate"></i> <span>ملفات الرئيسية</span></a>
