@@ -181,5 +181,11 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);
         }
+        [HttpGet]
+        public IActionResult Print(int id)
+        {
+            var studentDetails=_servicestudent.GetPrintStudentDetails(id);
+            return View(studentDetails);
+        }
     }
 }

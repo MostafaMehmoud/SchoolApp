@@ -1,0 +1,125 @@
+﻿@using SchoolApp.DAL.ViewModels
+@model PrintStudentDetails
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>طباعة عقد طالب</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            padding: 20px;
+        }
+
+        #printStudentDetails {
+            border: 1px solid #000;
+            padding: 30px;
+            margin-top: 20px;
+            line-height: 2;
+        }
+
+        h2 {
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            text-decoration: underline;
+        }
+
+        .signature-area {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .field {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <button type="button" class="btn" id="dtnPrint">طباعة عقد</button>
+
+    <div id="printStudentDetails">
+        <div id="contract-content">
+            <img src="~/images/kwakib3.JPG" alt="شعار المدرسة" style=" display: block; margin: 0 auto 20px;" />
+
+            <h2>عقد إتفاق تسديد رسوم دراسية</h2>
+
+            <div class="field"><strong>إسم الطالب:</strong> @Model.StudentName</div>
+            <div class="field"><strong>المرحلة الدراسية:</strong> @Model.Stage</div>
+            <div class="field"><strong>الصف:</strong> @Model.Level</div>
+            <div class="field"><strong>القسط الشهرى:</strong> @Model.Fees ريال</div>
+            <div class="field"><strong>الدفعة المقدمة:</strong> @Model.Payment ريال</div>
+         
+            <div class="field"><strong>الإشتراك فى النقل المدرسى (الباص):</strong>@Model.BusType</div>
+            <div class="field"><strong>مدة الإلتحاق:</strong> @Model.Term</div>
+
+            <div class="section-title">تعهـــد وإقرار</div>
+            <p>
+                أتعهد أنا الموقع أدناه ولي أمر الطالب أني اطلعت على نظام شركة أجيالكم التعليمية في الرسوم الدراسية
+                وأتعهد بالإلتزام بما جاء فيها.
+            </p>
+
+            <div class="field"><strong>صلة القرابة:</strong> @Model.Relation</div>
+            <div class="field"><strong>إسم ولي الأمر:</strong> @Model.Guardian</div>
+            <div class="field"><strong>عنوان العمل:</strong> @Model.WorkAddress</div>
+            <div class="field"><strong>عنوان المنزل:</strong> @Model.HomeAddress</div>
+            <div class="field"><strong>رقم الجوال:</strong> @Model.Phone}</div>
+            <div class="field"><strong>التاريخ:</strong> @Model.date}</div>
+
+            <div class="signature-area">
+                <div class="signature-box">توقيع ولي أمر الطالب</div>
+                <div class="signature-box">توقيع مدير عام الشركة</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // const student = {
+        //   name: 'محمد جمال محمود',
+        //   stage: 'ابتدائى',
+        //   level: 'الصف الأول',
+        //   fees: '5120',
+        //   downPayment: '1000',
+        //   paymentType: 'الدفع مقدما',
+        //   busType: 'ذهاب وعودة',
+        //   term: 'عام دراسى كامل',
+        //   guardian: 'جمال محمود',
+        //   phone: '0501234567',
+        //   relation: 'أب',
+        //   homeAddress: 'الرياض',
+        //   workAddress: 'شركة المستقبل',
+        //   date: '2025-04-23'
+        // };
+
+       
+        $('#dtnPrint').on('click', function () {
+          window.print();
+        });
+    </script>
+
+   
+
+</body>
+</html>

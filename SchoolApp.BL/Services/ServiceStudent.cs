@@ -895,5 +895,56 @@ namespace SchoolApp.BL.Services
             vwStudent.RemainingFees = student.RemainingFees;
             return vwStudent;
         }
+
+        public PrintStudentDetails GetPrintStudentDetails(int StudentId)
+        {
+            PrintStudentDetails printStudentDetails = new PrintStudentDetails();
+           
+            var student = _unitOfWork.students.GetById(StudentId);
+            var BusType = "";
+            if (student.DirectionBus == 1)
+            {
+                BusType = "ذهب و عودة";
+            }
+            else if (student.DirectionBus == 2)
+            {
+                BusType = "الذهب فقط";
+            }
+            else if(student.DirectionBus == 3) 
+            {
+                BusType = "العودة فقط";
+            }
+            else
+            {
+                BusType = "لا يوجد باص تم اختياره ";
+            }
+            var EnrollmentPeriod = "";
+            if (student.EnrollmentPeriodId == 1)
+            {
+                EnrollmentPeriod = "اول";
+            }else if(student.EnrollmentPeriodId == 2)
+            {
+                EnrollmentPeriod = "الثاني";
+            }else if(student.EnrollmentPeriodId == 3)
+            {
+                EnrollmentPeriod = "كامل";
+            }
+            var stage = _unitOfWork.stages.GetAll().FirstOrDefault(i => i.Id == student.StageId);
+            var level = _unitOfWork.classTypes.GetAll().FirstOrDefault(i => i.Id == student.ClassTypeId);
+            printStudentDetails.StudentName= $"{student.StudentName} {student.FatherName} {student.GrandFatherName} {student.FamilyName}";
+            printStudentDetails.Stage = stage == null ? "" : stage.StageName;
+            printStudentDetails.Level= level==null?"": level.Name;
+            printStudentDetails.Fees = student.MonthlyInstallment;
+            printStudentDetails.Payment = student.AdvanceRepayment;
+            printStudentDetails.BusType = BusType;
+            printStudentDetails.Term = EnrollmentPeriod;
+            printStudentDetails.Guardian = student.FatherName;
+            printStudentDetails.Phone = student.GuardianMobile;
+            printStudentDetails.Relation = student.Kinship;
+            printStudentDetails.HomeAddress = student.HouseLocationGuardian;
+            printStudentDetails.WorkAddress = student.GuardianWork;
+            printStudentDetails.date=student.RegistrationDate;
+            return printStudentDetails;
+        }
     }
 }

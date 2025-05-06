@@ -200,11 +200,9 @@
                     @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.EditAdd)
                     {
                         <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
-                    }
-                    @if (currentUser.Level == UserLevels.Admin || currentUser.Level == UserLevels.View)
-                    {
                         <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
                     }
+                   
                 </div>
 
             </form>

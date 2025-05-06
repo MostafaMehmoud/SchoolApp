@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolApp.DAL.Models;
@@ -31,6 +32,39 @@ namespace SchoolApp.DAL
         public DbSet<StudentsClassType> studentsClassTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //var adminId = "c7c062f0-1784-4245-8630-1fc72bae7b26";
+            //var hasher = new PasswordHasher<ApplicationUser>();
+
+            //var adminUser = new ApplicationUser
+            //{
+            //    Id = adminId,
+            //    UserName = "الحسابات",
+            //    NormalizedUserName = "ADMIN",
+            //    Email = "admin@school.com",
+            //    NormalizedEmail = "ADMIN@SCHOOL.COM",
+            //    EmailConfirmed = true,
+            //    PhoneNumberConfirmed = false,
+            //    UserNumber = 1,
+            //    Level = "Admin",
+
+            //    // صلاحيات
+            //    CanAccessGrades = true,
+            //    CanAccessStudentsFile = true,
+            //    CanAccessBusesFile = true,
+            //    CanAccessTypesEncoming = true,
+            //    CanAccessReceipts = true,
+            //    CanAccessPayments = true,
+            //    CanAccessPrintReports = true,
+            //    CanAccessSearch = true,
+            //    CanAccessUsersFile = true,
+
+            //    SecurityStamp = "EJBUZX7KWK3DCZVSOHHPYWIA7HBFVGGL",
+            //    ConcurrencyStamp = "29acb43e-2f18-4c77-85eb-b9445de3e38f"
+            //};
+
+            //adminUser.PasswordHash = hasher.HashPassword(adminUser, "300100"); // بدل الباسوورد حسب رغبتك
+
+            //modelBuilder.Entity<ApplicationUser>().HasData(adminUser);
             modelBuilder.Entity<National>()
             .HasIndex(n => n.code)
             .IsUnique();

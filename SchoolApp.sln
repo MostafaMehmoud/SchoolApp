@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp", "SchoolApp\SchoolApp.csproj", "{731B06C2-95A5-4378-8B25-F143CEFEBB41}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.BL", "SchoolApp.B
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.DAL", "SchoolApp.DAL\SchoolApp.DAL.csproj", "{15AC70AC-1D80-4C3B-AB12-D4842F97E30B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.API", "SchoolApp.API\SchoolApp.API.csproj", "{B34FC14B-164E-4ACD-9863-CED1C083D93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{15AC70AC-1D80-4C3B-AB12-D4842F97E30B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15AC70AC-1D80-4C3B-AB12-D4842F97E30B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15AC70AC-1D80-4C3B-AB12-D4842F97E30B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34FC14B-164E-4ACD-9863-CED1C083D93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34FC14B-164E-4ACD-9863-CED1C083D93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34FC14B-164E-4ACD-9863-CED1C083D93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34FC14B-164E-4ACD-9863-CED1C083D93C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

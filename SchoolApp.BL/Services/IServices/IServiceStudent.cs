@@ -22,6 +22,7 @@ namespace SchoolApp.BL.Services.IServices
         Task<VWStudent> GetMaxStudent();
         int GetMaxStudentId();
         VWStudentCostReceipt GetCostReceipt(int StudentId);
+        PrintStudentDetails GetPrintStudentDetails(int StudentId);  
         
       
     }

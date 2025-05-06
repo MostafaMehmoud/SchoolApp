@@ -248,7 +248,7 @@ namespace SchoolApp.Controllers
             }
 
             foreach (var error in result.Errors)
-                ModelState.AddModelError("", error.Description);
+                ModelState.AddModelError("NewPassword", error.Description);
 
             return View(model);
         }
