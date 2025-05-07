@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolApp.BL.Services.IServices;
@@ -38,10 +39,17 @@ namespace SchoolApp.API.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<National>>> Add(National national)
         {
-            _serviceNational.Add(national.code,national.Name);
-            
-            return CreatedAtAction(nameof(GetById), new { id = national.ID },
+            var result=_serviceNational.Add(national.code,national.Name);
+            if(result == "تم الحفظ بنجاح")
+            {
+                return CreatedAtAction(nameof(GetById), new { id = national.ID },
                 ApiResponse<National>.SuccessResponse(national, "National added successfully"));
+            }
+            else
+            {
+                return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "National failed to added" }));
+            }
+            
         }
 
         // PUT: api/national/{id}
@@ -49,10 +57,19 @@ namespace SchoolApp.API.Controllers
         public async Task<ActionResult<ApiResponse<VWNationals>>> Update(int id, VWNationals national)
         {
             if (id != national.ID)
-                return BadRequest(ApiResponse<National>.ErrorResponse(new List<string> { "ID mismatch" }));
+                return BadRequest(ApiResponse<VWNationals>.ErrorResponse(new List<string> { "ID mismatch" }));
 
-            _serviceNational.Edit( national.ID,national.code,national.Name);
-           
+           var result= _serviceNational.Edit( national.ID,national.code,national.Name);
+            if (result == "تم التعديل بنجاح")
+            {
+                return Ok(ApiResponse<VWNationals>.SuccessResponse(national, "National updated successfully"));
+
+            }
+            else
+            {
+                return NotFound(ApiResponse<VWNationals>.ErrorResponse(new List<string> { "National failed to updated" }));
+
+            }
 
             return Ok(ApiResponse<VWNationals>.SuccessResponse(national, "National updated successfully"));
         }
@@ -65,10 +82,18 @@ namespace SchoolApp.API.Controllers
             if (national == null)
                 return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "National not found" }));
 
-            _serviceNational.Delete(national.ID);
-            
+           var result= _serviceNational.Delete(national.ID);
 
-            return Ok(ApiResponse<National>.SuccessResponse(null, "National deleted successfully"));
+
+            if (result == "تم الحذف بنجاح")
+            {
+                return CreatedAtAction(nameof(GetById), new { id = national.ID },
+                ApiResponse<National>.SuccessResponse(national, "National added successfully"));
+            }
+            else
+            {
+                return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "National failed to deleted" }));
+            }
         }
         [HttpGet("GetMinNational")]
         public async Task<ActionResult<ApiResponse<National>>> GetMinNational()

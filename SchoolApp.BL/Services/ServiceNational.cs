@@ -36,6 +36,11 @@ namespace SchoolApp.BL.Services
 
         public string Delete(int id)
         {
+           var studentWithNational=_unitOfWork.students.GetAll().Where(i=>i.NationalId==id);
+            if (studentWithNational.Count() > 0)
+            {
+                return "يجب تغير جنسية الطلابة";
+            }
             if (_unitOfWork.Nationals.Delete(id))
             {
                 return "تم الحذف بنجاح";
