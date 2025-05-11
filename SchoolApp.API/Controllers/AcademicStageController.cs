@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -16,13 +18,22 @@ namespace SchoolApp.API.Controllers
         {
             _serviceStage = serviceStage;
         }
+       
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse<List<Stage>>>> GetAll()
         {
+            var canAccessGrades = User.HasClaim(c => c.Type == "CanAccessGrades" && c.Value == "True");
+
+            if (!canAccessGrades)
+            {
+                return Forbid(); // المستخدم ليس لديه صلاحية الوصول
+            }
             var Stages = _serviceStage.GetAll().ToList();
             return Ok(ApiResponse<List<Stage>>.SuccessResponse(Stages));
         }
-
+      
+        [Permission("CanAccessGrades")]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<Stage>>> GetById(int id)
@@ -33,7 +44,8 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Stage>.SuccessResponse(stage));
         }
-
+      
+        [Permission("CanAccessGrades")]
         // POST: api/national
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<Stage>>> Add(Stage stage)
@@ -51,7 +63,8 @@ namespace SchoolApp.API.Controllers
             }
            
         }
-
+      [Authorize]
+        [Permission("CanAccessGrades")]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWStage>>> Update(int id, VWStage vWStage)
@@ -72,7 +85,8 @@ namespace SchoolApp.API.Controllers
             }
 
            }
-
+      [Authorize]
+        [Permission("CanAccessGrades")]
         // DELETE: api/national/{id}
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<Stage>>> Delete(int id)
@@ -103,6 +117,8 @@ namespace SchoolApp.API.Controllers
 
 
         }
+      [Authorize]
+        [Permission("CanAccessGrades")]
         [HttpGet("GetMinStage")]
         public async Task<IActionResult> GetMinStage()
         {
@@ -111,7 +127,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Stage);
         }
-
+      [Authorize]
+        [Permission("CanAccessGrades")]
         [HttpGet("GetMaxStage")]
         public async Task<IActionResult> GetMaxStage()
         {
@@ -120,7 +137,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Stage);
         }
-
+      [Authorize]
+        [Permission("CanAccessGrades")]
         [HttpGet("GetNextStage/{id}")]
         public async Task<IActionResult> GetNextStage(int id)
         {
@@ -133,7 +151,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(Stage);
         }
-
+      [Authorize]
+        [Permission("CanAccessGrades")]
         [HttpGet("GetPreviousStage/{id}")]
         public async Task<IActionResult> GetPreviousStage(int id)
         {

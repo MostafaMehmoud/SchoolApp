@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -20,17 +22,19 @@ namespace SchoolApp.API.Controllers
             _serviceClassTypeName = serviceClassTypeName;
             _serviceClassType = serviceClassType;
         }
-       
-       
+
+      //  [Authorize]
         [HttpGet("GetAll")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<ClassType>>>> GetAll()
         {
             var ClassTypes = _serviceClassType.GetAll().ToList();
             return Ok(ApiResponse<List<ClassType>>.SuccessResponse(ClassTypes));
         }
-
+      //  [Authorize]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<ClassType>>> GetById(int id)
         {
             var classType = _serviceClassType.GetbyId(id);
@@ -39,9 +43,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<ClassType>.SuccessResponse(classType));
         }
-
+      //  [Authorize]
         // POST: api/national
         [HttpPost("Add")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<ClassType>>> Add(VWClassType vWclassType)
         {
            string resualt= _serviceClassType.Add(vWclassType);
@@ -58,9 +63,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<VWClassType>>> Update(int id, VWClassType vWclassType)
         {
             if (id != vWclassType.Id)
@@ -79,9 +85,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
         // DELETE: api/national/{id}
         [HttpDelete("Delete/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<ClassType>>> Delete(int id)
         {
             var classType = _serviceClassType.GetbyId(id);
@@ -93,7 +100,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<National>.SuccessResponse(null, "classType deleted successfully"));
         }
+      //  [Authorize]
         [HttpGet("GetClassTypeNamesByStage/{stageId}")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<ClassTypeName>>>> GetClassTypeNamesByStage(int stageId)
         {
             var classTypeName = _serviceClassTypeName.GetAllClassTypesByStageId(stageId);
@@ -103,7 +112,9 @@ namespace SchoolApp.API.Controllers
             return Ok(ApiResponse<List<ClassTypeName>>.SuccessResponse(classTypeName));
 
         }
+      //  [Authorize]
         [HttpGet("GetMinClassType")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMinClassType()
         {
             var ClassType = await _serviceClassType.GetMinClassType();
@@ -111,8 +122,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(ClassType);
         }
-
+      //  [Authorize]
         [HttpGet("GetMaxClassType")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMaxClassType()
         {
             var national = await _serviceClassType.GetMaxClassType();
@@ -120,8 +132,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetNextClassType/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetNextClassType(int id)
         {
             if (id == 0)
@@ -133,8 +146,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetPreviousClassType/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetPreviousClassType(int id = 0)
         {
 

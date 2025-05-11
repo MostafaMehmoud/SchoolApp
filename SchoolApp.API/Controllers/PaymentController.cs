@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -19,20 +21,26 @@ namespace SchoolApp.API.Controllers
 
             _servicePayment = servicePayment;
         }
+      //  [Authorize]
         [HttpGet("GetAll")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<List<Payment>>>> GetAll()
         {
             var Payments = _servicePayment.GetAll().ToList();
             return Ok(ApiResponse<List<Payment>>.SuccessResponse(Payments));
         }
+      //  [Authorize]
         [HttpGet("GetStudentDetailsCost")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<VWStudentCostReceipt>>> GetStudentDetailsCost(int id)
         {
             VWStudentCostReceipt receipt = _servicePayment.GetStudent(id);
             return Ok(ApiResponse<VWStudentCostReceipt>.SuccessResponse(receipt));
         }
+      //  [Authorize]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<Payment>>> GetById(int id)
         {
             var Payment = _servicePayment.GetbyId(id);
@@ -41,9 +49,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Payment>.SuccessResponse(Payment));
         }
-
+      //  [Authorize]
         // POST: api/national
         [HttpPost("Add")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<VWPayment>>> Add(VWPayment VWPayment)
         {
             var resualt = _servicePayment.Add(VWPayment);
@@ -59,9 +68,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<VWPayment>>> Update(int id, VWPayment vWPayment)
         {
             if (id != vWPayment.Id)
@@ -80,9 +90,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
         // DELETE: api/national/{id}
         [HttpDelete("Delete/{id}")]
+       // [Permission("CanAccessPayments")]
         public async Task<ActionResult<ApiResponse<Payment>>> Delete(int id)
         {
             try
@@ -111,7 +122,9 @@ namespace SchoolApp.API.Controllers
 
 
         }
+      //  [Authorize]
         [HttpGet("GetMinPayment")]
+       // [Permission("CanAccessPayments")]
         public async Task<IActionResult> GetMinPayment()
         {
             var Payment = await _servicePayment.GetMinPayment();
@@ -119,8 +132,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Payment);
         }
-
+      //  [Authorize]
         [HttpGet("GetMaxPayment")]
+       // [Permission("CanAccessPayments")]
         public async Task<IActionResult> GetMaxPayment()
         {
             var national = await _servicePayment.GetMaxPayment();
@@ -128,8 +142,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetNextPayment/{id}")]
+       // [Permission("CanAccessPayments")]
         public async Task<IActionResult> GetNextPayment(int id)
         {
             if (id == 0)
@@ -141,8 +156,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetPreviousPayment/{id}")]
+       // [Permission("CanAccessPayments")]
         public async Task<IActionResult> GetPreviousPayment(int id)
         {
             if (id == 0)

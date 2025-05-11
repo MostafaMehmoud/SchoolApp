@@ -28,5 +28,7 @@ namespace SchoolApp.BL.Services.IServices
         Task Logout();
         Task<string> GenerateResetPasswordLinkAsync(string username, HttpRequest request, IUrlHelper urlHelper);
         Task<IdentityResult> ResetPasswordAsync(string username, string token, string newPassword);
+        Task<string> AuthenticateUser(string username, string password);
+        Task<bool> RegisterUser(ApplicationUser user, string password);
     }
 }

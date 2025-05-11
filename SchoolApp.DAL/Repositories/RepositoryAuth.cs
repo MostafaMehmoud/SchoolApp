@@ -24,6 +24,11 @@ namespace SchoolApp.DAL.Repositories
         {
             return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
         }
+        public async Task<bool> ValidateUserCredentials(string username, string password)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return user != null && await _userManager.CheckPasswordAsync(user, password);
+        }
         public async Task<OperationResult> DeleteUser(ApplicationUser user)
         {
             var result = await _userManager.DeleteAsync(user);
@@ -148,7 +153,11 @@ namespace SchoolApp.DAL.Repositories
 
             return response;
         }
-
+        public async Task<bool> CreateUser(ApplicationUser user, string password)
+        {
+            var result = await _userManager.CreateAsync(user, password);
+            return result.Succeeded;
+        }
         public async Task Logout()
         {
             await _signInManger.SignOutAsync();

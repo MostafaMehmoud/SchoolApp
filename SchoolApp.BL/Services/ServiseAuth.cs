@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.Repositories.UnitOfWork;
@@ -17,11 +21,61 @@ namespace SchoolApp.BL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ServiseAuth(IUnitOfWork unitOfWork,UserManager<ApplicationUser> userManager)
+        private readonly IConfiguration _configuration;
+        public ServiseAuth(IUnitOfWork unitOfWork,UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork; 
             _userManager = userManager;
+            _configuration = configuration;
         }
+        public async Task<string> AuthenticateUser(string username, string password)
+        {
+            var user = await _unitOfWork.auth.GetUserByUsernameAsync(username);
+            if (user == null || !await _unitOfWork.auth.ValidateUserCredentials(username, password))
+                return null;
+
+            return GenerateJwtToken(user);
+        }
+
+        public async Task<bool> RegisterUser(ApplicationUser user, string password)
+        {
+            return await _unitOfWork.auth.CreateUser(user, password);
+        }
+
+        public string GenerateJwtToken(ApplicationUser user)
+        {
+            var secretKey = _configuration["JwtSettings:Secret"];
+            var issuer = _configuration["JwtSettings:Issuer"];
+            var audience = _configuration["JwtSettings:Audience"];
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+        new Claim("UserNumber", user.UserNumber.ToString()),
+        new Claim("Level", user.Level),
+        new Claim("CanAccessGrades", user.CanAccessGrades.ToString()),
+        new Claim("CanAccessStudentsFile", user.CanAccessStudentsFile.ToString()),
+        new Claim("CanAccessBusesFile", user.CanAccessBusesFile.ToString()),
+        new Claim("CanAccessTypesEncoming", user.CanAccessTypesEncoming.ToString()),
+        new Claim("CanAccessReceipts", user.CanAccessReceipts.ToString()),
+        new Claim("CanAccessPayments", user.CanAccessPayments.ToString()),
+        new Claim("CanAccessPrintReports", user.CanAccessPrintReports.ToString()),
+        new Claim("CanAccessSearch", user.CanAccessSearch.ToString()),
+        new Claim("CanAccessUsersFile", user.CanAccessUsersFile.ToString())
+    };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpirationInMinutes"])),
+            signingCredentials: credentials
+        );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
         public async Task<string> GenerateResetPasswordLinkAsync(string username, HttpRequest request, IUrlHelper urlHelper)
         {
             var user = await _unitOfWork.auth.GetUserByUsernameAsync(username);

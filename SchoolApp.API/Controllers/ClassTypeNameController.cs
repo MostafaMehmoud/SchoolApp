@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -17,13 +19,16 @@ namespace SchoolApp.API.Controllers
             _serviceStage = serviceStage;
             _serviceClassTypeName = serviceClassTypeName;
         }
+      //  [Authorize]
         [HttpGet("GetAll")]
+        //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<ClassTypeName>>>> GetAll()
         {
             var ClassTypeNames = _serviceClassTypeName.GetAll().ToList();
             return Ok(ApiResponse<List<ClassTypeName>>.SuccessResponse(ClassTypeNames));
         }
-
+      //  [Authorize]
+        //[Permission("CanAccessGrades")]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<ClassTypeName>>> GetById(int id)
@@ -34,7 +39,8 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<ClassTypeName>.SuccessResponse(ClassTypeName));
         }
-
+      //  [Authorize]
+        //[Permission("CanAccessGrades")]
         // POST: api/national
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<ClassTypeName>>> Add(VWClassTypeName VWClassTypeName)
@@ -52,7 +58,8 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
+        //[Permission("CanAccessGrades")]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWClassTypeName>>> Update(int id, VWClassTypeName vWClassTypeName)
@@ -73,7 +80,8 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-
+      //  [Authorize]
+        //[Permission("CanAccessGrades")]
         // DELETE: api/national/{id}
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<ClassTypeName>>> Delete(int id)
@@ -104,7 +112,9 @@ namespace SchoolApp.API.Controllers
 
 
         }
+      //  [Authorize]
         [HttpGet("GetMinClassTypeName")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMinClassTypeName()
         {
             var ClassTypeName = await _serviceClassTypeName.GetMinClassTypeName();
@@ -112,8 +122,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(ClassTypeName);
         }
-
+      //  [Authorize]
         [HttpGet("GetMaxClassTypeName")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMaxClassTypeName()
         {
             var national = await _serviceClassTypeName.GetMaxClassTypeName();
@@ -121,8 +132,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetNextClassTypeName/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetNextClassTypeName(int id)
         {
             if (id == 0)
@@ -134,8 +146,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-
+      //  [Authorize]
         [HttpGet("GetPreviousClassTypeName/{id}")]
+        //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetPreviousClassTypeName(int id)
         {
             if (id == 0)

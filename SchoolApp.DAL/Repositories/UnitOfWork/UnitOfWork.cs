@@ -36,10 +36,13 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
 
         public IRepositoryAuth auth { get; }
 
+        public IRoleRepository roleRepository { get; }
+
         public UnitOfWork(
         ApplicationDBContext context,
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager
+        SignInManager<ApplicationUser> signInManager,
+          RoleManager<IdentityRole> roleManager
     )
         {
             _context = context;
@@ -56,6 +59,7 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             payments=new RepositoryPayment(_context);
             studentClassType=new RepositoryStudentClassType(_context);
             auth = new RepositoryAuth(userManager, signInManager);
+            roleRepository=new RoleRepository(userManager,roleManager);
 
         }
         public IDbContextTransaction BeginTransaction()

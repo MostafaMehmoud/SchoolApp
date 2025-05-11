@@ -9,6 +9,10 @@ using SchoolApp.DAL.Repositories;
 using SchoolApp.DAL.Repository;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using SchoolApp.DAL.Repositories.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -46,6 +50,17 @@ builder.Services.AddScoped<IServiceReceipt, ServiceReceipt>();
 builder.Services.AddScoped<IServicePayment, ServicePayment>();
 builder.Services.AddScoped<IServiceReport, ServiceReport>();
 builder.Services.AddScoped<IserviceAuth, ServiseAuth>();
+builder.Services.AddScoped<UserManager<ApplicationUser>>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -59,9 +74,48 @@ builder.Services.AddSwaggerGen(options =>
         Description = "توثيق API لإدارة بيانات المدرسة"
     });
 });
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
+
+
+
+// إعداد JWT
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = builder.Configuration["JwtSettings:Secret"];
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new ArgumentNullException("JwtSettings:Secret", "Secret key cannot be null");
+}
+
+var key = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -70,21 +124,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "National API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SchoolApp API v1");
         options.RoutePrefix = string.Empty; // فتح Swagger مباشرة عند تشغيل التطبيق
     });
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SchoolApp API v1");
-        options.RoutePrefix = string.Empty; // This makes Swagger accessible at '/'
-    });
-}
+app.UseCors("AllowAll");
 
+
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

@@ -22,7 +22,10 @@ namespace SchoolApp.DAL.Repositories.IRepository
         Task<int> GetNewCode();
         public Task<OperationResult> Login(string username, string password);
         Task Logout();
-        Task<ApplicationUser> GetUserByUsernameAsync(string username);
-
+        Task<ApplicationUser> GetUserByUsernameAsync(string username); 
+        Task<bool> ValidateUserCredentials(string username, string password);
+        Task<bool> CreateUser(ApplicationUser user, string password);
     }
+
 }
+
