@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -18,22 +19,64 @@ namespace SchoolApp.API.Controllers
         {
             _serviceStage = serviceStage;
         }
-       
+        [HttpGet("TestClaims")]
+        public IActionResult TestClaims([FromHeader(Name = "Authorization")] string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("التوكن مفقود.");
+            }
+
+            // إزالة "Bearer " من بداية التوكن إذا كان موجودًا
+            if (token.StartsWith("Bearer "))
+            {
+                token = token.Substring(7);
+            }
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            // فك تشفير التوكن للتحقق من الصلاحيات
+           
+
+            
+            foreach (var claim in jwtToken.Claims)
+            {
+                Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            }
+
+
+            if (jwtToken == null)
+            {
+                return Unauthorized("التوكن غير صالح.");
+            }
+
+            var canAccessGradesClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "CanAccessGrades");
+
+            if (canAccessGradesClaim != null && canAccessGradesClaim.Value.Equals("True", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("المستخدم لديه صلاحية الوصول إلى الدرجات.");
+                return Ok("المستخدم لديه صلاحية الوصول إلى الدرجات.");
+            }
+            else
+            {
+                Console.WriteLine("المستخدم **ليس** لديه صلاحية الوصول.");
+                return Forbid(); // رفض الوصول
+            }
+
+
+           
+        }
+
+
         [HttpGet("GetAll")]
-        [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<Stage>>>> GetAll()
         {
-            var canAccessGrades = User.HasClaim(c => c.Type == "CanAccessGrades" && c.Value == "True");
-
-            if (!canAccessGrades)
-            {
-                return Forbid(); // المستخدم ليس لديه صلاحية الوصول
-            }
+            
             var Stages = _serviceStage.GetAll().ToList();
             return Ok(ApiResponse<List<Stage>>.SuccessResponse(Stages));
         }
-      
-        [Permission("CanAccessGrades")]
+
+        [AuthorizeClaim("CanAccessGrades")]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<Stage>>> GetById(int id)
@@ -44,8 +87,8 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Stage>.SuccessResponse(stage));
         }
-      
-        [Permission("CanAccessGrades")]
+
+        [AuthorizeClaim("CanAccessGrades")]
         // POST: api/national
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<Stage>>> Add(Stage stage)
@@ -63,8 +106,7 @@ namespace SchoolApp.API.Controllers
             }
            
         }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWStage>>> Update(int id, VWStage vWStage)
@@ -85,8 +127,7 @@ namespace SchoolApp.API.Controllers
             }
 
            }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         // DELETE: api/national/{id}
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<Stage>>> Delete(int id)
@@ -117,8 +158,7 @@ namespace SchoolApp.API.Controllers
 
 
         }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetMinStage")]
         public async Task<IActionResult> GetMinStage()
         {
@@ -127,8 +167,7 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Stage);
         }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetMaxStage")]
         public async Task<IActionResult> GetMaxStage()
         {
@@ -137,8 +176,7 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Stage);
         }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetNextStage/{id}")]
         public async Task<IActionResult> GetNextStage(int id)
         {
@@ -151,8 +189,7 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(Stage);
         }
-      [Authorize]
-        [Permission("CanAccessGrades")]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetPreviousStage/{id}")]
         public async Task<IActionResult> GetPreviousStage(int id)
         {

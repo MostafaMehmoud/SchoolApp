@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -19,7 +19,8 @@ namespace SchoolApp.API.Controllers
         {
             _serviceNational = serviceNational; 
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetAll")]
        // [Permission("CanAccessBusesFile")]
         public async Task<ActionResult<ApiResponse<List<National>>>> GetAll()
@@ -27,9 +28,10 @@ namespace SchoolApp.API.Controllers
             var nationals =  _serviceNational.GetAll().ToList();
             return Ok(ApiResponse<List<National>>.SuccessResponse(nationals));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
         // GET: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<National>>> GetById(int id)
         {
@@ -39,9 +41,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<National>.SuccessResponse(national));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
-        // POST: api/national
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
+        // POST: api/nationalط
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<National>>> Add(National national)
         {
@@ -57,9 +60,10 @@ namespace SchoolApp.API.Controllers
             }
             
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWNationals>>> Update(int id, VWNationals national)
         {
@@ -80,9 +84,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<VWNationals>.SuccessResponse(national, "National updated successfully"));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<National>>> Delete(int id)
         {
@@ -103,8 +108,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "National failed to deleted" }));
             }
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMinNational")]
         public async Task<ActionResult<ApiResponse<National>>> GetMinNational()
         {
@@ -115,8 +121,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<National>.SuccessResponse(national));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMaxNational")]
         public async Task<ActionResult<ApiResponse<National>>> GetMaxNational()
         {
@@ -125,8 +132,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "لم يتم العثور على بيانات الوطنية" }));
             return Ok(ApiResponse<National>.SuccessResponse(national));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetNextNational/{id}")]
         public async Task<ActionResult<ApiResponse<National>>> GetNextNational(int id)
         {
@@ -139,8 +147,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(ApiResponse<National>.ErrorResponse(new List<string> { "لم يتم العثور على بيانات الوطنية" }));
             return Ok(ApiResponse<National>.SuccessResponse(national));
         }
-      //  [Authorize]
-       // [Permission("CanAccessBusesFile")]
+        //  [Authorize]
+        // [Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetPreviousNational/{id}")]
         public async Task<ActionResult<ApiResponse<National>>> GetPreviousNational(int id)
         {

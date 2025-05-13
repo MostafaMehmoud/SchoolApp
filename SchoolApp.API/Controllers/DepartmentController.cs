@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -18,7 +18,8 @@ namespace SchoolApp.API.Controllers
         {
             _serviceDepartment = serviceDepartment;
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessBusesFile")]
         //[Permission("CanAccessBusesFile")]
         [HttpGet("GetAll")]
         public async Task<ActionResult<ApiResponse<List<Department>>>> GetAll()
@@ -26,9 +27,10 @@ namespace SchoolApp.API.Controllers
             var Departments = _serviceDepartment.GetAll().ToList();
             return Ok(ApiResponse<List<Department>>.SuccessResponse(Departments));
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // GET: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<Department>>> GetById(int id)
         {
@@ -38,9 +40,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Department>.SuccessResponse(Department));
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // POST: api/national
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<VWDepartment>>> Add(VWDepartment VWDepartment)
         {
@@ -57,9 +60,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWDepartment>>> Update(int id, VWDepartment vWDepartment)
         {
@@ -79,10 +83,11 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
 
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<Department>>> Delete(int id)
         {
@@ -112,8 +117,9 @@ namespace SchoolApp.API.Controllers
 
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMinDepartment")]
         public async Task<IActionResult> GetMinDepartment()
         {
@@ -122,9 +128,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(department);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
-
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMaxDepartment")]
         public async Task<IActionResult> GetMaxDepartment()
         {
@@ -133,8 +139,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(department);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetNextDepartment/{id}")]
         public async Task<IActionResult> GetNextDepartment(int id)
         {
@@ -147,8 +154,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(department);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetPreviousDepartment/{id}")]
         public async Task<IActionResult> GetPreviousDepartment(int id)
         {

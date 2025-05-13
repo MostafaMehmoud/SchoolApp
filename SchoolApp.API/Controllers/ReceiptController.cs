@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -20,7 +20,8 @@ namespace SchoolApp.API.Controllers
             _serviceStudent = serviceStudent;
             _servicerreceipt = servicerreceipt;
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
         [HttpGet("GetAll")]
         //[Permission("CanAccessReceipts")]
         public async Task<ActionResult<ApiResponse<List<Receipt>>>> GetAll()
@@ -28,7 +29,8 @@ namespace SchoolApp.API.Controllers
             var Receipts = _servicerreceipt.GetAll().ToList();
             return Ok(ApiResponse<List<Receipt>>.SuccessResponse(Receipts));
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
         //[Permission("CanAccessReceipts")]
         [HttpGet("GetStudentDetailsCost")]
         public async Task<ActionResult<ApiResponse<VWStudentCostReceipt>>> GetStudentDetailsCost(int id)
@@ -36,9 +38,10 @@ namespace SchoolApp.API.Controllers
             VWStudentCostReceipt receipt = _serviceStudent.GetCostReceipt(id);
             return Ok(ApiResponse<VWStudentCostReceipt>.SuccessResponse(receipt));
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessReceipts")]
         // GET: api/national/{id}
+        [AuthorizeClaim("CanAccessReceipts")]
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<Receipt>>> GetById(int id)
         {
@@ -48,9 +51,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Receipt>.SuccessResponse(Receipt));
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessReceipts")]
         // POST: api/national
+        [AuthorizeClaim("CanAccessReceipts")]
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<VWReceipt>>> Add(VWReceipt VWReceipt)
         {
@@ -67,7 +71,8 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
+        //  [Authorize]
         // PUT: api/national/{id}
         [HttpPut("Update/{id}")]
         //[Permission("CanAccessReceipts")]
@@ -89,7 +94,8 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
+        //  [Authorize]
         // DELETE: api/national/{id}
         //[Permission("CanAccessReceipts")]
         [HttpDelete("Delete/{id}")]
@@ -121,7 +127,8 @@ namespace SchoolApp.API.Controllers
 
 
         }
-      //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
+        //  [Authorize]
         [HttpGet("GetMinReceipt")]
         //[Permission("CanAccessReceipts")]
         public async Task<IActionResult> GetMinReceipt()
@@ -131,7 +138,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Receipt);
         }
-      //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
+        //  [Authorize]
         [HttpGet("GetMaxReceipt")]
         //[Permission("CanAccessReceipts")]
         public async Task<IActionResult> GetMaxReceipt()
@@ -141,7 +149,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
         //[Permission("CanAccessReceipts")]
         [HttpGet("GetNextReceipt/{id}")]
         public async Task<IActionResult> GetNextReceipt(int id)
@@ -155,7 +164,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessReceipts")]
         //[Permission("CanAccessReceipts")]
         [HttpGet("GetPreviousReceipt/{id}")]
         public async Task<IActionResult> GetPreviousReceipt(int id)

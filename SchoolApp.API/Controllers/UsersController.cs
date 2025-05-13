@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -30,16 +30,17 @@ namespace SchoolApp.API.Controllers
             };
             return Levels;
         }
-       [Authorize]
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetAll")]
-        [Permission("CanAccessUsersFile")]
+        
         public async Task<ActionResult<ApiResponse<IEnumerable<ApplicationUser>>>> GetAll()
         {
             var Users = await _iserviceAuth.GetAllUsers();
             return Ok(ApiResponse<IEnumerable<ApplicationUser>>.SuccessResponse(Users));
         }
-      //  [Authorize]
+        //  [Authorize]
         // GET: api/national/{id}
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetById/{id}")]
         // [Permission("CanAccessUsersFile")]
         public async Task<ActionResult<ApiResponse<ApplicationUser>>> GetById(string id)
@@ -50,8 +51,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<ApplicationUser>.SuccessResponse(User));
         }
-      //  [Authorize]
+        //  [Authorize]
         // POST: api/national
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpPost("Add")]
         // [Permission("CanAccessUsersFile")]
         public async Task<ActionResult<ApiResponse<VWUser>>> Add(VWUser VWUser)
@@ -69,8 +71,9 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpPut("Update/{id}")]
         // [Permission("CanAccessUsersFile")]
         public async Task<ActionResult<ApiResponse<VWUser>>> Update(string id, VWUser vWUser)
@@ -94,8 +97,9 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpDelete("Delete/{id}")]
         // [Permission("CanAccessUsersFile")]
         public async Task<ActionResult<ApiResponse<VWUser>>> Delete(string id)
@@ -124,7 +128,8 @@ namespace SchoolApp.API.Controllers
 
             }
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetMin")]
         // [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> GetMin()
@@ -134,7 +139,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(ClassType);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetMax")]
         // [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> GetMax()
@@ -144,7 +150,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetNext/{id}")]
         // [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> GetNext(int id)
@@ -158,7 +165,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessUsersFile")]
         [HttpGet("GetPrevious/{id}")]
         // [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> GetPrevious(int id = 0)
@@ -177,6 +185,7 @@ namespace SchoolApp.API.Controllers
             return Ok(national);
         }
       //  [Authorize]
+
         [HttpPost("login")]
         // [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)

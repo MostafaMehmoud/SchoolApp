@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -22,7 +22,8 @@ namespace SchoolApp.API.Controllers
             _servicefileBus = serviceFileBus;
             _serviceInstallment = serviceInstallment;
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetAll")]
        // [Permission("CanAccessStudentsFile")]
         public async Task<ActionResult<ApiResponse<List<Student>>>> GetAll()
@@ -30,9 +31,10 @@ namespace SchoolApp.API.Controllers
             var Students = _servicestudent.GetAll().ToList();
             return Ok(ApiResponse<List<Student>>.SuccessResponse(Students));
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
         // GET: api/national/{id}
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<ApiResponse<Student>>> GetById(int id)
         {
@@ -42,8 +44,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<Student>.SuccessResponse(Student));
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetBusCostByClassType")]
         public async Task<ActionResult<ApiResponse<VWCostBus>>> GetBusCostByClassType(int buseId, int busCostTypeId)
         {
@@ -54,8 +57,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<VWCostBus>.SuccessResponse(installments));
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetInstallmentsByClassType")]
         public async Task<ActionResult<ApiResponse<InstallmentMain>>> GetInstallmentsByClassType(int stageId, int classTypeId)
         {
@@ -73,9 +77,10 @@ namespace SchoolApp.API.Controllers
             }
             return Ok(ApiResponse<InstallmentMain>.SuccessResponse(installments));
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
         // POST: api/national
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<VWStudent>>> Add(VWStudent VWStudent)
         {
@@ -92,9 +97,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWStudent>>> Update(int id, VWStudent vWStudent)
         {
@@ -114,9 +120,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<Student>>> Delete(int id)
         {
@@ -145,8 +152,9 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetMinStudent")]
         public async Task<IActionResult> GetMinStudent()
         {
@@ -155,8 +163,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(Student);
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetMaxStudent")]
         public async Task<IActionResult> GetMaxStudent()
         {
@@ -165,8 +174,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetNextStudent/{id}")]
         public async Task<IActionResult> GetNextStudent(int id)
         {
@@ -179,8 +189,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-      //  [Authorize]
-       // [Permission("CanAccessStudentsFile")]
+        //  [Authorize]
+        // [Permission("CanAccessStudentsFile")]
+        [AuthorizeClaim("CanAccessStudentsFile")]
         [HttpGet("GetPreviousStudent/{id}")]
         public async Task<IActionResult> GetPreviousStudent(int id)
         {

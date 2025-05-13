@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
@@ -20,7 +20,8 @@ namespace SchoolApp.API.Controllers
             _serviceFileBus = serviceFileBus;
             _serviceStage = serviceStage;
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetAll")]
         //[Permission("CanAccessBusesFile")]
         public async Task<ActionResult<ApiResponse<List<FileBus>>>> GetAll()
@@ -28,8 +29,8 @@ namespace SchoolApp.API.Controllers
             var FileBuses = _serviceFileBus.GetAll().ToList();
             return Ok(ApiResponse<List<FileBus>>.SuccessResponse(FileBuses));
         }
-      //  [Authorize]
-
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessBusesFile")]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
         //[Permission("CanAccessBusesFile")]
@@ -41,9 +42,10 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<FileBus>.SuccessResponse(FileBus));
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // POST: api/national
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPost("Add")]
         public async Task<ActionResult<ApiResponse<VWFileBus>>> Add(VWFileBus VWFileBus)
         {
@@ -60,9 +62,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpPut("Update/{id}")]
         public async Task<ActionResult<ApiResponse<VWFileBus>>> Update(int id, VWFileBus VWFileBus)
         {
@@ -82,9 +85,10 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<ApiResponse<FileBus>>> Delete(int id)
         {
@@ -114,8 +118,9 @@ namespace SchoolApp.API.Controllers
 
 
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMinFileBus")]
         public async Task<IActionResult> GetMinFileBus()
         {
@@ -124,8 +129,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(fileBus);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetMaxFileBus")]
         public async Task<IActionResult> GetMaxFileBus()
         {
@@ -134,8 +140,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetNextFileBus/{id}")]
         public async Task<IActionResult> GetNextFileBus(int id)
         {
@@ -148,8 +155,9 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
         //[Permission("CanAccessBusesFile")]
+        [AuthorizeClaim("CanAccessBusesFile")]
         [HttpGet("GetPreviousFileBus/{id}")]
         public async Task<IActionResult> GetPreviousFileBus(int id)
         {

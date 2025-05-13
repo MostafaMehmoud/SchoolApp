@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using SchoolApp.API.Auth;
 using SchoolApp.BL.Services.IServices;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
@@ -22,8 +22,8 @@ namespace SchoolApp.API.Controllers
             _serviceClassTypeName = serviceClassTypeName;
             _serviceClassType = serviceClassType;
         }
-
-      //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
+        //  [Authorize]
         [HttpGet("GetAll")]
         //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<ClassType>>>> GetAll()
@@ -31,7 +31,8 @@ namespace SchoolApp.API.Controllers
             var ClassTypes = _serviceClassType.GetAll().ToList();
             return Ok(ApiResponse<List<ClassType>>.SuccessResponse(ClassTypes));
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         // GET: api/national/{id}
         [HttpGet("GetById/{id}")]
         //[Permission("CanAccessGrades")]
@@ -43,8 +44,9 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<ClassType>.SuccessResponse(classType));
         }
-      //  [Authorize]
+        //  [Authorize]
         // POST: api/national
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpPost("Add")]
         //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<ClassType>>> Add(VWClassType vWclassType)
@@ -63,8 +65,9 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         // PUT: api/national/{id}
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpPut("Update/{id}")]
         //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<VWClassType>>> Update(int id, VWClassType vWclassType)
@@ -85,8 +88,9 @@ namespace SchoolApp.API.Controllers
             }
 
         }
-      //  [Authorize]
+        //  [Authorize]
         // DELETE: api/national/{id}
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpDelete("Delete/{id}")]
         //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<ClassType>>> Delete(int id)
@@ -100,7 +104,8 @@ namespace SchoolApp.API.Controllers
 
             return Ok(ApiResponse<National>.SuccessResponse(null, "classType deleted successfully"));
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetClassTypeNamesByStage/{stageId}")]
         //[Permission("CanAccessGrades")]
         public async Task<ActionResult<ApiResponse<List<ClassTypeName>>>> GetClassTypeNamesByStage(int stageId)
@@ -112,7 +117,8 @@ namespace SchoolApp.API.Controllers
             return Ok(ApiResponse<List<ClassTypeName>>.SuccessResponse(classTypeName));
 
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetMinClassType")]
         //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMinClassType()
@@ -122,7 +128,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(ClassType);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetMaxClassType")]
         //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetMaxClassType()
@@ -132,7 +139,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No records found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetNextClassType/{id}")]
         //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetNextClassType(int id)
@@ -146,7 +154,8 @@ namespace SchoolApp.API.Controllers
                 return NotFound(new { Message = "No next record found." });
             return Ok(national);
         }
-      //  [Authorize]
+        //  [Authorize]
+        [AuthorizeClaim("CanAccessGrades")]
         [HttpGet("GetPreviousClassType/{id}")]
         //[Permission("CanAccessGrades")]
         public async Task<IActionResult> GetPreviousClassType(int id = 0)
