@@ -38,6 +38,8 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
 
         public IRoleRepository roleRepository { get; }
 
+        public ICompanyRepository company { get; }
+
         public UnitOfWork(
         ApplicationDBContext context,
         UserManager<ApplicationUser> userManager,
@@ -60,13 +62,18 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
             studentClassType=new RepositoryStudentClassType(_context);
             auth = new RepositoryAuth(userManager, signInManager);
             roleRepository=new RoleRepository(userManager,roleManager);
-
+            company= new RepositoryCompany(_context);   
         }
         public IDbContextTransaction BeginTransaction()
         {
             return _context.Database.BeginTransaction();
         }
+        public async Task<int> CompleteAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
 
+        
         public int Complete() => _context.SaveChanges();
         public void Dispose() => _context.Dispose();
 

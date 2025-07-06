@@ -26,9 +26,11 @@ namespace SchoolApp.DAL.Repositories.UnitOfWork
         IRepositoryBase<StudentsClassType> studentClassType { get;  }
         IRoleRepository roleRepository { get; }
         IRepositoryAuth auth { get; }
+        ICompanyRepository company { get; }
         IDbContextTransaction BeginTransaction();
         void Save();
         int Complete();
+        Task<int> CompleteAsync();
     }
 
 }

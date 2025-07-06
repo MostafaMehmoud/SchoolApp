@@ -67,6 +67,7 @@ builder.Services.AddScoped<IServiceReceipt, ServiceReceipt>();
 builder.Services.AddScoped<IServicePayment, ServicePayment>();  
 builder.Services.AddScoped<IServiceReport, ServiceReport>();  
 builder.Services.AddScoped<IserviceAuth, ServiseAuth>();
+builder.Services.AddScoped<IServiceCompany, ServiceCompany>();
 
 builder.Services.AddRazorPages();
 

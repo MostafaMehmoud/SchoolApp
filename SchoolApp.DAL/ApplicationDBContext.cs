@@ -30,6 +30,7 @@ namespace SchoolApp.DAL
         public DbSet<InstallmentReceipt> installmentReceipts { get; set; }
         public DbSet<Payment> payments { get; set; }   
         public DbSet<StudentsClassType> studentsClassTypes { get; set; }
+        public DbSet<Company> companies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //var adminId = "c7c062f0-1784-4245-8630-1fc72bae7b26";

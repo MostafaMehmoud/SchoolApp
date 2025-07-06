@@ -24,83 +24,212 @@
 
     <style>
         body {
-        height: 100vh;
-        display: block;
+            height: 100vh;
+            display: block;
         }
 
-        .sidebar {
-        width: 250px;
-        background: #318eeb;
-        color: white;
-        height: max-content;
-        min-height: calc(100vh);
-        position: absolute;
-        padding-top: 20px;
-        }
-
-        .sidebar a {
-        color: white;
-        text-decoration: none;
-        padding: 10px;
-        display: block;
-        }
-
-        .sidebar a:hover {
-        background: #0f62b5;
-        }
 
         .content {
-        margin-right: 250px;
-        flex-grow: 1;
-        padding: 20px;
+            margin-right: 250px;
+            flex-grow: 1;
+            padding: 20px;
         }
 
         .submenu {
-        display: none;
-        list-style: none;
-        padding-left: 20px;
+            display: none;
+            list-style: none;
+            padding-left: 20px;
         }
 
-        .submenu.show {
-        display: block;
-        }
+            .submenu.show {
+                display: block;
+            }
 
         .logo {
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
+
         @@media (max-width: 768px) {
-        .sidebar
+            .sidebar {
+                width: 100px;
+                text-align: center;
+            }
 
-        {
-        width: 100px;
-        text-align: center;
-        }
+            .content {
+                margin-right: 100px;
+            }
 
-        .content {
-        margin-right: 100px;
-        }
+            .sidebar a span {
+                display: none;
+            }
 
-        .sidebar a span {
-        display: none;
-        }
-
-        .submenu {
-        padding-left: 0;
-        }
-
+            .submenu {
+                padding-left: 0;
+            }
         }
 
         .navbar {
-        background-color: #318eeb;
-        color: white
-        }
-        .nav-link{
-        color:white !important;
+            background-color: #318eeb;
+            color: white
         }
 
+        .nav-link {
+            color: white !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background-color: #f5f5f5;
+        }
+
+        /* الشريط العلوي */
+        .navbar {
+            background-color: #318eeb;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            .navbar .nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                gap: 15px;
+            }
+
+            .navbar .nav-item {
+                display: inline-block;
+            }
+
+            .navbar .nav-link {
+                color: white;
+                text-decoration: none;
+                font-size: 16px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                transition: background 0.3s;
+            }
+
+                .navbar .nav-link:hover {
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 250px;
+            background: #318eeb;
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            top: 60px;
+            right: 0;
+            padding: 20px 10px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #318eeb;
+            color: white;
+            position: fixed;
+            top: 60px; /* أعلى الشريط الجانبي يبدأ بعد navbar */
+            right: 0;
+            bottom: 0;
+            overflow-y: auto; /* التمرير العمودي عند الحاجة */
+            padding: 20px 10px;
+        }
+
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                padding: 12px 15px;
+                color: white;
+                text-decoration: none;
+                font-size: 15px;
+                transition: background 0.3s;
+                border-radius: 6px;
+                margin-bottom: 5px;
+            }
+
+                .sidebar a i {
+                    margin-left: 10px;
+                }
+
+                .sidebar a:hover {
+                    background-color: rgba(255, 255, 255, 0.15);
+                }
+
+        .submenu {
+            list-style: none;
+            padding-right: 20px;
+            margin-top: 5px;
+            display: none;
+        }
+
+            .submenu li {
+                margin-bottom: 5px;
+            }
+
+                .submenu li a {
+                    font-size: 14px;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    padding: 8px 12px;
+                    display: block;
+                    border-radius: 6px;
+                }
+
+                    .submenu li a:hover {
+                        background-color: rgba(255, 255, 255, 0.2);
+                    }
+
+        /* المحتوى الرئيسي */
+        .content {
+            margin-right: 250px;
+            padding: 80px 20px 20px 20px;
+        }
+
+        /* تحسين استايل الفورم */
+        .custom-input,
+        .form-control-sm {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .custom-button {
+            margin: 0.2rem;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .custom-form-group {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header {
+            padding: 0.5rem 1rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
 
     </style>
 </head>
@@ -138,92 +267,84 @@
 
     <div class="d-flex">
         <div class="sidebar">
-            
-
 
             <a href="#"><i class="fas fa-home"></i> <span>الرئيسية</span></a>
-           
-            <a href="#" onclick="toggleMenu('students-menu')"><i class="fas fa-user-graduate"></i> <span>ملفات الرئيسية</span></a>
+
+            <a href="#" onclick="toggleMenu('students-menu')"><i class="fas fa-folder-open"></i> <span>ملفات رئيسية</span></a>
             <ul id="students-menu" class="submenu">
                 @if (currentUser != null && currentUser.CanAccessBusesFile)
                 {
-                <li><a asp-controller="National" asp-action="Index"> الجنسية</a></li>
-                
-                    <li><a asp-controller="FileBus" asp-action="Index"> ملف الباص</a></li>
-
-                <li><a asp-controller="Department" asp-action="Index"> الاقسام </a></li>
+                    <li><a asp-controller="National" asp-action="Index"><i class="fas fa-flag"></i> الجنسية</a></li>
+                    <li><a asp-controller="FileBus" asp-action="Index"><i class="fas fa-bus-alt"></i> ملف الباص</a></li>
+                    <li><a asp-controller="Department" asp-action="Index"><i class="fas fa-building"></i> الأقسام</a></li>
                 }
                 @if (currentUser != null && currentUser.CanAccessStudentsFile)
                 {
-                    <li><a asp-controller="Student" asp-action="Index"> ملف الطالب </a></li>
+                    <li><a asp-controller="Student" asp-action="Index"><i class="fas fa-user-graduate"></i> ملف الطالب</a></li>
                 }
-
-
             </ul>
+
             @if (currentUser != null && currentUser.CanAccessGrades)
             {
-                <a href="#" onclick="toggleMenu('teachers-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>المراحل الدراسية</span></a>
+                <a href="#" onclick="toggleMenu('teachers-menu')"><i class="fas fa-school"></i> <span>المراحل الدراسية</span></a>
                 <ul id="teachers-menu" class="submenu">
-
-                    <li><a asp-controller="AcademicStage" asp-action="Index"> اسم المرحلة </a></li>
-                    <li><a asp-controller="ClassTypeName" asp-action="Index">اضافة سنوات الي المرحلة </a></li>
-                    <li><a asp-controller="ClassType" asp-action="Index">المرحلة الدراسية</a></li>
-                    <li><a asp-controller="ClassType" asp-action="Index"> اضافة قسط علي المرحلة</a></li>
-                    <li><a asp-controller="ClassType" asp-action="ReportAllClassType">قائمة المراحل الدراسية</a></li>
+                    <li><a asp-controller="AcademicStage" asp-action="Index"><i class="fas fa-layer-group"></i> اسم المرحلة</a></li>
+                    <li><a asp-controller="ClassTypeName" asp-action="Index"><i class="fas fa-plus-circle"></i> إضافة سنوات للمرحلة</a></li>
+                    <li><a asp-controller="ClassType" asp-action="Index"><i class="fas fa-graduation-cap"></i> المرحلة الدراسية</a></li>
+                    <li><a asp-controller="ClassType" asp-action="Index"><i class="fas fa-money-bill-wave"></i> إضافة قسط على المرحلة</a></li>
+                    <li><a asp-controller="ClassType" asp-action="ReportAllClassType"><i class="fas fa-list-ul"></i> قائمة المراحل</a></li>
                 </ul>
             }
-            <a href="#" onclick="toggleMenu('cash-menu')"><i class="fas fa-chalkboard-teacher"></i> <span> السندات</span></a>
+
+            <a href="#" onclick="toggleMenu('cash-menu')"><i class="fas fa-receipt"></i> <span>السندات</span></a>
             <ul id="cash-menu" class="submenu">
-                @if (currentUser != null && currentUser.CanAccessReceipts){
-                    <li><a asp-controller="Receipt" asp-action="Index">  سندات قبض </a></li>
+                @if (currentUser != null && currentUser.CanAccessReceipts)
+                {
+                    <li><a asp-controller="Receipt" asp-action="Index"><i class="fas fa-download"></i> سندات قبض</a></li>
                 }
                 @if (currentUser != null && currentUser.CanAccessPayments)
                 {
-                    <li><a asp-controller="Payment" asp-action="Index">سندات صرف </a></li>
+                    <li><a asp-controller="Payment" asp-action="Index"><i class="fas fa-upload"></i> سندات صرف</a></li>
                 }
+            </ul>
 
-
-            </ul> 
             @if (currentUser != null && currentUser.CanAccessPrintReports)
             {
-                <a href="#" onclick="toggleMenu('report-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>تقارير </span></a>
+                <a href="#" onclick="toggleMenu('report-menu')"><i class="fas fa-chart-bar"></i> <span>التقارير</span></a>
                 <ul id="report-menu" class="submenu">
-                    <li><a asp-controller="Reports" asp-action="ReportStudentSName"> قائمة اسماء الطلبة  </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentSFatherName"> تقرير عن اولياء الامور  </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentSMotherName"> تقرير عن امهات الطلبة  </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentFeesName"> تقرير رسوم الطلبة    </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportAccountStatement"> تقرير  حساب طالب    </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentCompleteFees"> تقرير بالمسددين كاملا    </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentPartFees"> تقرير بالمسددين جزء من المبلغ      </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportStudentNoFees"> تقرير بالطلبة غير مسددين      </a></li>
-
-
-
-                </ul> 
-                <a href="#" onclick="toggleMenu('note-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>اشعارات </span></a>
-                <ul id="note-menu" class="submenu">
-                    <li><a asp-controller="Reports" asp-action="ReportStudentNotificationFees">اشعار مطالبة بالرسوم </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportDefinationStudent"> شهادة تعريف</a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportBarcodeStudent">  طباعة الباركود</a></li>
-                    @*  <li><a asp-controller="" asp-action=""> Student List Report </a></li>
- *@
+                    <li><a asp-controller="Reports" asp-action="ReportStudentSName"><i class="fas fa-users"></i> قائمة أسماء الطلبة</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentSFatherName"><i class="fas fa-male"></i> تقرير أولياء الأمور</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentSMotherName"><i class="fas fa-female"></i> تقرير الأمهات</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentFeesName"><i class="fas fa-dollar-sign"></i> تقرير الرسوم</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportAccountStatement"><i class="fas fa-file-invoice-dollar"></i> حساب الطالب</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentCompleteFees"><i class="fas fa-check-circle"></i> المسددين كاملاً</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentPartFees"><i class="fas fa-adjust"></i> المسددين جزئياً</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentNoFees"><i class="fas fa-times-circle"></i> غير المسددين</a></li>
                 </ul>
-                <a href="#" onclick="toggleMenu('bondes-menu')"><i class="fas fa-chalkboard-teacher"></i> <span>تقرير السندات </span></a>
-                <ul id="bondes-menu" class="submenu">
-                    <li><a asp-controller="Reports" asp-action="ReportPayments">تقرير  سندات القبض </a></li>
-                    <li><a asp-controller="Reports" asp-action="ReportFees"> تقرير ملخص الرسوم</a></li>
-                    @*  <li><a asp-controller="" asp-action="">  احصائية للمبالغ المسحقة </a></li> *@
-                    <li><a asp-controller="Reports" asp-action="ReportStudentSNameOrderByStudentName"> تقرير بالطلبة ابجديا </a></li>
 
+                <a href="#" onclick="toggleMenu('note-menu')"><i class="fas fa-bell"></i> <span>الإشعارات</span></a>
+                <ul id="note-menu" class="submenu">
+                    <li><a asp-controller="Reports" asp-action="ReportStudentNotificationFees"><i class="fas fa-bell"></i> إشعار بالرسوم</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportDefinationStudent"><i class="fas fa-id-card"></i> شهادة تعريف</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportBarcodeStudent"><i class="fas fa-barcode"></i> طباعة الباركود</a></li>
+                </ul>
+
+                <a href="#" onclick="toggleMenu('bondes-menu')"><i class="fas fa-file-invoice"></i> <span>تقرير السندات</span></a>
+                <ul id="bondes-menu" class="submenu">
+                    <li><a asp-controller="Reports" asp-action="ReportPayments"><i class="fas fa-money-check-alt"></i> سندات القبض</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportFees"><i class="fas fa-coins"></i> ملخص الرسوم</a></li>
+                    <li><a asp-controller="Reports" asp-action="ReportStudentSNameOrderByStudentName"><i class="fas fa-sort-alpha-down"></i> الطلبة أبجديًا</a></li>
                 </ul>
             }
+
             @if (currentUser != null && currentUser.CanAccessUsersFile)
             {
-                <a asp-controller="TransferringClasses" asp-action="Index"><i class="fas fa-cogs"></i> <span>نقل الصفوف</span></a>
-                <a asp-controller="Users" asp-action="Create"><i class="fas fa-cogs"></i> <span>ملف المستخدمين </span></a>
-
+                <a asp-controller="TransferringClasses" asp-action="Index"><i class="fas fa-random"></i> <span>نقل الصفوف</span></a>
+                <a asp-controller="Users" asp-action="Create"><i class="fas fa-user-cog"></i> <span>ملف المستخدمين</span></a>
+                <a asp-controller="Company" asp-action="Index"><i class="fas fa-building"></i> <span>ملف الشركة</span></a>
             }
-            </div>
+        </div>
+
     <div class="content">
         @RenderBody()
     </div>
