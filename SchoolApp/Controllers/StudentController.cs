@@ -16,10 +16,11 @@ namespace SchoolApp.Controllers
         private readonly IServiceInstallment _serviceInstallment;   
         private readonly IServiceFileBus _servicefileBus;
         private readonly IServiceStudent _servicestudent;
+        private readonly IServiceCompany _companyService;
         public StudentController(IServiceDepartment serviceDepartment,
             IServiceNational serviceNational, IServiceStage serviceStage,
             IServiceInstallment serviceInstallment, IServiceFileBus servicefileBus, 
-            IServiceStudent servicestudent)
+            IServiceStudent servicestudent, IServiceCompany companyService)
         {
             _serviceDepartment = serviceDepartment;
             _serviceNational = serviceNational;
@@ -27,6 +28,7 @@ namespace SchoolApp.Controllers
             _serviceInstallment = serviceInstallment;
             _servicefileBus = servicefileBus;
             _servicestudent = servicestudent;
+            _companyService = companyService;
         }
         [Permission("CanAccessStudentsFile")]
         public IActionResult Index()
@@ -182,10 +184,20 @@ namespace SchoolApp.Controllers
             return Ok(national);
         }
         [HttpGet]
-        public IActionResult Print(int id)
+        public async Task<IActionResult> Print(int id)
         {
-            var studentDetails=_servicestudent.GetPrintStudentDetails(id);
-            return View(studentDetails);
+            var studentDetails = _servicestudent.GetPrintStudentDetails(id);
+            var company =await _companyService.GetCompanyAsync(); // أو async إذا كان await
+
+            var viewModel = new PrintViewModel<PrintStudentDetails>
+            {
+                model = studentDetails,
+                Company = company
+            };
+
+
+            return View(viewModel);
         }
+
     }
 }

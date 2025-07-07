@@ -197,10 +197,7 @@
                           
                        
                     </div>
-                        <div class="col-sm-4">
-                            <label class="form-label"> دفعة مقدمة </label>
-                            <input id="advanceRepayment" asp-for="AdvanceRepayment" type="number" class="form-control form-control-sm" placeholder="ادخل دفعة مقدمة">
-                        </div>
+                        
                         <div class="col-sm-4">
                             <label class="form-label">القسط الشهري  </label>
                             <input type="number" id="monthlyInstallment" asp-for="MonthlyInstallment" class="form-control form-control-sm" placeholder="ادخل القسط الشهري ">
@@ -623,7 +620,13 @@
                         <input asp-for="BusDiscount" type="number" id="busDiscount" class="form-control form-control-sm ">
                     </div>
                 </div>
-
+                <div class="row row-cols-4 g-2">
+                    <div class="col-4">
+                        <label class="form-label">% ضريبة القيمة المضافة </label>
+                        <input asp-for="ValueAddedTax" type="number" id="ValueAddedTax" class="form-control form-control-sm discount-input discount-percentage">
+                    </div>
+                   
+                </div>
 
 
                 <p>بيانات الخصم الاقساط</p>
@@ -671,6 +674,7 @@
                     {
                         <button type="button" class="btn btn-secondary btn-sm custom-button" id="btnEdit">تعديل</button>
                         <button type="button" class="btn btn-danger btn-sm custom-button" id="btnDelete">حذف</button>
+                        <button type='button' class='btn btn-secondary btn-sm custom-button'  id='btnPrint'>طباعة</button>
                     }
                    
                 </div>
@@ -779,10 +783,21 @@
               
 
                      $(document).ready(function () {
-                                 $(document).on('click', '#btnPrint', function () {
-          var id = $(this).data('id'); // الحصول على ID من data-id
-          window.location.href = '/Student/Print?id=' + id;
+                                      $(document).on('click', '#btnPrint', function () {
+            var id = $("#studentId").val();
+
+            if (!id || isNaN(id) || parseInt(id) <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تنبيه',
+                    text: 'يرجى تحديد طالب أولاً قبل الطباعة.'
+                });
+                return;
+            }
+
+            window.location.href = '/Student/Print?id=' + id;
         });
+
 
             $("#busDiscount").on("input", function () {
                 let busDiscount = parseFloat($(this).val()) || 0; // قيمة الخصم المدخلة
@@ -969,11 +984,13 @@
             let specialDiscount = parseFloat($("#specialDiscount").val()) || 0;
            let fixedDiscount = parseFloat($("#fixedDiscount").val()) || 0;
             let busDiscount = parseFloat($("#busDiscount").val()) || 0;
+                   let ValueAddedTax = parseFloat($("#ValueAddedTax").val()) || 0;
 
             let generalDiscountAmount = (generalDiscount / 100) * baseTotalAmount;
             let employeeDiscountAmount = (employeeDiscount / 100) * baseTotalAmount;
+                          let ValueAddedTaxAmount = (ValueAddedTax / 100) * baseTotalAmount;
 
-            let totalDiscount = generalDiscountAmount + employeeDiscountAmount + earlyPaymentDiscount +
+            let totalDiscount =ValueAddedTaxAmount+ generalDiscountAmount + employeeDiscountAmount + earlyPaymentDiscount +
                 siblingsDiscount + communityFundDiscount + specialDiscount + busDiscount;
                
                 if($("#studentId").val()!=0){
@@ -1213,13 +1230,13 @@
                 let inputId = parentDiv.find(".additional-input").attr("id");
                  var currentValue = parseFloat($('#discountedTotalAmount').val());
                 if ($(this).prop("checked")) {
-                    var valueToAdd =inputValue; // غيّر هذه القيمة لما تريد
+        //             var valueToAdd =inputValue; // غيّر هذه القيمة لما تريد
 
-        // تنفيذ عملية الطرح
-        var newValue = currentValue + valueToAdd;
+        // // تنفيذ عملية الطرح
+        // var newValue = currentValue + valueToAdd;
 
-        // تحديث القيمة في العنصر
-        $('#discountedTotalAmount').val(newValue);
+        // // تحديث القيمة في العنصر
+        // $('#discountedTotalAmount').val(newValue);
                     // ✅ إضافة العنصر إلى #container فقط إذا لم يكن مضافًا بالفعل
                     if (container.find(`.added-item[data-id="${inputId}"]`).length === 0) {
                         container.append(`
@@ -1235,14 +1252,14 @@
                             // جلب القيمة من العنصر وتحويلها إلى رقم
        
 
-        // القيمة التي تريد طرحها
-        var valueToSubtract =inputValue; // غيّر هذه القيمة لما تريد
+        // // القيمة التي تريد طرحها
+        // var valueToSubtract =inputValue; // غيّر هذه القيمة لما تريد
 
-        // تنفيذ عملية الطرح
-        var newValue = currentValue - valueToSubtract;
+        // // تنفيذ عملية الطرح
+        // var newValue = currentValue - valueToSubtract;
 
-        // تحديث القيمة في العنصر
-        $('#discountedTotalAmount').val(newValue);
+        // // تحديث القيمة في العنصر
+        // $('#discountedTotalAmount').val(newValue);
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
             });
@@ -1809,6 +1826,7 @@
                                $("#siblingsDiscount").val(response.siblingsDiscount);
                                 // $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);
+                               $("#ValueAddedTax").val(response.valueAddedTax);
                                // $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
                                 // $("#specialDiscount").prop("disabled", true);
@@ -1819,8 +1837,7 @@
                                  $("#receiptTotalFees").val(response.receiptTotalFees);
                                   $("#receiptTotalPayments").val(response.receiptTotalPayments);
                                    $("#remainingFees").val(response.remainingFees);
-                                                    $("#printStudentDetails").append(" <button type='button' class='btn btn-secondary btn-sm custom-button'data-id='"+response.id+"' id='btnPrint'>طباعة</button>")
-        let container = $("#container");
+                                                      let container = $("#container");
                                  container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
             $("#checkCLSCloth").prop("checked", true);
@@ -1979,6 +1996,7 @@
                                $("#communityFundDiscount").val(response.communityFundDiscount);
                                // $("#communityFundDiscount").prop("disabled", true);
                                $("#specialDiscount").val(response.specialDiscount);
+                               $("#ValueAddedTax").val(response.valueAddedTax);
                                 // $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
                                 // $("#fixedDiscount").prop("disabled", true);
@@ -1986,9 +2004,7 @@
                                 // $("#busDiscount").prop("disabled", true);
                                  $("#receiptTotalFees").val(response.receiptTotalFees);
                                   $("#receiptTotalPayments").val(response.receiptTotalPayments);
-                     $("#printStudentDetails").append(" <button type='button' class='btn btn-secondary btn-sm custom-button'data-id='"+response.id+"' id='btnPrint'>طباعة</button>")
-
-                                         $("#remainingFees").val(response.remainingFees);
+                                           $("#remainingFees").val(response.remainingFees);
                             let container = $("#container");
                              container.find(`.added-item[data-id="CLSCloth"]`).remove();
                                       if ( response.clsCloth !== 0) {
@@ -2063,8 +2079,7 @@
             $(".text-danger").text("");
             $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
 
-              $("#printStudentDetails").append(" <button type='button' class='btn btn-secondary btn-sm custom-button' id='btnPrint'>طباعة</button>")
-
+          
                                $("#studentId").val(response.id);
                                $("#studentCodeInput").val(response.studentNumber);
                                $("#departmentId").val(response.departmentId);
@@ -2156,6 +2171,7 @@
                                $("#specialDiscount").val(response.specialDiscount);
                                 // $("#specialDiscount").prop("disabled", true);
                                $("#fixedDiscount").val(response.totalDiscount);
+                               $("#ValueAddedTax").val(response.valueAddedTax);
                                 // $("#fixedDiscount").prop("disabled", true);
                                $("#busDiscount").val(response.busDiscount);
                                 // $("#busDiscount").prop("disabled", true);
@@ -2239,8 +2255,7 @@
             $(".text-danger").text("");
             $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
 
-                           $("#printStudentDetails").append(" <button type='button' class='btn btn-secondary btn-sm custom-button'data-id='"+response.id+"' id='btnPrint'>طباعة</button>")
-
+                         
                                $("#studentId").val(response.id);
                                $("#studentCodeInput").val(response.studentNumber);
                                $("#departmentId").val(response.departmentId);
@@ -2326,6 +2341,7 @@
                                 // $("#employeeDiscount").prop("disabled", true);
                                $("#earlyPaymentDiscount").val(response.earlyPaymentDiscount);
                                  // $("#earlyPaymentDiscount").prop("disabled", true);
+                                 $("#ValueAddedTax").val(response.valueAddedTax);
                                $("#siblingsDiscount").val(response.siblingsDiscount);
                                 // $("#siblingsDiscount").prop("disabled", true);
                                $("#communityFundDiscount").val(response.communityFundDiscount);

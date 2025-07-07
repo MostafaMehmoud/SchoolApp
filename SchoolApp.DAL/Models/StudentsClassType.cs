@@ -20,7 +20,7 @@ namespace SchoolApp.DAL.Models
         public string BrithPlace { get; set; }
         public int ClassTypeId { get; set; }
         public decimal LastBalance { get; set; } = 0;
-        public decimal AdvanceRepayment { get; set; } = 0;
+        public decimal ValueAddedTax { get; set; } = 0;
         public decimal MonthlyInstallment { get; set; } = 0;
         public decimal CLSCloth { get; set; } = 0;
         public decimal CLSAcpt { get; set; } = 0;

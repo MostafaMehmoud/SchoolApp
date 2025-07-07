@@ -67,7 +67,7 @@ namespace SchoolApp.BL.Services
                     student.ClassTypeName = VWStudent.ClassTypeName;
                     student.LastBalance = VWStudent.LastBalance;
                     student.LastSchoolName = VWStudent.LastSchoolName;
-                    student.AdvanceRepayment = VWStudent.AdvanceRepayment;
+                    student.ValueAddedTax = VWStudent.ValueAddedTax;
                     student.MonthlyInstallment = VWStudent.MonthlyInstallment;
                     student.PersonalStatusStudentId = VWStudent.PersonalStatusStudentId;
                     student.PersonalStatusStudentNumber = VWStudent.PersonalStatusStudentNumber;
@@ -124,7 +124,7 @@ namespace SchoolApp.BL.Services
                     student.TotalDiscount = VWStudent.TotalDiscount;
                     student.BusDiscount = VWStudent.BusDiscount;
                     student.TotalCost = VWStudent.TotalCost;
-                    student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+                    student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount+VWStudent.CLSAcpt+VWStudent.CLSBakelite+VWStudent.CLSCloth;
 
                     student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount
                         ;
@@ -133,7 +133,7 @@ namespace SchoolApp.BL.Services
                     {
                         student.ReceiptTotalFees += item.CostInstallment;
                     }
-                    student.ReceiptTotalPayments = student.LastBalance+student.AdvanceRepayment;
+                    student.ReceiptTotalPayments = student.LastBalance;
                     student.RemainingFees = student.ReceiptTotalFees - student.ReceiptTotalPayments;
                     if (_unitOfWork.students.Add(student))
                     {
@@ -148,7 +148,7 @@ namespace SchoolApp.BL.Services
                         studentsClassType.BrithPlace = studentAdd.BrithPlace;
                         studentsClassType.ClassTypeId = studentAdd.ClassTypeId;
                         studentsClassType.LastBalance = studentAdd.LastBalance;
-                        studentsClassType.AdvanceRepayment = studentAdd.AdvanceRepayment;
+                        studentsClassType.ValueAddedTax = studentAdd.ValueAddedTax;
                         studentsClassType.MonthlyInstallment = studentAdd.MonthlyInstallment;
                         studentsClassType.CLSCloth = studentAdd.CLSCloth;
                         studentsClassType.CLSAcpt = studentAdd.CLSAcpt;
@@ -170,7 +170,7 @@ namespace SchoolApp.BL.Services
                         studentsClassType.CostFirstTermAfterDiscount = studentAdd.CostFirstTermAfterDiscount;
                         studentsClassType.CostSecondTermAfterDiscount = studentAdd.CostSecondTermAfterDiscount;
                         studentsClassType.TotalCost = studentAdd.TotalCost;
-                        studentsClassType.TotalCostAfterDiscount = studentAdd.TotalCostAfterDiscount;
+                        studentsClassType.TotalCostAfterDiscount = studentAdd.TotalCostAfterDiscount + VWStudent.CLSAcpt + VWStudent.CLSBakelite + VWStudent.CLSCloth;
                         studentsClassType.ReceiptTotalFees = studentAdd.ReceiptTotalFees;
                         studentsClassType.ReceiptTotalPayments = studentAdd.ReceiptTotalPayments;
                         studentsClassType.RemainingFees = studentAdd.RemainingFees;
@@ -276,7 +276,7 @@ namespace SchoolApp.BL.Services
             student.ClassTypeName = VWStudent.ClassTypeName;
             student.LastBalance = VWStudent.LastBalance;
             student.LastSchoolName = VWStudent.LastSchoolName;
-            student.AdvanceRepayment = VWStudent.AdvanceRepayment;
+            student.ValueAddedTax = VWStudent.ValueAddedTax;
             student.MonthlyInstallment = VWStudent.MonthlyInstallment;
             student.PersonalStatusStudentId = VWStudent.PersonalStatusStudentId;
             student.PersonalStatusStudentNumber = VWStudent.PersonalStatusStudentNumber;
@@ -336,7 +336,7 @@ namespace SchoolApp.BL.Services
             student.BusDiscount = VWStudent.BusDiscount;
             student.TotalCost = VWStudent.TotalCost;
             
-            student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+            student.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount + VWStudent.CLSAcpt + VWStudent.CLSBakelite + VWStudent.CLSCloth;
             ///////////////////////////////////////////////////////////
             var allClasses = _unitOfWork.studentClassType
     .GetAll()
@@ -348,12 +348,12 @@ namespace SchoolApp.BL.Services
             if (allClasses.Count == 1)
             {
                 result = new StudentsClassType(); // العنصر الوحيد
-                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount ;
+                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.CLSAcpt + student.CLSBakelite + student.CLSCloth;
             }
             else if (allClasses.Count >= 2)
             {
                 result = allClasses[allClasses.Count - 2]; // العنصر قبل الأخير
-                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + (-LastStudentclassType.LastBalance);
+                student.ReceiptTotalFees = student.TotalCostAfterDiscount + student.CostSecondTermAfterDiscount + student.CostFirstTermAfterDiscount + student.CLSAcpt + student.CLSBakelite + student.CLSCloth + (-LastStudentclassType.LastBalance);
             }
 
             // الآن result تحتوي على العنصر المطلوب
@@ -383,7 +383,7 @@ namespace SchoolApp.BL.Services
             ;
             LastStudentclassType.BusDiscount = VWStudent.BusDiscount;
             LastStudentclassType.TotalCost = VWStudent.TotalCost;
-            LastStudentclassType.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount;
+            LastStudentclassType.TotalCostAfterDiscount = VWStudent.TotalCostAfterDiscount + VWStudent.CLSAcpt + VWStudent.CLSBakelite + VWStudent.CLSCloth;
             LastStudentclassType.ReceiptTotalFees = VWStudent.TotalCostAfterDiscount + VWStudent.CostSecondTermAfterDiscount + VWStudent.CostFirstTermAfterDiscount 
                ;
            
@@ -493,7 +493,7 @@ namespace SchoolApp.BL.Services
             vwStudent.ClassTypeName = student.ClassTypeName;
             vwStudent.LastBalance = student.LastBalance;
             vwStudent.LastSchoolName = student.LastSchoolName;
-            vwStudent.AdvanceRepayment = student.AdvanceRepayment;
+            vwStudent.ValueAddedTax = student.ValueAddedTax;
             vwStudent.MonthlyInstallment = student.MonthlyInstallment;
             vwStudent.PersonalStatusStudentId = student.PersonalStatusStudentId;
             vwStudent.PersonalStatusStudentNumber = student.PersonalStatusStudentNumber;
@@ -605,7 +605,7 @@ namespace SchoolApp.BL.Services
             vwStudent.ClassTypeName = student.ClassTypeName;
             vwStudent.LastBalance = student.LastBalance;
             vwStudent.LastSchoolName = student.LastSchoolName;
-            vwStudent.AdvanceRepayment = student.AdvanceRepayment;
+            vwStudent.ValueAddedTax = student.ValueAddedTax;
             vwStudent.MonthlyInstallment = student.MonthlyInstallment;
             vwStudent.PersonalStatusStudentId = student.PersonalStatusStudentId;
             vwStudent.PersonalStatusStudentNumber = student.PersonalStatusStudentNumber;
@@ -721,7 +721,7 @@ namespace SchoolApp.BL.Services
             vwStudent.ClassTypeName = student.ClassTypeName;
             vwStudent.LastBalance = student.LastBalance;
             vwStudent.LastSchoolName = student.LastSchoolName;
-            vwStudent.AdvanceRepayment = student.AdvanceRepayment;
+            vwStudent.ValueAddedTax = student.ValueAddedTax;
             vwStudent.MonthlyInstallment = student.MonthlyInstallment;
             vwStudent.PersonalStatusStudentId = student.PersonalStatusStudentId;
             vwStudent.PersonalStatusStudentNumber = student.PersonalStatusStudentNumber;
@@ -832,7 +832,7 @@ namespace SchoolApp.BL.Services
             vwStudent.ClassTypeName = student.ClassTypeName;
             vwStudent.LastBalance = student.LastBalance;
             vwStudent.LastSchoolName = student.LastSchoolName;
-            vwStudent.AdvanceRepayment = student.AdvanceRepayment;
+            vwStudent.ValueAddedTax = student.ValueAddedTax;
             vwStudent.MonthlyInstallment = student.MonthlyInstallment;
             vwStudent.PersonalStatusStudentId = student.PersonalStatusStudentId;
             vwStudent.PersonalStatusStudentNumber = student.PersonalStatusStudentNumber;
@@ -935,7 +935,7 @@ namespace SchoolApp.BL.Services
             printStudentDetails.Stage = stage == null ? "" : stage.StageName;
             printStudentDetails.Level= level==null?"": level.Name;
             printStudentDetails.Fees = student.MonthlyInstallment;
-            printStudentDetails.Payment = student.AdvanceRepayment;
+            printStudentDetails.Payment = student.ValueAddedTax;
             printStudentDetails.BusType = BusType;
             printStudentDetails.Term = EnrollmentPeriod;
             printStudentDetails.Guardian = student.FatherName;
@@ -943,7 +943,7 @@ namespace SchoolApp.BL.Services
             printStudentDetails.Relation = student.Kinship;
             printStudentDetails.HomeAddress = student.HouseLocationGuardian;
             printStudentDetails.WorkAddress = student.GuardianWork;
-            printStudentDetails.date=student.RegistrationDate;
+            printStudentDetails.date = DateOnly.FromDateTime(DateTime.Now);
             return printStudentDetails;
         }
     }

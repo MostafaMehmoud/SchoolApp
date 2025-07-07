@@ -97,21 +97,7 @@ namespace SchoolApp.BL.Services
 
                 //    accountStatementDetails.Add(accountStatementDetail2);
                 //}
-               if(student.AdvanceRepayment != 0)
-                {
-                    AccountStatementDetails accountStatementDetails3 = new AccountStatementDetails();
-                    
-                    accountStatementDetails3.AcountName = "دفعة مقدمة  ";
-                    accountStatementDetails3.ReceiptIdOrName = student.StudentNumber.ToString();
-                    accountStatementDetails3.LastBalance = 0;
-                    accountStatementDetails3.ReceiptIdOrName= student.StudentNumber.ToString();
-                    accountStatementDetails3.AccountDate = student.RegistrationDate;
-                    accountStatementDetails3.Payment = student.AdvanceRepayment;
-                    totalamount -= student.AdvanceRepayment;
-                    accountStatementDetails3.RamaingPayment = totalamount;
-                    accountStatementDetails.Add(accountStatementDetails3);
-                }
-               
+              
                 var receipts=_unitOfWork.receipts.GetAll().Where(i=>i.StudentId==student.Id);
                 if(receipts .Any())
                 {
@@ -547,11 +533,12 @@ namespace SchoolApp.BL.Services
                         student.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
                         student.EmployeeDiscount = student.EmployeeDiscount;
                         student.GeneralDiscount = student.GeneralDiscount;
+                        student.ValueAddedTax = student.ValueAddedTax;
                         student.SiblingsDiscount= student.SiblingsDiscount;
                         student.SpecialDiscount = student.SpecialDiscount;
                         student.BusDiscount = student.BusDiscount;
                         totalCostAmountStudent = totalCostAmountStudent - (student.CommunityFundDiscount + student.EarlyPaymentDiscount +
-                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
+                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.ValueAddedTax / 100) * student.TotalCost + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
                         if (student.AreYouWantGoWithBusSchool)
                         {
                             decimal BusCostDiscount = (student.BusDiscount / 100) * (student.CostFirstTermAfterDiscount + student.CostSecondTermAfterDiscount);
@@ -591,11 +578,12 @@ namespace SchoolApp.BL.Services
                         studentsClassType.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
                         studentsClassType.EmployeeDiscount = student.EmployeeDiscount;
                         studentsClassType.GeneralDiscount = student.GeneralDiscount;
+                        studentsClassType.ValueAddedTax = student.ValueAddedTax;
                         studentsClassType.SiblingsDiscount = student.SiblingsDiscount;
                         studentsClassType.SpecialDiscount = student.SpecialDiscount;
                         studentsClassType.BusDiscount = student.BusDiscount;
                         TotalCostClassTypeTransferring = TotalCostClassTypeTransferring - (studentsClassType.CommunityFundDiscount + studentsClassType.EarlyPaymentDiscount +
-                          studentsClassType.SiblingsDiscount + studentsClassType.SpecialDiscount + studentsClassType.SpecialDiscount + (studentsClassType.GeneralDiscount / 100) * student.TotalCost + (studentsClassType.EmployeeDiscount / 100) * studentsClassType.TotalCost);
+                          studentsClassType.SiblingsDiscount + studentsClassType.SpecialDiscount + studentsClassType.SpecialDiscount + (studentsClassType.ValueAddedTax / 100) * student.TotalCost + (studentsClassType.GeneralDiscount / 100) * student.TotalCost + (studentsClassType.EmployeeDiscount / 100) * studentsClassType.TotalCost);
 
                         if (studentsClassType.AreYouWantGoWithBusSchool)
                         {
@@ -620,14 +608,15 @@ namespace SchoolApp.BL.Services
                         student.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
                         student.EmployeeDiscount = student.EmployeeDiscount;
                         student.GeneralDiscount = student.GeneralDiscount;
+                        student.ValueAddedTax = student.ValueAddedTax;
                         student.SiblingsDiscount = student.SiblingsDiscount;
                         student.SpecialDiscount = student.SpecialDiscount;
                         student.BusDiscount = student.BusDiscount;
                         student.TotalDiscount= (student.CommunityFundDiscount + student.EarlyPaymentDiscount +
-                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
+                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.ValueAddedTax / 100) * student.TotalCost + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
 
                         totalCostAmountStudent = totalCostAmountStudent - (student.CommunityFundDiscount + student.EarlyPaymentDiscount +
-                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
+                            student.SiblingsDiscount + student.SpecialDiscount + student.SpecialDiscount + (student.ValueAddedTax / 100) * student.TotalCost + (student.GeneralDiscount / 100) * student.TotalCost + (student.EmployeeDiscount / 100) * student.TotalCost);
                         if (student.AreYouWantGoWithBusSchool)
                         {
                             decimal BusCostDiscount = (student.BusDiscount / 100) * (student.CostFirstTermAfterDiscount + student.CostSecondTermAfterDiscount);
@@ -666,6 +655,7 @@ namespace SchoolApp.BL.Services
                         studentsClassType.EarlyPaymentDiscount = student.EarlyPaymentDiscount;
                         studentsClassType.EmployeeDiscount = student.EmployeeDiscount;
                         studentsClassType.GeneralDiscount = student.GeneralDiscount;
+                        studentsClassType.ValueAddedTax = student.ValueAddedTax;
                         studentsClassType.SiblingsDiscount = student.SiblingsDiscount;
                         studentsClassType.SpecialDiscount = student.SpecialDiscount;
                         studentsClassType.BusDiscount = student.BusDiscount;

@@ -1,125 +1,166 @@
 ﻿@using SchoolApp.DAL.ViewModels
-@model PrintStudentDetails
+@model PrintViewModel<PrintStudentDetails>
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>طباعة عقد طالب</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
+  
+   <style>
+    @@media print {
+        @@page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            direction: rtl;
-            padding: 20px;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            margin: 0;
+            padding: 0;
         }
 
-        #printStudentDetails {
-            border: 1px solid #000;
-            padding: 30px;
-            margin-top: 20px;
-            line-height: 2;
+        .btn-print {
+            display: none !important;
         }
 
-        h2 {
-            text-align: center;
-            text-decoration: underline;
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
+    }
 
-        .section-title {
-            font-weight: bold;
-            margin-top: 20px;
-            text-decoration: underline;
-        }
+    body {
+        font-family: 'Cairo', 'Arial', sans-serif;
+        line-height: 1.8;
+        direction: rtl;
+        background-color: white;
+        margin: 0;
+        padding: 0;
+    }
 
-        .signature-area {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
-        }
+    .contract-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px 30px;
+        border: 1px solid #000;
+        background-color: white;
+    }
 
-        .signature-box {
-            width: 45%;
-            text-align: center;
-        }
+    .centered {
+        text-align: center;
+    }
 
-        .btn {
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
+    .logo {
+        max-height: 80px;
+        display: block;
+        margin: 0 auto 10px;
+    }
 
-        .field {
-            margin: 10px 0;
-        }
-    </style>
+    .section-title {
+        font-weight: bold;
+        text-decoration: underline;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .field {
+        margin: 10px 0;
+        font-size: 15px;
+    }
+
+    .signature-area {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .signature-box {
+        width: 45%;
+        text-align: center;
+    }
+
+    .btn-print {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        font-size: 15px;
+        margin: 15px auto;
+        cursor: pointer;
+        display: block;
+    }
+</style>
+
+
 </head>
 <body>
 
-    <button type="button" class="btn" id="dtnPrint">طباعة عقد</button>
+    
 
-    <div id="printStudentDetails">
-        <div id="contract-content">
-            <img src="~/images/kwakib3.JPG" alt="شعار المدرسة" style=" display: block; margin: 0 auto 20px;" />
+    <div class="contract-container">
+        @* شعار الشركة *@
+        @if (Model.Company?.Logo != null)
+        {
+            var logoBase64 = Convert.ToBase64String(Model.Company.Logo);
+            <img src="data:image/png;base64,@logoBase64" class="logo" alt="شعار المدرسة" />
+        }
 
-            <h2>عقد إتفاق تسديد رسوم دراسية</h2>
+        <div class="centered">
+            <h2>عقد اتفاق تسديد رسوم دراسية</h2>
+            <strong>@Model.Company.CompanyName</strong><br />
+            هاتف: @Model.Company.CompanyPhoneNumber | إيميل: @Model.Company.CompanyEmail<br />
+            العنوان: @Model.Company.CityAddress - @Model.Company.AreaAddress
+        </div>
 
-            <div class="field"><strong>إسم الطالب:</strong> @Model.StudentName</div>
-            <div class="field"><strong>المرحلة الدراسية:</strong> @Model.Stage</div>
-            <div class="field"><strong>الصف:</strong> @Model.Level</div>
-            <div class="field"><strong>القسط الشهرى:</strong> @Model.Fees ريال</div>
-            <div class="field"><strong>الدفعة المقدمة:</strong> @Model.Payment ريال</div>
-         
-            <div class="field"><strong>الإشتراك فى النقل المدرسى (الباص):</strong>@Model.BusType</div>
-            <div class="field"><strong>مدة الإلتحاق:</strong> @Model.Term</div>
+        <div class="field"><strong>اسم الطالب:</strong> @Model.model.StudentName</div>
+        <div class="field"><strong>المرحلة الدراسية:</strong> @Model.model.Stage</div>
+        <div class="field"><strong>الصف:</strong> @Model.model.Level</div>
+        <div class="field"><strong>القسط الشهري:</strong> @Model.model.Fees ريال</div>
+        <div class="field"><strong> ضريبة القيمة المضافة:</strong> @Model.model.Payment ريال</div>
+        <div class="field"><strong>الباص:</strong> @Model.model.BusType</div>
+        <div class="field"><strong>مدة الالتحاق:</strong> @Model.model.Term</div>
 
-            <div class="section-title">تعهـــد وإقرار</div>
-            <p>
-                أتعهد أنا الموقع أدناه ولي أمر الطالب أني اطلعت على نظام شركة أجيالكم التعليمية في الرسوم الدراسية
-                وأتعهد بالإلتزام بما جاء فيها.
-            </p>
+        <div class="section-title">تعهد وإقرار</div>
+        <p>
+            أتعهد أنا الموقع أدناه، ولي أمر الطالب، بأنني اطلعت على نظام الشركة في الرسوم الدراسية
+            وأوافق على جميع الشروط، وأتعهد بالالتزام بها.
+        </p>
 
-            <div class="field"><strong>صلة القرابة:</strong> @Model.Relation</div>
-            <div class="field"><strong>إسم ولي الأمر:</strong> @Model.Guardian</div>
-            <div class="field"><strong>عنوان العمل:</strong> @Model.WorkAddress</div>
-            <div class="field"><strong>عنوان المنزل:</strong> @Model.HomeAddress</div>
-            <div class="field"><strong>رقم الجوال:</strong> @Model.Phone}</div>
-            <div class="field"><strong>التاريخ:</strong> @Model.date}</div>
+        <div class="field"><strong>اسم ولي الأمر:</strong> @Model.model.Guardian</div>
+        <div class="field"><strong>صلة القرابة:</strong> @Model.model.Relation</div>
+        <div class="field"><strong>عنوان العمل:</strong> @Model.model.WorkAddress</div>
+        <div class="field"><strong>عنوان المنزل:</strong> @Model.model.HomeAddress</div>
+        <div class="field"><strong>رقم الجوال:</strong> @Model.model.Phone</div>
+        <div class="field"><strong>التاريخ:</strong> @Model.model.date.ToString("yyyy-MM-dd")</div>
 
-            <div class="signature-area">
-                <div class="signature-box">توقيع ولي أمر الطالب</div>
-                <div class="signature-box">توقيع مدير عام الشركة</div>
+        <div class="signature-area">
+            <div class="signature-box">
+                
+                توقيع ولي الأمر
+                <div style="border-bottom: 1px dashed #000; width: 80%; margin: 0 auto 5px;"></div>
+            </div>
+            <div class="signature-box">
+               
+                توقيع مدير عام الشركة
+                <div style="border-bottom: 1px dashed #000; width: 80%; margin: 0 auto 5px;"></div>
             </div>
         </div>
+
     </div>
-
-    <script>
-        // const student = {
-        //   name: 'محمد جمال محمود',
-        //   stage: 'ابتدائى',
-        //   level: 'الصف الأول',
-        //   fees: '5120',
-        //   downPayment: '1000',
-        //   paymentType: 'الدفع مقدما',
-        //   busType: 'ذهاب وعودة',
-        //   term: 'عام دراسى كامل',
-        //   guardian: 'جمال محمود',
-        //   phone: '0501234567',
-        //   relation: 'أب',
-        //   homeAddress: 'الرياض',
-        //   workAddress: 'شركة المستقبل',
-        //   date: '2025-04-23'
-        // };
-
-       
-        $('#dtnPrint').on('click', function () {
-          window.print();
-        });
-    </script>
-
-   
 
 </body>
 </html>
+<script>
+    window.onload = function () {
+        window.print();
+    };
+
+    window.onafterprint = function () {
+        window.location.href = '/Student/Index'; // عدّل حسب الحاجة
+    };
+</script>

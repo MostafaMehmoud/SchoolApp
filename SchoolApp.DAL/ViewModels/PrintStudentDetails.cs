@@ -19,7 +19,7 @@ namespace SchoolApp.DAL.ViewModels
         public string Relation { get; set; }
         public string HomeAddress { get; set; }
         public string WorkAddress { get; set; }
-        public DateOnly date { get; set; }
+        public DateOnly date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public decimal Fees {  get; set; }
         public decimal Payment {  get; set; }
 

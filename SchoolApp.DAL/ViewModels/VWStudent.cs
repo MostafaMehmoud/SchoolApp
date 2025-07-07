@@ -49,7 +49,7 @@ namespace SchoolApp.DAL.ViewModels
         public string ClassTypeName { get; set; }
         public decimal LastBalance { get; set; } = 0;
         public string? LastSchoolName { get; set; }
-        public decimal AdvanceRepayment { get; set; } = 0;
+        public decimal ValueAddedTax { get; set; } = 0;
         public decimal MonthlyInstallment { get; set; } = 0;
         [Required(ErrorMessage = "رجا الحالة الشخصية لطالب ")]
         public short PersonalStatusStudentId { get; set; }

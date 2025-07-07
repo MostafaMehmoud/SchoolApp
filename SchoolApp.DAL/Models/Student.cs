@@ -26,7 +26,7 @@ namespace SchoolApp.DAL.Models
         public string ClassTypeName {  get; set; }
         public decimal LastBalance { get; set; } = 0;
         public string? LastSchoolName {  get; set; }
-        public decimal AdvanceRepayment {  get; set; } = 0;
+        public decimal ValueAddedTax { get; set; } = 0;
         public decimal MonthlyInstallment {  get; set; } = 0;
         public short PersonalStatusStudentId { get; set; }
         public string PersonalStatusStudentNumber { get;set; }

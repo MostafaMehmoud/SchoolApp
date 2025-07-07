@@ -12,7 +12,7 @@ namespace SchoolApp.Controllers
         {
             _companyService = companyService;
         }
-
+        [Permission("CanAccessUsersFile")]
         public async Task<IActionResult> Index()
         {
             var company = await _companyService.GetCompanyAsync();
@@ -22,7 +22,26 @@ namespace SchoolApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(Company model, IFormFile logoFile)
         {
-            if (logoFile != null)
+            var existing = await _companyService.GetCompanyAsync();
+
+            if (existing == null)
+            {
+                // تحقق من رفع الصورة عند الإضافة فقط
+                if (logoFile == null || logoFile.Length == 0)
+                {
+                    ModelState.AddModelError("Logo", "يرجى رفع شعار الشركة");
+                    return View("Index", model);
+                }
+            }
+            ModelState.Remove("Logo");
+            ModelState.Remove("logoFile");
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            // تحميل الصورة الجديدة إن وُجدت
+            if (logoFile != null && logoFile.Length > 0)
             {
                 using (var ms = new MemoryStream())
                 {
@@ -30,16 +49,18 @@ namespace SchoolApp.Controllers
                     model.Logo = ms.ToArray();
                 }
             }
-
-            if (!ModelState.IsValid)
+            else if (existing != null)
             {
-                return View("Index", model);
+                // استخدم الشعار القديم إن لم تُرسل صورة جديدة
+                model.Logo = existing.Logo;
             }
 
             await _companyService.SaveCompanyAsync(model);
+
             TempData["Success"] = "تم حفظ بيانات الشركة بنجاح";
             return RedirectToAction("Index");
         }
+
 
     }
 

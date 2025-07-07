@@ -1,0 +1,16 @@
+﻿@model string
+
+<li class="nav-item">
+    @if (!string.IsNullOrEmpty(Model))
+    {
+        <img src="data:image/png;base64,@Model"
+             alt="شعار الشركة"
+             style="height: 50px; width: 50px; border-radius: 50%;" />
+    }
+    else
+    {
+        <img src="~/images/default-logo.png"
+             alt="شعار افتراضي"
+             style="height: 50px; width: 50px; border-radius: 50%;" />
+    }
+</li>

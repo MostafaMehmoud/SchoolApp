@@ -241,9 +241,9 @@
 <body>
     <div class="navbar">
         <ul class="nav">
-            <li class="nav-item">
-                <img src="~/images/download.jpg" alt="شعار مدرستي" style="height: 50px; border-radius: 50%; width: 50px;" />
-            </li>
+            @await Component.InvokeAsync("CompanyLogo")
+
+
             @if (User.Identity.IsAuthenticated)
             {
                 <li class="nav-item">
