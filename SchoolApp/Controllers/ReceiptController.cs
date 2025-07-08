@@ -11,10 +11,12 @@ namespace SchoolApp.Controllers
     {
         private readonly IServiceStudent _serviceStudent;
         private readonly IServiceReceipt _servicerreceipt;
-        public ReceiptController(IServiceStudent serviceStudent, IServiceReceipt servicerreceipt)
+        private readonly IServiceCompany _serviceCompany;   
+        public ReceiptController(IServiceStudent serviceStudent, IServiceReceipt servicerreceipt, IServiceCompany serviceCompany)
         {
             _serviceStudent = serviceStudent;
             _servicerreceipt = servicerreceipt;
+            _serviceCompany = serviceCompany;
         }
         [Permission("CanAccessReceipts")]
         public IActionResult Index()
@@ -127,5 +129,34 @@ namespace SchoolApp.Controllers
                 return NotFound(new { Message = "No previous record found." });
             return Ok(national);
         }
+        public async Task<IActionResult> Print(int id)
+        {
+            var receipt = _servicerreceipt.GetbyId(id); // هذا يجب أن يكون async أيضًا إن أمكن
+            var company = await _serviceCompany.GetCompanyAsync();
+
+            var viewModel = new ReceiptViewModel
+            {
+                Code = receipt.Code,
+                ReceiptDate = receipt.ReceiptDate,
+                StudentName = receipt.StudentName,
+                Amount = receipt.Amount,
+                AmountName = receipt.AmountName,
+                CashCheque = receipt.CashCheque,
+                ChequeNumber = receipt.ChequeNumber,
+                ChequeDate = receipt.ChequeDate,
+                BankName = receipt.BankName,
+                Purpose = receipt.Purpose,
+                Installments = receipt.installmentReceipts // أو .Select(...) لو كنت تستخدم نوع مختلف
+            };
+
+            var model = new PrintViewModel<ReceiptViewModel>
+            {
+                model = viewModel,
+                Company = company
+            };
+
+            return View(model);
+        }
+
     }
 }

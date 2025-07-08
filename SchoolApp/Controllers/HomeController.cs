@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SchoolApp.BL.Services.IServices;
 using SchoolApp.Models;
 
 namespace SchoolApp.Controllers
@@ -7,15 +8,17 @@ namespace SchoolApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IDashboardService _dashboardService;
+        public HomeController(ILogger<HomeController> logger,IDashboardService dashboardService)
         {
             _logger = logger;
+            _dashboardService = dashboardService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await _dashboardService.GetDashboardDataAsync();
+            return View(model);
         }
 
         public IActionResult Privacy()

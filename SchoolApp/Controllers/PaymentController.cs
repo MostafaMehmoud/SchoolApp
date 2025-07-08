@@ -9,11 +9,13 @@ namespace SchoolApp.Controllers
     public class PaymentController : Controller
     {
         private readonly IServiceStudent _serviceStudent;
-       private readonly IServicePayment _servicePayment;    
-        public PaymentController(IServiceStudent serviceStudent, IServicePayment servicePayment)
+       private readonly IServicePayment _servicePayment;   
+        private readonly IServiceCompany _serviceCompany;
+        public PaymentController(IServiceStudent serviceStudent, IServicePayment servicePayment,
+            IServiceCompany serviceCompany)
         {
             _serviceStudent = serviceStudent;
-            
+            _serviceCompany = serviceCompany;
             _servicePayment = servicePayment;
         }
         [Permission("CanAccessPayments")]
@@ -71,49 +73,18 @@ namespace SchoolApp.Controllers
 
             return Ok(new { success, message = resultMessage });
         }
-        public ActionResult Print(int id)
+        public async Task<ActionResult> Print(int id)
         {
             var voucher = _servicePayment.Print(id);
-           
+           var company=await _serviceCompany.GetCompanyAsync();
+            PrintViewModel<VWPayment> printViewModel = new PrintViewModel<VWPayment>
+            {
+                model = voucher,
+                Company = company,
+            };
 
-       
-            string htmlContent = $@"
-        <html>
-        <head>
-            <title>طباعة سند الصرف</title>
-            <style>
-                body {{ font-family: Arial, sans-serif; text-align: right; direction: rtl; }}
-                .voucher-container {{ width: 80%; margin: auto; border: 2px solid black; padding: 20px; }}
-                .voucher-header {{ text-align: center; font-size: 20px; font-weight: bold; }}
-                .voucher-content {{ margin-top: 20px; }}
-                .voucher-row {{ display: flex; justify-content: space-between; padding: 5px 0; }}
-                .voucher-label {{ font-weight: bold; }}
-                .signature-section {{ margin-top: 30px; display: flex; justify-content: space-between; }}
-                .signature {{ text-align: center; width: 24%; border-top: 1px solid black; }}
-            </style>
-        </head>
-        <body>
-            <div class='voucher-container'>
-                <div class='voucher-header'>سند صرف</div>
-                <div class='voucher-content'>
-                    <div class='voucher-row'><span class='voucher-label'>التاريخ:</span> {voucher.PaymentDate.ToShortDateString()}</div>
-                    <div class='voucher-row'><span class='voucher-label'>المبلغ:</span> {voucher.Amount} ريال</div>
-                    <div class='voucher-row'><span class='voucher-label'>إدفعوا إلى:</span> {voucher.StudentName}</div>
-                    <div class='voucher-row'><span class='voucher-label'>المبلغ كتابةً:</span> {voucher.AmountName}</div>
-                    <div class='voucher-row'><span class='voucher-label'>البنك:</span> {voucher.BankName}</div>
-                    <div class='voucher-row'><span class='voucher-label'>شيك رقم:</span> {voucher.ChequeNumber}</div>
-                </div>
-                <div class='signature-section'>
-                    <div class='signature'>المدير</div>
-                    <div class='signature'>المحاسب</div>
-                    <div class='signature'>أمين الصندوق</div>
-                    <div class='signature'>المستلم</div>
-                </div>
-            </div>
-            <script>window.print();</script>
-        </body>
-        </html>";
-            return Content(htmlContent, "text/html");
+
+            return View(printViewModel);
         }
         [HttpGet("GetMinPayment")]
         public async Task<IActionResult> GetMinPayment()

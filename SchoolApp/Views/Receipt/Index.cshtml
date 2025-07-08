@@ -373,6 +373,23 @@ function convertToArabicWords(num) {
     });
 </script>
     <script>
+        $(document).on('click', '#btnPrint', function () {
+            var id = $("#receiptId").val();
+
+            if (!id || isNaN(id) || parseInt(id) <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تنبيه',
+                    text: 'يرجى تحديد سند صحيح للطباعة'
+                });
+                return;
+            }
+
+            window.open('/Receipt/Print?id=' + id, '_blank');
+        });
+    </script>
+
+    <script>
         function toggleChequeDetails() {
             var paymentMethod = document.getElementById("paymentMethod").value;
             var chequeDetails = document.getElementById("chequeDetails");

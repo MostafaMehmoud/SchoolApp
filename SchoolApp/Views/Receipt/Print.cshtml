@@ -1,0 +1,184 @@
+﻿@using SchoolApp.DAL.ViewModels
+@model PrintViewModel<ReceiptViewModel>
+@{
+    Layout = null;
+    var receipt = Model.model;
+    var company = Model.Company;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>سند قبض</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            text-align: right;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .voucher-container {
+            width: 90%;
+            margin: auto;
+            border: 2px solid black;
+            padding: 30px;
+        }
+
+        .voucher-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .company-info {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .voucher-content {
+            margin-top: 30px;
+            font-size: 16px;
+        }
+
+        .voucher-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .voucher-label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .signature {
+            width: 22%;
+            border-top: 1px dashed black;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        @@media print {
+            body
+
+        {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="voucher-container">
+
+        @* شعار الشركة *@
+        @if (company?.Logo != null)
+        {
+            var logoBase64 = Convert.ToBase64String(company.Logo);
+            <div class="company-info">
+                <img src="data:image/png;base64,@logoBase64" alt="شعار" style="max-height: 70px;" />
+            </div>
+        }
+
+        @* بيانات الشركة *@
+        @if (company != null)
+        {
+            <div class="company-info">
+                @company.CompanyName<br />
+                هاتف: @company.CompanyPhoneNumber | البريد: @company.CompanyEmail<br />
+                @company.CityAddress - @company.AreaAddress
+            </div>
+        }
+
+        <div class="voucher-header">سند قبض</div>
+
+        <div class="voucher-content">
+            <div class="voucher-row"><span class="voucher-label">رقم السند:</span> <span>@receipt.Code</span></div>
+            <div class="voucher-row"><span class="voucher-label">التاريخ:</span> <span>@receipt.ReceiptDate.ToString("yyyy-MM-dd")</span></div>
+            <div class="voucher-row"><span class="voucher-label">استلمنا من:</span> <span>@receipt.StudentName</span></div>
+            <div class="voucher-row"><span class="voucher-label">مبلغ وقدره:</span> <span>@receipt.Amount.ToString("N2") ريال</span></div>
+            <div class="voucher-row"><span class="voucher-label">كتابةً:</span> <span>@receipt.AmountName</span></div>
+            <div class="voucher-row">
+                <span class="voucher-label">طريقة الدفع:</span>
+                <span>
+                    @(receipt.CashCheque == 2 ? "نقدًا" : receipt.CashCheque == 1 ? "شيك" : "أخرى")
+                </span>
+            </div>
+            @if (receipt.CashCheque == 1)
+            {
+                <div class="voucher-row"><span class="voucher-label">رقم الشيك:</span> <span>@receipt.ChequeNumber</span></div>
+                <div class="voucher-row"><span class="voucher-label">تاريخ الشيك:</span> <span>@receipt.ChequeDate?.ToString("yyyy-MM-dd")</span></div>
+                <div class="voucher-row"><span class="voucher-label">البنك:</span> <span>@receipt.BankName</span></div>
+            }
+            <div class="voucher-row"><span class="voucher-label">مقابل:</span> <span>@receipt.Purpose</span></div>
+        </div>
+
+        @if (receipt.Installments != null && receipt.Installments.Any())
+        {
+            <h4 style="margin-top: 30px;">تفاصيل الأقساط</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم القسط</th>
+                        <th>القيمة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ins in receipt.Installments)
+                    {
+                        <tr>
+                            <td>@ins.InstallmentName</td>
+                            <td>@ins.CostInstallment.ToString("N2") ريال</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <div class="signature-section">
+            <div class="signature">المدير</div>
+            <div class="signature">المحاسب</div>
+            <div class="signature">أمين الصندوق</div>
+            <div class="signature">المستلم</div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            window.print();
+        };
+    </script>
+
+</body>
+</html>

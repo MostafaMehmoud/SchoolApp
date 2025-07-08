@@ -1,0 +1,134 @@
+﻿@using SchoolApp.DAL.ViewModels
+@model PrintViewModel<VWPayment>
+@{
+    Layout = null;
+    var voucher = Model.model;
+    var company = Model.Company;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>طباعة سند صرف</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .voucher-container {
+            width: 90%;
+            margin: auto;
+            border: 2px solid #000;
+            padding: 30px;
+        }
+
+        .voucher-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .company-info {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .voucher-content {
+            margin-top: 30px;
+            font-size: 16px;
+        }
+
+        .voucher-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .voucher-label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .signature {
+            width: 22%;
+            border-top: 1px dashed black;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        @@media print {
+            body
+
+        {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="voucher-container">
+
+        @* شعار الشركة *@
+        @if (company?.Logo != null)
+        {
+            var base64Logo = Convert.ToBase64String(company.Logo);
+            <div class="company-info">
+                <img src="data:image/png;base64,@base64Logo" alt="الشعار" style="max-height: 70px;" />
+            </div>
+        }
+
+        @* بيانات الشركة *@
+        @if (company != null)
+        {
+            <div class="company-info">
+                @company.CompanyName<br />
+                هاتف: @company.CompanyPhoneNumber | البريد: @company.CompanyEmail<br />
+                @company.CityAddress - @company.AreaAddress
+            </div>
+        }
+
+        <div class="voucher-header">سند صرف</div>
+
+        <div class="voucher-content">
+            <div class="voucher-row"><span class="voucher-label">التاريخ:</span> <span>@voucher.PaymentDate.ToShortDateString()</span></div>
+            <div class="voucher-row"><span class="voucher-label">المبلغ:</span> <span>@voucher.Amount.ToString("N2")جنيها</span></div>
+            <div class="voucher-row"><span class="voucher-label">ادفعوا إلى:</span> <span>@voucher.StudentName</span></div>
+            <div class="voucher-row"><span class="voucher-label">المبلغ كتابةً:</span> <span>@voucher.AmountName</span></div>
+            <div class="voucher-row"><span class="voucher-label">البنك:</span> <span>@voucher.BankName</span></div>
+            <div class="voucher-row"><span class="voucher-label">رقم الشيك:</span> <span>@voucher.ChequeNumber</span></div>
+        </div>
+
+        <div class="signature-section">
+            <div class="signature">المدير</div>
+            <div class="signature">المحاسب</div>
+            <div class="signature">أمين الصندوق</div>
+            <div class="signature">المستلم</div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
