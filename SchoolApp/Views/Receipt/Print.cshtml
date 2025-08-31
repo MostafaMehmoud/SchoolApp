@@ -127,20 +127,26 @@
             <div class="voucher-row"><span class="voucher-label">رقم السند:</span> <span>@receipt.Code</span></div>
             <div class="voucher-row"><span class="voucher-label">التاريخ:</span> <span>@receipt.ReceiptDate.ToString("yyyy-MM-dd")</span></div>
             <div class="voucher-row"><span class="voucher-label">استلمنا من:</span> <span>@receipt.StudentName</span></div>
-            <div class="voucher-row"><span class="voucher-label">مبلغ وقدره:</span> <span>@receipt.Amount.ToString("N2") ريال</span></div>
-            <div class="voucher-row"><span class="voucher-label">كتابةً:</span> <span>@receipt.AmountName</span></div>
+            <div class="voucher-row"><span class="voucher-label">المبلغ الأساسي:</span> <span>@receipt.Amount.ToString("N2") ريال</span></div>
+            <div class="voucher-row"><span class="voucher-label">نسبة الضريبة:</span> <span>@receipt.TaxRate %</span></div>
+            <div class="voucher-row"><span class="voucher-label">قيمة الضريبة:</span> <span>@receipt.TaxRateValue.ToString("N2") ريال</span></div>
+            <div class="voucher-row"><span class="voucher-label">الإجمالي بعد الضريبة:</span> <span>@receipt.AmountAfterTaxRate.ToString("N2") ريال</span></div>
+            <div class="voucher-row"><span class="voucher-label">كتابةً:</span> <span>@receipt.AmountNameAfterTaxRate</span></div>
+
             <div class="voucher-row">
                 <span class="voucher-label">طريقة الدفع:</span>
                 <span>
                     @(receipt.CashCheque == 2 ? "نقدًا" : receipt.CashCheque == 1 ? "شيك" : "أخرى")
                 </span>
             </div>
+
             @if (receipt.CashCheque == 1)
             {
                 <div class="voucher-row"><span class="voucher-label">رقم الشيك:</span> <span>@receipt.ChequeNumber</span></div>
                 <div class="voucher-row"><span class="voucher-label">تاريخ الشيك:</span> <span>@receipt.ChequeDate?.ToString("yyyy-MM-dd")</span></div>
                 <div class="voucher-row"><span class="voucher-label">البنك:</span> <span>@receipt.BankName</span></div>
             }
+
             <div class="voucher-row"><span class="voucher-label">مقابل:</span> <span>@receipt.Purpose</span></div>
         </div>
 

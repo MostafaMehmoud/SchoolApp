@@ -34,6 +34,10 @@ namespace SchoolApp.DAL.ViewModels
         public decimal LastBalance { get; set; } = 0;
         public string AmountName { get; set; }
         public string? BankName { get; set; }
+        public decimal TaxRate { get; set; } // مثل 15
+        public decimal AmountAfterTaxRate { get; set; } // مثل 15
+        public string AmountNameAfterTaxRate { get; set; }
+        public decimal TaxRateValue { get; set; }
         public List<InstallmentReceipt> installmentReceipts { get; set; }
     }
 }

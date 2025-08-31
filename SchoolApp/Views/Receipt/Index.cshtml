@@ -159,6 +159,31 @@
 
                     </div>
                 </div>
+                <div class="row custom-form-group">
+                    <div class="col-md-4">
+                        <label>نسبة الضريبة:</label>
+                        <input type="text" id="taxRate" asp-for="TaxRate" class="form-control" value="@ViewBag.TaxRateCompany" readonly />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>قيمة الضريبة:</label>
+                        <input asp-for="TaxRateValue" type="text" id="taxValue" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>الإجمالي بعد الضريبة:</label>
+                        <input type="text" id="totalWithTax" asp-for="AmountAfterTaxRate" class="form-control" readonly />
+                    </div>
+
+			</div>
+                <div class="row custom-form-group">
+                    <div class="col-md-12">
+                        <label class="fs-6">تفنيد المبلغ</label>
+                        <input type="text" asp-for="AmountNameAfterTaxRate" id="breakdownAfterCalculate" class="form-control form-control-sm" readonly>
+                        <input type="hidden" name="AmountNameAfterCalculate" id="hiddenBreakdownAfterCalculate">
+
+                    </div>
+            </div>
                  <br />
                  <hr />
                  <br />
@@ -212,157 +237,106 @@
 </div>
 @section Scripts {
     <script>
- document.addEventListener("DOMContentLoaded", function () {
-    let amountInput = document.getElementById("amount");
-    let breakdownInput = document.getElementById("breakdown");
-
-    amountInput.addEventListener("input", updateBreakdown);
-    updateBreakdown();
-
-    // Enable the breakdown field before form submission
-    document.getElementById("receiptForm").addEventListener("submit", function () {
-        breakdownInput.removeAttribute("disabled");
-    });
-});
-
-function updateBreakdown() {
-    let amountInput = document.getElementById("amount");
-    let breakdownInput = document.getElementById("breakdown");
-    let amount = parseInt(amountInput.value) || 0;
-    breakdownInput.value = convertToArabicWords(amount) + " فقط لا غير";
-}
-
-function convertToArabicWords(num) {
-    if (num === 0) return "صفر جنيهاً مصرياً";
-
-    let ones = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
-    let tens = ["", "", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
-    let teens = ["عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر"];
-    let hundreds = ["", "مائة", "مئتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
-
-    function convertChunk(n) {
-        let result = "";
-        if (n >= 100) {
-            let hundredsPart = Math.floor(n / 100);
-            let remainder = n % 100;
-            result += hundreds[hundredsPart];
-
-            if (remainder > 0) {
-                result += " و " + convertChunk(remainder);
-            }
-            return result;
-        }
-        if (n >= 10 && n < 20) {
-            return teens[n - 10];
-        }
-        if (n >= 20) {
-            result += tens[Math.floor(n / 10)];
-            let remainder = n % 10;
-            if (remainder > 0) {
-                result += " و " + ones[remainder];
-            }
-            return result;
-        }
-        return ones[n];
-    }
-
-    let words = [];
-
-    if (num >= 1000000) {
-        let millions = Math.floor(num / 1000000);
-        words.push(millions === 1 ? "مليون" : millions === 2 ? "مليونان" : convertChunk(millions) + " ملايين");
-        num %= 1000000;
-    }
-
-    if (num >= 1000) {
-        let thousands = Math.floor(num / 1000);
-        words.push(thousands === 1 ? "ألف" : thousands === 2 ? "ألفان" : thousands >= 3 && thousands <= 10 ? convertChunk(thousands) + " آلاف" : convertChunk(thousands) + " ألف");
-        num %= 1000;
-    }
-
-    if (num > 0) {
-        words.push(convertChunk(num));
-    }
-
-    return words.filter(word => word).join(" و ") + " جنيهاً مصرياً";
-}
         document.addEventListener("DOMContentLoaded", function () {
-            let amountInput = document.getElementById("amount");
-            let breakdownInput = document.getElementById("breakdown");
+            const amountInput = document.getElementById("amount");
+            const taxRateInput = document.getElementById("taxRate");
+            const taxValueInput = document.getElementById("taxValue");
+            const totalWithTaxInput = document.getElementById("totalWithTax");
 
-            amountInput.addEventListener("input", updateBreakdown);
-            updateBreakdown();
+            const breakdown = document.getElementById("breakdown");
+            const hiddenBreakdown = document.getElementById("hiddenBreakdown");
 
-            // Enable the breakdown field before form submission
-            document.getElementById("receiptForm").addEventListener("submit", function () {
-                breakdownInput.removeAttribute("disabled");
+            const breakdownAfter = document.getElementById("breakdownAfterCalculate");
+            const hiddenBreakdownAfter = document.getElementById("hiddenBreakdownAfterCalculate");
+
+            amountInput.addEventListener("input", updateCalculations);
+            updateCalculations();
+
+            function updateCalculations() {
+                const amount = parseFloat(amountInput.value) || 0;
+                const taxRate = parseFloat(taxRateInput.value) || 0;
+                const taxValue = amount * (taxRate / 100);
+                const total = amount + taxValue;
+
+                // تحديث الحقول
+                taxValueInput.value = taxValue.toFixed(2);
+                totalWithTaxInput.value = total.toFixed(2);
+
+                // تحويل الرقم إلى كتابة
+                const amountText = convertToArabicWords(Math.round(amount));
+                const totalText = convertToArabicWords(Math.round(total));
+
+                breakdown.value = amountText + " فقط لا غير";
+                hiddenBreakdown.value = breakdown.value;
+
+                breakdownAfter.value = totalText + " فقط لا غير";
+                hiddenBreakdownAfter.value = breakdownAfter.value;
+            }
+
+            function convertToArabicWords(num) {
+                if (num === 0) return "صفر جنيهاً مصرياً";
+
+                const ones = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
+                const tens = ["", "", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
+                const teens = ["عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر"];
+                const hundreds = ["", "مائة", "مئتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
+
+                function convertChunk(n) {
+                    let result = "";
+                    if (n >= 100) {
+                        const h = Math.floor(n / 100);
+                        const r = n % 100;
+                        result += hundreds[h];
+                        if (r > 0) result += " و " + convertChunk(r);
+                        return result;
+                    }
+                    if (n >= 10 && n < 20) return teens[n - 10];
+                    if (n >= 20) {
+                        const t = Math.floor(n / 10);
+                        const r = n % 10;
+                        result += tens[t];
+                        if (r > 0) result += " و " + ones[r];
+                        return result;
+                    }
+                    return ones[n];
+                }
+
+                const words = [];
+                if (num >= 1_000_000) {
+                    const millions = Math.floor(num / 1_000_000);
+                    words.push(millions === 1 ? "مليون" : millions === 2 ? "مليونان" : convertChunk(millions) + " ملايين");
+                    num %= 1_000_000;
+                }
+
+                if (num >= 1000) {
+                    const thousands = Math.floor(num / 1000);
+                    words.push(thousands === 1 ? "ألف" : thousands === 2 ? "ألفان" : thousands <= 10 ? convertChunk(thousands) + " آلاف" : convertChunk(thousands) + " ألف");
+                    num %= 1000;
+                }
+
+                if (num > 0) words.push(convertChunk(num));
+
+                return words.filter(Boolean).join(" و ") + " جنيهاً مصرياً";
+            }
+        });
+    </script>
+
+
+    @* <script>
+        $(document).ready(function () {
+            $('#amount').on('input', function () {
+                var amount = parseFloat($('#amount').val()) || 0;
+                var taxRate = parseFloat($('#taxRate').val()) || 0;
+
+                var taxValue = (amount * taxRate) / 100;
+                var total = amount + taxValue;
+
+                $('#taxValue').val(taxValue.toFixed(2));
+                $('#totalWithTax').val(total.toFixed(2));
             });
         });
+    </script> *@
 
-        function updateBreakdown() {
-            let amountInput = document.getElementById("amount");
-            let breakdownInput = document.getElementById("breakdown");
-            let amount = parseInt(amountInput.value) || 0;
-            breakdownInput.value = convertToArabicWords(amount) + " فقط لا غير";
-        }
-
-        function convertToArabicWords(num) {
-            if (num === 0) return "صفر جنيهاً مصرياً";
-
-            let ones = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
-            let tens = ["", "", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
-            let teens = ["عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر"];
-            let hundreds = ["", "مائة", "مئتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
-
-            function convertChunk(n) {
-                let result = "";
-                if (n >= 100) {
-                    let hundredsPart = Math.floor(n / 100);
-                    let remainder = n % 100;
-                    result += hundreds[hundredsPart];
-
-                    if (remainder > 0) {
-                        result += " و " + convertChunk(remainder);
-                    }
-                    return result;
-                }
-                if (n >= 10 && n < 20) {
-                    return teens[n - 10];
-                }
-                if (n >= 20) {
-                    result += tens[Math.floor(n / 10)];
-                    let remainder = n % 10;
-                    if (remainder > 0) {
-                        result += " و " + ones[remainder];
-                    }
-                    return result;
-                }
-                return ones[n];
-            }
-
-            let words = [];
-
-            if (num >= 1000000) {
-                let millions = Math.floor(num / 1000000);
-                words.push(millions === 1 ? "مليون" : millions === 2 ? "مليونان" : convertChunk(millions) + " ملايين");
-                num %= 1000000;
-            }
-
-            if (num >= 1000) {
-                let thousands = Math.floor(num / 1000);
-                words.push(thousands === 1 ? "ألف" : thousands === 2 ? "ألفان" : thousands >= 3 && thousands <= 10 ? convertChunk(thousands) + " آلاف" : convertChunk(thousands) + " ألف");
-                num %= 1000;
-            }
-
-            if (num > 0) {
-                words.push(convertChunk(num));
-            }
-
-            return words.filter(word => word).join(" و ") + " جنيهاً مصرياً";
-        }
-
-    </script>
-  
 <script>
      document.addEventListener("DOMContentLoaded", function () {
         // الحصول على تاريخ اليوم بتنسيق YYYY-MM-DD
@@ -452,6 +426,8 @@ function convertToArabicWords(num) {
                             if (response) {
                                 console.log(response);
 
+                                    $("#taxRate").val(response.taxRate);
+                            
                                 // Set student details
                                 $("#studentName").val(response.studentName);
                                 $("#CLSRegs").val(response.clsRegs);
@@ -521,6 +497,7 @@ function convertToArabicWords(num) {
                      $("#btnAdd").click(function () {
             var errors = "";
             $("#hiddenBreakdown").val($("#breakdown").val());
+            $("#hiddenBreakdownAfterCalculate").val($("#breakdownAfterCalculate").val());
             // Clear previous errors
                 var studentId = $("#studentSelect").val();
           if (studentId == "0" || studentId == 0) {
@@ -654,7 +631,10 @@ function convertToArabicWords(num) {
                     $("#chequeDate").val(response.chequeDate);
                     $("#bankName").val(response.bankName);
                     $("#amount").val(response.amount);
-
+                    $("#taxRate").val(response.taxRate);
+                    $("#taxValue").val(response.taxRateValue);
+                    $("#totalWithTax").val(response.amountAfterTaxRate);
+                     $("#breakdownAfterCalculate").val(response.amountNameAfterTaxRate);
                 } else {
                     Swal.fire("خطأ", "لم يتم العثور على سجلات.", "error");
                 }
@@ -697,6 +677,10 @@ function convertToArabicWords(num) {
                     $("#chequeDate").val(response.chequeDate);
                     $("#bankName").val(response.bankName);
                     $("#amount").val(response.amount);
+                     $("#taxRate").val(response.taxRate);
+                    $("#taxValue").val(response.taxRateValue);
+                    $("#totalWithTax").val(response.amountAfterTaxRate);
+                     $("#breakdownAfterCalculate").val(response.amountNameAfterTaxRate);
                     } else {
                         Swal.fire("خطأ", "No records found.", "error");
                     }
@@ -745,6 +729,10 @@ function convertToArabicWords(num) {
                     $("#chequeDate").val(response.chequeDate);
                     $("#bankName").val(response.bankName);
                     $("#amount").val(response.amount);
+                     $("#taxRate").val(response.taxRate);
+                    $("#taxValue").val(response.taxRateValue);
+                    $("#totalWithTax").val(response.amountAfterTaxRate);
+                     $("#breakdownAfterCalculate").val(response.amountNameAfterTaxRate);
                     } else {
                         Swal.fire("تنبيه", "No previous record found.", "info");
                     }
@@ -799,6 +787,10 @@ function convertToArabicWords(num) {
                     $("#chequeDate").val(response.chequeDate);
                     $("#bankName").val(response.bankName);
                     $("#amount").val(response.amount);
+                     $("#taxRate").val(response.taxRate);
+                    $("#taxValue").val(response.taxRateValue);
+                    $("#totalWithTax").val(response.amountAfterTaxRate);
+                     $("#breakdownAfterCalculate").val(response.amountNameAfterTaxRate);
                     } else {
                         Swal.fire("تنبيه", "No next record found.", "info");
                     }

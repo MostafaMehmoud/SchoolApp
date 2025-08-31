@@ -1,126 +1,111 @@
 ﻿@using SchoolApp.DAL.Models
 @model Company
 
-<h2 class="mb-4">بيانات الشركة</h2>
+<h4 class="mb-3">بيانات الشركة</h4>
 
 <form asp-action="Save" enctype="multipart/form-data" method="post">
-    <div class="row">
-		<input type="hidden" asp-for="Id" />
-        <div class="col-md-6 mb-3">
-            <label asp-for="CompanyName" class="form-label">اسم الشركة</label>
-            <input asp-for="CompanyName" class="form-control" />
-            <span asp-validation-for="CompanyName" class="text-danger"></span>
+    <div class="row g-4">
+        <input type="hidden" asp-for="Id" />
 
-        </div>
-        <div class="col-md-6 mb-3">
-            <label asp-for="TaxNumber" class="form-label">الرقم الضريبي</label>
-            <input asp-for="TaxNumber" class="form-control" />
-            <span asp-validation-for="TaxNumber" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="CompanyName" class="form-label form-label-sm">اسم الشركة</label>
+            <input asp-for="CompanyName" class="form-control form-control-sm" />
+            <span asp-validation-for="CompanyName" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="TaxRate" class="form-label">نسبة الضريبة</label>
-            <input asp-for="TaxRate" class="form-control" />
-            <span asp-validation-for="TaxRate" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="TaxNumber" class="form-label form-label-sm">الرقم الضريبي</label>
+            <input asp-for="TaxNumber" class="form-control form-control-sm" />
+            <span asp-validation-for="TaxNumber" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="CompanyPhoneNumber" class="form-label">رقم الهاتف</label>
-            <input asp-for="CompanyPhoneNumber" class="form-control" />
-            <span asp-validation-for="CompanyPhoneNumber" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="TaxRate" class="form-label form-label-sm">نسبة الضريبة</label>
+            <input asp-for="TaxRate" class="form-control form-control-sm" />
+            <span asp-validation-for="TaxRate" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="CompanyEmail" class="form-label">البريد الإلكتروني</label>
-            <input asp-for="CompanyEmail" class="form-control" />
-            <span asp-validation-for="CompanyEmail" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="CompanyPhoneNumber" class="form-label form-label-sm">رقم الهاتف</label>
+            <input asp-for="CompanyPhoneNumber" class="form-control form-control-sm" />
+            <span asp-validation-for="CompanyPhoneNumber" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="EstablishedDate" class="form-label">تاريخ التأسيس</label>
-            <input asp-for="EstablishedDate" class="form-control" type="date" />
-            <span asp-validation-for="EstablishedDate" class="text-danger"></span>
-
+        <div class="col-md-6 mb-2">
+            <label asp-for="CompanyEmail" class="form-label form-label-sm">البريد الإلكتروني</label>
+            <input asp-for="CompanyEmail" class="form-control form-control-sm" />
+            <span asp-validation-for="CompanyEmail" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-12 mb-3">
-            <label asp-for="Description" class="form-label">الوصف</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="EstablishedDate" class="form-label form-label-sm">تاريخ التأسيس</label>
+            <input asp-for="EstablishedDate" class="form-control form-control-sm" type="date" />
+            <span asp-validation-for="EstablishedDate" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="CommercialRegister" class="form-label">السجل التجاري</label>
-            <input asp-for="CommercialRegister" class="form-control" />
-            <span asp-validation-for="CommercialRegister" class="text-danger"></span>
-
+        <div class="col-md-9 mb-2">
+            <label asp-for="Description" class="form-label form-label-sm">الوصف</label>
+            <textarea asp-for="Description" class="form-control form-control-sm" rows="2"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label class="form-label">شعار الشركة</label>
-            <input type="file" name="logoFile" class="form-control" />
+        <div class="col-md-3 mb-2">
+            <label asp-for="CommercialRegister" class="form-label form-label-sm">السجل التجاري</label>
+            <input asp-for="CommercialRegister" class="form-control form-control-sm" />
+            <span asp-validation-for="CommercialRegister" class="text-danger small"></span>
+        </div>
 
+        <div class="col-md-6 mb-2">
+            <label class="form-label form-label-sm">شعار الشركة</label>
+            <input type="file" name="logoFile" class="form-control form-control-sm" />
             @if (Model?.Logo != null)
             {
                 var base64 = Convert.ToBase64String(Model.Logo);
-                <img src="data:image/png;base64,@base64" class="img-thumbnail mt-2" style="height:100px;" />
+                <img src="data:image/png;base64,@base64" class="img-thumbnail mt-1" style="height:80px;" />
             }
-            <span asp-validation-for="Logo" class="text-danger"></span>
+            <span asp-validation-for="Logo" class="text-danger small"></span>
         </div>
 
-
-        <div class="col-md-6 mb-3">
-            <label asp-for="BulidingAddressNumber" class="form-label">رقم المبنى</label>
-            <input asp-for="BulidingAddressNumber" class="form-control" />
-            <span asp-validation-for="BulidingAddressNumber" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="BulidingAddressNumber" class="form-label form-label-sm">رقم المبنى</label>
+            <input asp-for="BulidingAddressNumber" class="form-control form-control-sm" />
+            <span asp-validation-for="BulidingAddressNumber" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="BulidingAddressAddtionalNumber" class="form-label">الرقم الإضافي</label>
-            <input asp-for="BulidingAddressAddtionalNumber" class="form-control" />
-            <span asp-validation-for="BulidingAddressAddtionalNumber" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="BulidingAddressAddtionalNumber" class="form-label form-label-sm">الرقم الإضافي</label>
+            <input asp-for="BulidingAddressAddtionalNumber" class="form-control form-control-sm" />
+            <span asp-validation-for="BulidingAddressAddtionalNumber" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="StreetAddress" class="form-label">الشارع</label>
-            <input asp-for="StreetAddress" class="form-control" />
-            <span asp-validation-for="StreetAddress" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="StreetAddress" class="form-label form-label-sm">الشارع</label>
+            <input asp-for="StreetAddress" class="form-control form-control-sm" />
+            <span asp-validation-for="StreetAddress" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="NeighborhoodAddress" class="form-label">الحي</label>
-            <input asp-for="NeighborhoodAddress" class="form-control" />
-            <span asp-validation-for="NeighborhoodAddress" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="NeighborhoodAddress" class="form-label form-label-sm">الحي</label>
+            <input asp-for="NeighborhoodAddress" class="form-control form-control-sm" />
+            <span asp-validation-for="NeighborhoodAddress" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="CityAddress" class="form-label">المدينة</label>
-            <input asp-for="CityAddress" class="form-control" />
-            <span asp-validation-for="CityAddress" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="CityAddress" class="form-label form-label-sm">المدينة</label>
+            <input asp-for="CityAddress" class="form-control form-control-sm" />
+            <span asp-validation-for="CityAddress" class="text-danger small"></span>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label asp-for="AreaAddress" class="form-label">المنطقة</label>
-            <input asp-for="AreaAddress" class="form-control" />
-            <span asp-validation-for="AreaAddress" class="text-danger"></span>
-
+        <div class="col-md-3 mb-2">
+            <label asp-for="AreaAddress" class="form-label form-label-sm">المنطقة</label>
+            <input asp-for="AreaAddress" class="form-control form-control-sm" />
+            <span asp-validation-for="AreaAddress" class="text-danger small"></span>
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">💾 حفظ</button>
-
-   
+    <button type="submit" class="btn btn-success btn-sm mt-3 px-4">💾 حفظ</button>
 </form>
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

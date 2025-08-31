@@ -42,6 +42,10 @@ namespace SchoolApp.BL.Services
                     receipt.StudentName= Receipt.StudentName;
                     receipt.BankName= Receipt.BankName;
                     receipt.AmountName=Receipt.AmountName;
+                    receipt.TaxRate = Receipt.TaxRate;
+                    receipt.TaxRateValue = Receipt.Amount * (Receipt.TaxRate / 100); // حساب قيمة الضريبة بناءً على المبلغ ونسبة الضريبة
+                    receipt.AmountAfterTaxRate  = Receipt.Amount + (Receipt.Amount * Receipt.TaxRate / 100); ;    
+                    receipt.AmountNameAfterTaxRate = Receipt.AmountNameAfterTaxRate;    
                     var student = _unitOfWork.students.GetById(receipt.StudentId);
                     //student.ReceiptTotalFees =student.ReceiptTotalFees- Receipt.ReceiptTotalFees;
                     student.ReceiptTotalPayments =student.ReceiptTotalPayments+ Receipt.Amount;
@@ -149,6 +153,11 @@ namespace SchoolApp.BL.Services
                     receipt.installmentReceipts = Receipt.installmentReceipts;
                     receipt.StudentName = Receipt.StudentName;
                     receipt.BankName = Receipt.BankName;
+                    receipt.AmountName = Receipt.AmountName;
+                    receipt.TaxRate = Receipt.TaxRate;
+                    receipt.TaxRateValue = Receipt.Amount * (Receipt.TaxRate / 100); // حساب قيمة الضريبة بناءً على المبلغ ونسبة الضريبة
+                    receipt.AmountAfterTaxRate = Receipt.Amount + (Receipt.Amount * Receipt.TaxRate / 100); ;
+                    receipt.AmountNameAfterTaxRate = Receipt.AmountNameAfterTaxRate;
                     var student = _unitOfWork.students.GetById(receipt.StudentId);
                     student.ReceiptTotalFees = Receipt.ReceiptTotalFees;
                     student.ReceiptTotalPayments = Receipt.ReceiptTotalPayments;
@@ -213,7 +222,10 @@ namespace SchoolApp.BL.Services
             vWReceipt.BankName=receipt.BankName;
             vWReceipt.AmountName=receipt.AmountName;
             vWReceipt.Amount = receipt.Amount;
-
+            vWReceipt.TaxRate = receipt.TaxRate;
+            vWReceipt.AmountAfterTaxRate = receipt.AmountAfterTaxRate;
+            vWReceipt.AmountNameAfterTaxRate = receipt.AmountNameAfterTaxRate;
+            vWReceipt.TaxRateValue = receipt.TaxRateValue;
             return vWReceipt;
         }
 
@@ -251,6 +263,11 @@ namespace SchoolApp.BL.Services
             vWReceipt.BankName = receipt.BankName;
             vWReceipt.AmountName = receipt.AmountName;
             vWReceipt.Amount = receipt.Amount;
+            vWReceipt.TaxRate = receipt.TaxRate;
+            vWReceipt.AmountAfterTaxRate = receipt.AmountAfterTaxRate;
+            vWReceipt.AmountNameAfterTaxRate = receipt.AmountNameAfterTaxRate;
+            vWReceipt.TaxRateValue = receipt.TaxRateValue;
+
             return vWReceipt;
         }
 
@@ -293,6 +310,11 @@ namespace SchoolApp.BL.Services
             vWReceipt.BankName = receipt.BankName;
             vWReceipt.AmountName = receipt.AmountName;
             vWReceipt.Amount = receipt.Amount;
+            vWReceipt.TaxRate = receipt.TaxRate;
+            vWReceipt.AmountAfterTaxRate = receipt.AmountAfterTaxRate;
+            vWReceipt.AmountNameAfterTaxRate = receipt.AmountNameAfterTaxRate;
+            vWReceipt.TaxRateValue = receipt.TaxRateValue;
+
             return vWReceipt;
         }
 
@@ -329,6 +351,11 @@ namespace SchoolApp.BL.Services
             vWReceipt.BankName = receipt.BankName;
             vWReceipt.AmountName = receipt.AmountName;
             vWReceipt.Amount=receipt.Amount;
+            vWReceipt.TaxRate = receipt.TaxRate;
+            vWReceipt.AmountAfterTaxRate = receipt.AmountAfterTaxRate;
+            vWReceipt.AmountNameAfterTaxRate = receipt.AmountNameAfterTaxRate;
+            vWReceipt.TaxRateValue = receipt.TaxRateValue;
+
             return vWReceipt;
         }
     }

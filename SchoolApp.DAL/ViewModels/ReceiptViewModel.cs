@@ -19,6 +19,11 @@ namespace SchoolApp.DAL.ViewModels
         public DateOnly? ChequeDate { get; set; }
         public string Purpose { get; set; }
         public string? BankName { get; set; }
+        public decimal TaxRate { get; set; } // مثل 15
+        public decimal AmountAfterTaxRate { get; set; } // مثل 15
+        public string AmountNameAfterTaxRate { get; set; }
+        public decimal TaxRateValue { get; set; }
+
         public List<InstallmentReceipt> Installments { get; set; }
     }
 }

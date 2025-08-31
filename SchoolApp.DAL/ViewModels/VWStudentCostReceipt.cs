@@ -22,6 +22,8 @@ namespace SchoolApp.DAL.ViewModels
         public decimal CLSRegs { get; set; } = 0;
         public decimal TotalCost { get; set; } = 0;
         public decimal LastBalance {  get; set; } = 0;
+        public bool isSuadi  { get; set; } 
+        public decimal TaxRate { get; set; }
     }
     public class InstallmentForStudent
     {

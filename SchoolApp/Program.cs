@@ -81,6 +81,41 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    // إذا ما فيه مستخدم Admin، نضيفه
+    if (await userManager.FindByNameAsync("Admin") == null)
+    {
+        var adminUser = new ApplicationUser
+        {
+            UserName = "Admin",
+            Email = "admin@example.com",
+            EmailConfirmed = true,
+            UserNumber = 1,
+            Level = "Admin",
+            CanAccessGrades = true,
+            CanAccessStudentsFile = true,
+            CanAccessBusesFile = true,
+            CanAccessTypesEncoming = true,
+            CanAccessReceipts = true,
+            CanAccessPayments = true,
+            CanAccessPrintReports = true,
+            CanAccessSearch = true,
+            CanAccessUsersFile = true
+
+        };
+
+        var result = await userManager.CreateAsync(adminUser, "300100");
+        if (!result.Succeeded)
+        {
+            throw new Exception("فشل إنشاء حساب Admin: " +
+                string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+    }
+}
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

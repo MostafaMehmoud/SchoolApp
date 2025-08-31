@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolApp.BL.Services;
 using SchoolApp.BL.Services.IServices;
+using SchoolApp.DAL.Migrations;
 using SchoolApp.DAL.Models;
 using SchoolApp.DAL.ViewModels;
 
@@ -22,6 +23,7 @@ namespace SchoolApp.Controllers
         public IActionResult Index()
         {
             ViewBag.listStudents = new SelectList(_serviceStudent.GetAll(), "Id", "StudentNumber");
+            ViewBag.TaxRateCompany = _serviceCompany.GetCompanyAsync().Result.TaxRate;  
             return View(new VWReceipt());
         }
         public IActionResult GetStudentDetailsCost(int id)
@@ -146,7 +148,12 @@ namespace SchoolApp.Controllers
                 ChequeDate = receipt.ChequeDate,
                 BankName = receipt.BankName,
                 Purpose = receipt.Purpose,
-                Installments = receipt.installmentReceipts // أو .Select(...) لو كنت تستخدم نوع مختلف
+                Installments = receipt.installmentReceipts, // أو .Select(...) لو كنت تستخدم نوع مختلف
+            TaxRate=receipt.TaxRate,
+                AmountAfterTaxRate = receipt.AmountAfterTaxRate,
+                AmountNameAfterTaxRate = receipt.AmountNameAfterTaxRate,
+                TaxRateValue = receipt.TaxRateValue
+
             };
 
             var model = new PrintViewModel<ReceiptViewModel>

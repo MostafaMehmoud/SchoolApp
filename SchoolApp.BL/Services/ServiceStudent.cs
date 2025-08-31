@@ -417,8 +417,24 @@ namespace SchoolApp.BL.Services
 
         public VWStudentCostReceipt GetCostReceipt(int StudentId)
         {
+            VWStudentCostReceipt receipt = new VWStudentCostReceipt();
             var student = _unitOfWork.students.GetAllWithInclude(i=>i.installmentCostAfterDiscounts).FirstOrDefault(i=>i.Id== StudentId);
-            VWStudentCostReceipt receipt = new VWStudentCostReceipt();  
+            if(student == null)
+            {
+                throw new Exception("الطالب غير موجود");
+            }
+            var national=_unitOfWork.Nationals.GetById(student.NationalId);
+            if(national.Name== "السعودية")
+            {
+                receipt.isSuadi = true;
+                receipt.TaxRate = 0;
+            }
+            else
+            {
+                receipt.isSuadi = false;
+                receipt.TaxRate = _unitOfWork.company.GetCompanyAsync().Result.TaxRate;
+            }
+           
             receipt.CLSAcpt=student.CLSAcpt;
             receipt.RemainingFees=student.RemainingFees;
             receipt.CLSRegs=student.CLSRegs;

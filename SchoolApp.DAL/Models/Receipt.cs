@@ -28,7 +28,12 @@ namespace SchoolApp.DAL.Models
         public decimal ReceiptBusFirstTremCost { get; set; } = 0;
         public decimal ReceiptBusSecondTremCost { get; set; } = 0;
         public string AmountName { get; set; }
+        public decimal TaxRate { get; set; } // مثل 15
+        public decimal TaxRateValue { get; set; } // حساب قيمة الضريبة بناءً على المبلغ ونسبة الضريبة
+        public decimal AmountAfterTaxRate { get; set; }
 
+
+        public string AmountNameAfterTaxRate { get; set; }
         public List<InstallmentReceipt> installmentReceipts { get; set; }
     }
     public class InstallmentReceipt
